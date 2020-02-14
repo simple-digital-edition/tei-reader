@@ -1,37 +1,38 @@
 <template>
     <div class="tei-reader">
         <nav>
-            <ul>
-                <li>Book</li>
-                <li>Notes</li>
-                <li>Annotations</li>
+            <ul role="menubar">
+                <li v-for="value, key in sections" :key="key" role="presentation">
+                    <a role="menuitem" v-html="value.label" @click="selectSection(key)" :aria-checked="key === selectedSection ? 'true' : 'false'"></a>
+                </li>
             </ul>
         </nav>
-        <main>
-            <nav class="vertical">
-                <ul>
-                    <li>Heading 1</li>
-                    <li>Heading 2</li>
-                    <li>Heading 3</li>
-                </ul>
-            </nav>
-            <article>
-                <p>This is the main text</p>
-                <aside>
-                    <p>This is a footer</p>
-                </aside>
-            </article>
-            <aside>
-                <section>Annotations go here</section>
-            </aside>
-        </main>
+        <template v-for="value, key in sections">
+            <text-reader v-if="key === selectedSection && value.type === 'TextReader'" :key="key" :section="key"></text-reader>
+        </template>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import TextReader from './TextReader.vue';
 
-@Component
+@Component({
+    components: {
+        TextReader,
+    },
+})
 export default class TeiReader extends Vue {
+    public get sections() {
+        return this.$store.state.sections;
+    }
+
+    public get selectedSection() {
+        return this.$store.state.ui.selectedSection;
+    }
+
+    public selectSection(key: string) {
+        this.$store.commit('selectSection', key);
+    }
 }
 </script>

@@ -7,9 +7,110 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
     <style>
+    body {
+        margin: 0;
+    }
     #app {
         max-width: 66rem;
         margin: 0 auto;
+        height: 100vh;
+    }
+    #app nav, #app aside {
+        background: #dddddd;
+    }
+    #app .tei-reader > nav {
+        padding: 0.5rem 0;
+    }
+    #app .tei-reader > nav a {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+    }
+    #app .tei-reader > nav a:hover, #app .tei-reader > nav a[aria-checked="true"] {
+        font-weight: bold;
+    }
+    #app .tei-reader > main > nav {
+        padding: 0 1rem;
+    }
+    #app .tei-reader > main > nav a {
+        display: block;
+        padding: 0.5rem 0;
+        cursor: pointer;
+    }
+    #app .tei-reader > main > nav a:hover, #app .tei-reader > main > nav a[aria-checked="true"] {
+        font-weight: bold;
+    }
+    #app .tei-reader > main > aside > section {
+        padding-bottom: 1rem;
+        border-bottom: 1px dotted #666666;
+        margin-bottom: 1rem;
+    }
+
+    .node-title-page {
+        margin-bottom: 5rem;
+        text-align: center;
+    }
+    .node-title-part {
+        margin-bottom: 1rem;
+        font-size: 120%;
+    }
+    .node-doc-edition {
+        margin-bottom: 1rem;
+    }
+    .node-doc-imprint {
+        font-size: 80%;
+        margin-bottom: 1rem;
+    }
+    .node-byline {
+        margin-bottom: 1rem;
+    }
+    .node-head {
+        font-size: 16pt;
+        margin-bottom: 1rem;
+        line-height: 125%;
+    }
+    .node-line-group {
+        margin-bottom: 1rem;
+    }
+    .node-line {
+        line-height: 125%;
+    }
+    .node-paragraph {
+        margin-bottom: 1rem;
+        line-height: 125%;
+    }
+    .node-paragraph .node-line-break {
+        display: none;
+    }
+    .node-page-break {
+        display: none;
+    }
+    .node-line-break {
+        display: block;
+    }
+    .node-choice-ref {
+        text-decoration: dotted underline;
+        cursor: pointer;
+    }
+    .node-choice {
+    }
+    .node-corr {
+        font-style: italic;
+    }
+    .node-corr::after {
+        content: ']';
+        font-style: normal;
+        padding-left: 0.2rem;
+        padding-right: 1rem;
+    }
+    .node-sic {
+        display: block;
+        padding-left: 2rem;
+    }
+    .mark-letter-spacing {
+        letter-spacing: 0.125em;
+    }
+    .mark-initial-letter {
+        font-size: 150%;
     }
     </style>
   </head>
@@ -17,6 +118,243 @@
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
+    <script id="TEIReaderConfig" type="application/json">
+      {
+          "sections": {
+              "body": {
+                  "label": "Main Text",
+                  "type": "TextReader",
+                  "parser": {
+                      "selector": "tei:text/tei:body"
+                  },
+                  "schema": [
+                      {
+                          "name": "paragraph",
+                          "type": "block",
+                          "parser": {
+                              "selector": "tei:p"
+                          }
+                      },
+                      {
+                          "name": "title-page",
+                          "type": "block",
+                          "parser": {
+                              "selector": "tei:titlePage"
+                          }
+                      },
+                      {
+                          "name": "title-part",
+                          "type": "block",
+                          "parser": {
+                              "selector": "tei:titlePart"
+                          }
+                      },
+                      {
+                          "name": "doc-edition",
+                          "type": "block",
+                          "parser": {
+                              "selector": "tei:docEdition"
+                          }
+                      },
+                      {
+                          "name": "doc-imprint",
+                          "type": "block",
+                          "parser": {
+                              "selector": "tei:docImprint"
+                          }
+                      },
+                      {
+                          "name": "byline",
+                          "type": "block",
+                          "parser": {
+                              "selector": "tei:byline"
+                          }
+                      },
+                      {
+                          "name": "head",
+                          "type": "block",
+                          "parser": {
+                              "selector": "tei:head"
+                          },
+                          "attrs": {
+                              "id": {
+                                  "parser": {
+                                      "selector": "@xml:id"
+                                  }
+                              }
+                          },
+                          "navigation": {
+                              "attr": "xml:id"
+                          }
+                      },
+                      {
+                          "name": "line-group",
+                          "type": "block",
+                          "parser": {
+                              "selector": "tei:lg"
+                          }
+                      },
+                      {
+                          "name": "line",
+                          "type": "block",
+                          "parser": {
+                              "selector": "tei:l"
+                          }
+                      },
+                      {
+                          "name": "paragraph",
+                          "type": "block",
+                          "parser": {
+                              "selector": "tei:p"
+                          }
+                      },
+                      {
+                          "name": "text",
+                          "type": "inline",
+                          "parsers": [
+                              {
+                                  "selector": "tei:seg",
+                                  "text": "text()"
+                              },
+                              {
+                                  "selector": "tei:hi",
+                                  "text": "text()"
+                              }
+                          ]
+                      },
+                      {
+                          "name": "page-break",
+                          "type": "inline",
+                          "parser": {
+                              "selector": "tei:pb"
+                          }
+                      },
+                      {
+                          "name": "line-break",
+                          "type": "inline",
+                          "parsers": [
+                              {
+                                  "selector": "tei:lb"
+                              }
+                          ]
+                      },
+                      {
+                          "name": "pub-place",
+                          "type": "inline",
+                          "parsers": [
+                              {
+                                  "selector": "tei:pubPlace"
+                              }
+                          ]
+                      },
+                      {
+                          "name": "publisher",
+                          "type": "inline",
+                          "parsers": [
+                              {
+                                  "selector": "tei:publisher"
+                              }
+                          ]
+                      },
+                      {
+                          "name": "doc-date",
+                          "type": "inline",
+                          "parsers": [
+                              {
+                                  "selector": "tei:docDate"
+                              }
+                          ]
+                      },
+                      {
+                          "name": "choice-ref",
+                          "type": "inline",
+                          "parser": {
+                              "selector": "tei:ref[@type='choice']",
+                              "text": "text()"
+                          },
+                          "attrs": {
+                              "target": {
+                                  "parser": {
+                                      "selector": "@target"
+                                  }
+                              }
+                          },
+                          "reference": {
+                              "type": "choice",
+                              "attr": "target"
+                          }
+                      },
+                      {
+                          "name": "choice",
+                          "type": "nested",
+                          "parsers": {
+                              "selector": "tei:choice"
+                          },
+                          "attrs": {
+                              "id": {
+                                  "parser": {
+                                      "selector": "@xml:id"
+                                  }
+                              }
+                          }
+                      },
+                      {
+                          "name": "sic",
+                          "type": "inline",
+                          "parsers": [
+                              {
+                                  "selector": "tei:sic",
+                                  "text": "text()"
+                              }
+                          ]
+                      },
+                      {
+                          "name": "corr",
+                          "type": "inline",
+                          "parsers": [
+                              {
+                                  "selector": "tei:corr",
+                                  "text": "text()"
+                              }
+                          ]
+                      },
+                      {
+                          "name": "letter-spacing",
+                          "type": "mark",
+                          "parsers": [
+                              {
+                                  "selector": "contains(@style, 'letter-spacing')"
+                              }
+                          ]
+                      },
+                      {
+                          "name": "initial-letter",
+                          "type": "mark",
+                          "parsers": [
+                              {
+                                  "selector": "contains(@style, 'initial-letter')"
+                              }
+                          ]
+                      }
+                  ]
+              }
+          }
+      }
+    </script>
+    <script type="application/javascript">
+      window.TEIReader = {
+          callbacks: {
+              autoLoad: function(callback) {
+                  const request = window.fetch('text.tei');
+                  request.then((response) => {
+                      response.text().then((text) => {
+                          callback(text);
+                      })
+                  });
+              },
+          }
+      }
+    </script>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>

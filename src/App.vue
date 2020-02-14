@@ -13,12 +13,34 @@ import TeiReader from './components/TeiReader.vue';
     TeiReader,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+    public mounted() {
+        const configElement = document.getElementById('TEIReaderConfig');
+        if (configElement) {
+            const config = JSON.parse(configElement.innerHTML);
+            if (config) {
+                this.$store.commit('init', config);
+            }
+        }
+        if (this.$store.state.callbacks && this.$store.state.callbacks.autoLoad) {
+            this.$store.state.callbacks.autoLoad((sourceData: string) => {
+                this.$store.dispatch('load', sourceData);
+            });
+        }
+    }
+}
 </script>
 
 <style lang="scss">
 .tei-reader {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
     nav {
+        flex: 0 0 auto;
+
         > ul {
             margin: 0;
             padding: 0;
@@ -41,17 +63,22 @@ export default class App extends Vue {}
     }
 
     main {
+        flex: 1 1 auto;
         display: flex;
         flex-direction: row;
+        overflow: hidden;
 
         nav {
             flex: 0 0 auto;
-            width: 10rem;
+            width: 15rem;
+            overflow-y: auto;
         }
 
         article {
             flex: 1 1 auto;
             position: relative;
+            overflow-y: auto;
+            padding: 1rem;
 
             aside {
                 position: absolute;
@@ -63,7 +90,29 @@ export default class App extends Vue {}
 
         aside {
             flex: 0 0 auto;
-            width: 10rem;
+            width: 15rem;
+            padding: 0 1rem;
+            overflow-y: auto;
+
+            > section {
+                position: relative;
+
+                > a {
+                    position: absolute;
+                    right: 0.5rem;
+                    top: 0;
+                    z-index: 1;
+                    cursor: pointer;
+                    display: none;
+
+                }
+
+                &:hover {
+                    > a {
+                        display: block;
+                    }
+                }
+            }
         }
     }
 }
