@@ -17,6 +17,8 @@ export default new Vuex.Store({
         sections: {
         },
         ui: {
+            mode: 'small',
+            smallMenuOpen: false,
             selectedSection: null,
             sections: {}
         }
@@ -100,6 +102,14 @@ export default new Vuex.Store({
                     Vue.set(state.ui.sections[path[0]], 'footnote', payload.path);
                 }
             }
+        },
+
+        toggleSmallMenu(state) {
+            state.ui.smallMenuOpen = !state.ui.smallMenuOpen;
+        },
+
+        setMode(state, payload: string) {
+            this.state.ui.mode = payload;
         },
     },
     actions: {

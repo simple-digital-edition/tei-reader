@@ -27,6 +27,20 @@ export default class App extends Vue {
                 this.$store.dispatch('load', sourceData);
             });
         }
+        this.updateWindowSize();
+        window.addEventListener('resize', this.updateWindowSize);
+    }
+
+    public beforeDestroy() {
+        window.removeEventListener('resize', this.updateWindowSize);
+    }
+
+    public updateWindowSize() {
+        if (window.innerWidth < 1024) {
+            this.$store.commit('setMode', 'small');
+        } else {
+            this.$store.commit('setMode', 'large');
+        }
     }
 }
 </script>
@@ -62,76 +76,152 @@ export default class App extends Vue {
         }
     }
 
-    main {
-        flex: 1 1 auto;
-        display: flex;
-        flex-direction: row;
-        overflow: hidden;
-
-        > nav {
+    &.mode-small {
+        > div {
             flex: 0 0 auto;
-            width: 15rem;
-            overflow-y: auto;
-        }
-
-        > article {
-            flex: 1 1 auto;
-            overflow-y: hidden;
             display: flex;
-            flex-flow: column;
+            flex-direction: row;
 
-            > div {
-                position: relative;
-                overflow-y: auto;
-                padding: 1rem;
-                flex: 1 1 auto;
+            > nav:first-child {
+                flex: 0 0 auto;
             }
 
-            > aside {
+            > nav:last-child {
+                flex: 1 1 auto;
+            }
+        }
+
+        > main {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+
+            > div {
                 flex: 0 0 auto;
-                padding: 0.5rem 1rem;
-                position: relative;
+                display: flex;
+                flex-direction: row;
 
-                > a {
-                    position: absolute;
-                    right: 0.5rem;
-                    top: 0.2rem;
-                    z-index: 1;
-                    cursor: pointer;
-                    display: none;
+                nav {
+                    &:first-child {
+                        flex: 0 0 auto;
+                    }
 
+                    &:last-child {
+                        flex: 1 1 auto;
+                    }
                 }
 
-                &:hover {
+                &.small-menu-open {
+                    > nav:first-child a {
+                        visibility: hidden;
+                    }
+                }
+            }
+
+            > article {
+                flex: 1 1 auto;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+
+                > div {
+                    position: relative;
+                    overflow-y: auto;
+                    padding: 1rem;
+                    flex: 1 1 auto;
+                }
+
+                > aside {
+                    flex: 0 0 auto;
+                    padding: 0.5rem 1rem;
+                    position: relative;
+
                     > a {
-                        display: block;
+                        position: absolute;
+                        right: 0.5rem;
+                        top: 0.2rem;
+                        z-index: 1;
+                        cursor: pointer;
                     }
                 }
             }
         }
+    }
 
-        > aside {
-            flex: 0 0 auto;
-            width: 15rem;
-            padding: 0 1rem;
-            overflow-y: auto;
+    &.mode-large {
 
-            > section {
-                position: relative;
+        > main {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
 
-                > a {
-                    position: absolute;
-                    right: 0.5rem;
-                    top: 0;
-                    z-index: 1;
-                    cursor: pointer;
-                    display: none;
+            > nav {
+                flex: 0 0 auto;
+                width: 15rem;
+                overflow-y: auto;
+            }
 
+            > article {
+                flex: 1 1 auto;
+                overflow-y: hidden;
+                display: flex;
+                flex-flow: column;
+
+                > div {
+                    position: relative;
+                    overflow-y: auto;
+                    padding: 1rem;
+                    flex: 1 1 auto;
                 }
 
-                &:hover {
+                > aside {
+                    flex: 0 0 auto;
+                    padding: 0.5rem 1rem;
+                    position: relative;
+
                     > a {
-                        display: block;
+                        position: absolute;
+                        right: 0.5rem;
+                        top: 0.2rem;
+                        z-index: 1;
+                        cursor: pointer;
+                        display: none;
+
+                    }
+
+                    &:hover {
+                        > a {
+                            display: block;
+                        }
+                    }
+                }
+            }
+
+            > aside {
+                flex: 0 0 auto;
+                width: 15rem;
+                padding: 0 1rem;
+                overflow-y: auto;
+
+                > section {
+                    position: relative;
+
+                    > a {
+                        position: absolute;
+                        right: 0.5rem;
+                        top: 0;
+                        z-index: 1;
+                        cursor: pointer;
+                        display: none;
+
+                    }
+
+                    &:hover {
+                        > a {
+                            display: block;
+                        }
                     }
                 }
             }

@@ -18,12 +18,21 @@
     #app nav, #app aside {
         background: #dddddd;
     }
-    #app .tei-reader > nav {
+    #app .tei-reader.mode-large > nav {
         padding: 0.5rem 0;
     }
     #app .tei-reader > nav a {
         padding: 0.5rem 1rem;
         cursor: pointer;
+        display: block;
+    }
+    #app .tei-reader.mode-small nav a {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        display: block;
+    }
+    #app .tei-reader.mode-small nav a[aria-checked="true"] {
+        font-weight: bold;
     }
     #app .tei-reader > nav a:hover, #app .tei-reader > nav a[aria-checked="true"] {
         font-weight: bold;

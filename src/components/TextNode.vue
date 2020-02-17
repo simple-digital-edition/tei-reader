@@ -32,6 +32,10 @@ export default class TextNode extends Vue {
     @Prop() section!: string;
     @Prop() node!: any;
 
+    public get isSmall() {
+        return this.$store.state.ui.mode === 'small';
+    }
+
     public get typeDef() {
         const schema = this.$store.state.sections[this.$props.section].schema;
         for(let idx = 0; idx < schema.length; idx++) {
@@ -99,7 +103,7 @@ export default class TextNode extends Vue {
     public toggleReference() {
         const type = this.typeDef;
         if (type && this.isReference && this.$props.node.attrs[type.reference.attr]) {
-            if (type.reference.display === 'sidebar') {
+            if (!this.isSmall && type.reference.display === 'sidebar') {
                 this.$store.commit('toggleAnnotation', {
                     path: this.$props.section + '.nested.' + type.reference.type + '.' + this.$props.node.attrs[type.reference.attr].substring(1),
                 });

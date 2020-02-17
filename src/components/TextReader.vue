@@ -1,6 +1,20 @@
 <template>
     <main>
-        <nav v-if="headings.length > 0" class="vertical">
+        <div v-if="isSmall && headings.length > 0" :class="isSmallMenuOpen ? 'small-menu-open' : null">
+            <nav>
+                <ul>
+                    <li><a @click="toggleSmallMenu">&#x2630;</a></li>
+                </ul>
+            </nav>
+            <nav class="vertical">
+                <ul>
+                    <template v-for="heading, idx in headings">
+                        <li v-if="heading.target === activeHeading || (!activeHeading && idx === 0) || isSmallMenuOpen" :key="idx"><a v-html="heading.label" :aria-checked="heading.target === activeHeading ? 'true' : 'false'" @click="isSmallMenuOpen ? navigateTo(heading.target) : toggleSmallMenu()"></a></li>
+                    </template>
+                </ul>
+            </nav>
+        </div>
+        <nav v-if="!isSmall && headings.length > 0" class="vertical">
             <ul>
                 <li v-for="heading, idx in headings" :key="idx"><a v-html="heading.label" :aria-checked="heading.target === activeHeading ? 'true' : 'false'" @click="navigateTo(heading.target)"></a></li>
             </ul>
@@ -14,7 +28,7 @@
                 <text-node :section="section" :node="footnote[1]"></text-node>
             </aside>
         </article>
-        <aside v-if="hasNestedDocs">
+        <aside v-if="!isSmall && hasNestedDocs">
             <section v-for="[annotationId, annotation], idx in annotations" :key="idx">
                 <a @click="hideAnnotation(annotationId)">&#x2716;</a>
                 <text-node v-if="annotation" :section="section" :node="annotation"></text-node>
@@ -39,13 +53,16 @@ export default class TextReader extends Vue {
 
     activeHeading = '';
 
-    // ================
-    // Lifecycle events
-    // ================
-
     // ===================
     // Computed properties
     // ===================
+    public get isSmall() {
+        return this.$store.state.ui.mode === 'small';
+    }
+
+    public get isSmallMenuOpen() {
+        return this.$store.state.ui.smallMenuOpen;
+    }
 
     public get doc() {
         const sectionData = this.$store.state.content[this.$props.section];
@@ -134,6 +151,13 @@ export default class TextReader extends Vue {
                 behavior: 'smooth',
             });
         }
+        if (this.isSmallMenuOpen) {
+            this.toggleSmallMenu();
+        }
+    }
+
+    public toggleSmallMenu() {
+        this.$store.commit('toggleSmallMenu');
     }
 
     public scrollReader(ev: UIEvent, scroll: NumberKeyValueDict) {
