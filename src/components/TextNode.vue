@@ -99,9 +99,15 @@ export default class TextNode extends Vue {
     public toggleReference() {
         const type = this.typeDef;
         if (type && this.isReference && this.$props.node.attrs[type.reference.attr]) {
-            this.$store.commit('toggleAnnotation', {
-                path: this.$props.section + '.nested.' + type.reference.type + '.' + this.$props.node.attrs[type.reference.attr].substring(1),
-            });
+            if (type.reference.display === 'sidebar') {
+                this.$store.commit('toggleAnnotation', {
+                    path: this.$props.section + '.nested.' + type.reference.type + '.' + this.$props.node.attrs[type.reference.attr].substring(1),
+                });
+            } else {
+                this.$store.commit('toggleFootnote', {
+                    path: this.$props.section + '.nested.' + type.reference.type + '.' + this.$props.node.attrs[type.reference.attr].substring(1),
+                });
+            }
         }
     }
 }

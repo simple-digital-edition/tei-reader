@@ -35,6 +35,7 @@ export default new Vuex.Store({
                 Vue.set(state.ui.sections, key, {});
                 if (config.sections[key].type === 'TextReader') {
                     Vue.set(state.ui.sections[key], 'annotations', []);
+                    Vue.set(state.ui.sections[key], 'footnote', null);
                 }
                 if (idx === 0) {
                     state.ui.selectedSection = key;
@@ -87,6 +88,17 @@ export default new Vuex.Store({
                     annotations.push(payload.path);
                 }
                 Vue.set(state.ui.sections[path[0]], 'annotations', annotations);
+            }
+        },
+
+        toggleFootnote(state, payload: any) {
+            const path = payload.path.split('.');
+            if (path.length === 4) {
+                if (state.ui.sections[path[0]].footnote === payload.path) {
+                    Vue.set(state.ui.sections[path[0]], 'footnote', null);
+                } else {
+                    Vue.set(state.ui.sections[path[0]], 'footnote', payload.path);
+                }
             }
         },
     },

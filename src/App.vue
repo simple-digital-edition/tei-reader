@@ -68,27 +68,49 @@ export default class App extends Vue {
         flex-direction: row;
         overflow: hidden;
 
-        nav {
+        > nav {
             flex: 0 0 auto;
             width: 15rem;
             overflow-y: auto;
         }
 
-        article {
+        > article {
             flex: 1 1 auto;
-            position: relative;
-            overflow-y: auto;
-            padding: 1rem;
+            overflow-y: hidden;
+            display: flex;
+            flex-flow: column;
 
-            aside {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
+            > div {
+                position: relative;
+                overflow-y: auto;
+                padding: 1rem;
+                flex: 1 1 auto;
+            }
+
+            > aside {
+                flex: 0 0 auto;
+                padding: 0.5rem 1rem;
+                position: relative;
+
+                > a {
+                    position: absolute;
+                    right: 0.5rem;
+                    top: 0.2rem;
+                    z-index: 1;
+                    cursor: pointer;
+                    display: none;
+
+                }
+
+                &:hover {
+                    > a {
+                        display: block;
+                    }
+                }
             }
         }
 
-        aside {
+        > aside {
             flex: 0 0 auto;
             width: 15rem;
             padding: 0 1rem;

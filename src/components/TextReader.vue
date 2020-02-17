@@ -5,8 +5,14 @@
                 <li v-for="heading, idx in headings" :key="idx"><a v-html="heading.label" :aria-checked="heading.target === activeHeading ? 'true' : 'false'" @click="navigateTo(heading.target)"></a></li>
             </ul>
         </nav>
-        <article v-scroll="scrollReader">
-            <text-node v-if="doc" :section="section" :node="doc"/>
+        <article>
+            <div v-scroll="scrollReader">
+                <text-node v-if="doc" :section="section" :node="doc"/>
+            </div>
+            <aside v-if="footnote">
+                <a @click="hideFootnote(footnote[0])">&#x2716;</a>
+                <text-node :section="section" :node="footnote[1]"></text-node>
+            </aside>
         </article>
         <aside v-if="hasNestedDocs">
             <section v-for="[annotationId, annotation], idx in annotations" :key="idx">
@@ -70,6 +76,17 @@ export default class TextReader extends Vue {
         });
     }
 
+    public get footnote() {
+        const footnote = this.$store.state.ui.sections[this.$props.section].footnote;
+        if (footnote) {
+            const footnoteDoc = get(this.$store.state.content, footnote);
+            if (footnoteDoc) {
+                return [footnote, footnoteDoc.content[0]];
+            }
+        }
+        return null;
+    }
+
     public get headings() {
         if (this.doc) {
             const schema = this.$store.state.sections[this.$props.section].schema;
@@ -104,6 +121,10 @@ export default class TextReader extends Vue {
 
     public hideAnnotation(annotation: string) {
         this.$store.commit('toggleAnnotation', { path: annotation });
+    }
+
+    public hideFootnote(annotation: string) {
+        this.$store.commit('toggleFootnote', { path: annotation });
     }
 
     public navigateTo(heading: string) {
