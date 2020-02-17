@@ -2,10 +2,10 @@
     <main>
         <nav v-if="headings.length > 0" class="vertical">
             <ul>
-                <li v-for="heading, idx in headings" :key="idx"><a v-html="heading.label" @click="navigateTo(heading.target)"></a></li>
+                <li v-for="heading, idx in headings" :key="idx"><a v-html="heading.label" :aria-checked="heading.target === activeHeading ? 'true' : 'false'" @click="navigateTo(heading.target)"></a></li>
             </ul>
         </nav>
-        <article>
+        <article v-scroll="scrollReader">
             <text-node v-if="doc" :section="section" :node="doc"/>
         </article>
         <aside v-if="hasNestedDocs">
@@ -21,7 +21,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TextNode from './TextNode.vue';
 import get from '@/util/get';
-import { StringKeyValueDict } from '@interfaces';
+import { StringKeyValueDict, NumberKeyValueDict } from '@interfaces';
 
 @Component({
     components: {
@@ -30,6 +30,16 @@ import { StringKeyValueDict } from '@interfaces';
 })
 export default class TextReader extends Vue {
     @Prop() section!: string;
+
+    activeHeading = '';
+
+    // ================
+    // Lifecycle events
+    // ================
+
+    // ===================
+    // Computed properties
+    // ===================
 
     public get doc() {
         const sectionData = this.$store.state.content[this.$props.section];
@@ -50,7 +60,6 @@ export default class TextReader extends Vue {
     }
 
     public get annotations() {
-        const nested = this.$store.state.content[this.$props.section].nested;
         return this.$store.state.ui.sections[this.$props.section].annotations.map((annotation) => {
             const annotationDoc = get(this.$store.state.content, annotation);
             if (annotationDoc) {
@@ -89,6 +98,10 @@ export default class TextReader extends Vue {
         return [];
     }
 
+    // ==============
+    // Event handlers
+    // ==============
+
     public hideAnnotation(annotation: string) {
         this.$store.commit('toggleAnnotation', { path: annotation });
     }
@@ -101,6 +114,31 @@ export default class TextReader extends Vue {
             });
         }
     }
+
+    public scrollReader(ev: UIEvent, scroll: NumberKeyValueDict) {
+        const headings = this.$el.querySelectorAll(this.headings.map((heading: StringKeyValueDict) => { return '[data-id="' + heading.target + '"]' }).join(', '));
+        if (headings.length > 0) {
+            this.activeHeading = '';
+            if (scroll.scrollTop > 0) {
+                scroll.scrollTop = scroll.scrollTop + this.$el.querySelector('article').clientHeight * 0.25;
+            }
+            for (let idx = 0; idx < headings.length; idx++) {
+                if (idx < headings.length - 1) {
+                    if (scroll.scrollTop >= headings[idx].offsetTop && scroll.scrollTop < headings[idx + 1].offsetTop) {
+                        this.activeHeading = headings[idx].getAttribute('data-id');
+                    }
+                } else {
+                    if (scroll.scrollTop >= headings[idx].offsetTop) {
+                        this.activeHeading = headings[idx].getAttribute('data-id');
+                    }
+                }
+            }
+        }
+    }
+
+    // ===============
+    // Private methods
+    // ===============
 
     private getText(node: any) {
         if (node.type === 'text') {
