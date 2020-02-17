@@ -1,6 +1,6 @@
 <template>
     <main>
-        <nav class="vertical">
+        <nav v-if="headings.length > 0" class="vertical">
             <ul>
                 <li v-for="heading, idx in headings" :key="idx"><a v-html="heading.label" @click="navigateTo(heading.target)"></a></li>
             </ul>
@@ -8,7 +8,7 @@
         <article>
             <text-node v-if="doc" :section="section" :node="doc"/>
         </article>
-        <aside>
+        <aside v-if="hasNestedDocs">
             <section v-for="[annotationId, annotation], idx in annotations" :key="idx">
                 <a @click="hideAnnotation(annotationId)">&#x2716;</a>
                 <text-node v-if="annotation" :section="section" :node="annotation"></text-node>
@@ -38,6 +38,15 @@ export default class TextReader extends Vue {
         } else {
             return null;
         }
+    }
+
+    public get hasNestedDocs() {
+        if (this.$store.state.content[this.$props.section].nested) {
+            if (Object.keys(this.$store.state.content[this.$props.section].nested).length > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public get annotations() {

@@ -1,6 +1,6 @@
 <template>
     <div class="tei-reader">
-        <nav>
+        <nav v-if="sections.length > 1">
             <ul role="menubar">
                 <li v-for="value, key in sections" :key="key" role="presentation">
                     <a role="menuitem" v-html="value.label" @click="selectSection(key)" :aria-checked="key === selectedSection ? 'true' : 'false'"></a>
