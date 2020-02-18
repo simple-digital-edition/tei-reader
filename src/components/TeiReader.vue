@@ -16,6 +16,7 @@
         </div>
         <template v-for="value, key in sections">
             <text-reader v-if="key === selectedSection && value.type === 'Text'" :key="key" :section="key"></text-reader>
+            <metadata-reader v-if="key === selectedSection && value.type === 'Metadata'" :key="key" :section="key"></metadata-reader>
         </template>
     </div>
 </template>
@@ -23,10 +24,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import TextReader from './TextReader.vue';
+import MetadataReader from './MetadataReader.vue';
 
 @Component({
     components: {
         TextReader,
+        MetadataReader,
     },
 })
 export default class TeiReader extends Vue {
@@ -52,6 +55,9 @@ export default class TeiReader extends Vue {
 
     public selectSection(key: string) {
         this.$store.commit('selectSection', key);
+        if (this.isSmall) {
+            this.$store.commit('toggleSmallMenu');
+        }
     }
 
     public toggleSmallMenu() {

@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 export default function get(obj: any, path: string) {
     let pathElements = path.split('.');
     while (obj && pathElements.length > 0) {

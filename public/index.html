@@ -26,12 +26,12 @@
         cursor: pointer;
         display: block;
     }
-    #app .tei-reader.mode-small nav a {
+    #app .tei-reader nav a {
         padding: 0.5rem 1rem;
         cursor: pointer;
         display: block;
     }
-    #app .tei-reader.mode-small nav a[aria-checked="true"] {
+    #app .tei-reader nav a[aria-checked="true"] {
         font-weight: bold;
     }
     #app .tei-reader > nav a:hover, #app .tei-reader > nav a[aria-checked="true"] {
@@ -52,6 +52,31 @@
         padding-bottom: 1rem;
         border-bottom: 1px dotted #666666;
         margin-bottom: 1rem;
+    }
+    #app .tei-reader > .metadata-reader .field {
+        margin-bottom: 0.5rem;
+    }
+    #app .tei-reader > .metadata-reader .label {
+        font-weight: bold;
+    }
+    #app .tei-reader > .metadata-reader .multi-row {
+        margin: 0;
+        padding: 0;
+    }
+    #app .tei-reader > .metadata-reader .multi-row > li {
+        list-style-type: none;
+    }
+    #app .tei-reader > .metadata-reader .multi-row > li span.field {
+        margin-bottom: 0;
+    }
+    #app .tei-reader > .metadata-reader .multi-row > li span.label {
+        display: none;
+    }
+    #app .tei-reader > .metadata-reader .multi-row > li:first-child span.label {
+        display: block;
+    }
+    #app .tei-reader > .metadata-reader .multi-row > li:last-child span.field {
+        margin-bottom: 0.5rem;
     }
 
     .node-title-page {
@@ -131,7 +156,7 @@
       {
           "sections": {
               "body": {
-                  "label": "Main Text",
+                  "label": "Text",
                   "type": "Text",
                   "parser": {
                       "selector": "tei:text/tei:body"
@@ -343,6 +368,98 @@
                           "parsers": [
                               {
                                   "selector": "contains(@style, 'initial-letter')"
+                              }
+                          ]
+                      }
+                  ]
+              },
+              "metadata": {
+                  "label": "About",
+                  "type": "Metadata",
+                  "schema": [
+                      {
+                          "tag": "tei:fileDesc",
+                          "children": [
+                              {
+                                  "tag": "tei:titleStmt",
+                                  "children": [
+                                      {
+                                          "tag": "tei:title"
+                                      },
+                                      {
+                                          "tag": "tei:author",
+                                          "children": [
+                                              {
+                                                  "tag": "tei:persName"
+                                              }
+                                          ]
+                                      }
+                                  ]
+                              },
+                              {
+                                  "tag": "tei:publicationStmt",
+                                  "children": [
+                                      {
+                                          "tag": "tei:publisher",
+                                          "children": [
+                                              {
+                                                  "tag": "tei:orgName",
+                                                  "multiple": true
+                                              }
+                                          ]
+                                      },
+                                      {
+                                          "tag": "tei:availability",
+                                          "children": [
+                                              {
+                                                  "tag": "tei:licence",
+                                                  "children": [
+                                                      {
+                                                          "tag": "tei:p"
+                                                      }
+                                                  ]
+                                              }
+                                          ]
+                                      }
+                                  ]
+                              }
+                          ]
+                      }
+                  ],
+                  "ui": [
+                      {
+                          "label": "Bibliography",
+                          "entries": [
+                              {
+                                  "type": "single-text",
+                                  "label": "Title",
+                                  "path": "fileDesc.titleStmt.title._text"
+                              },
+                              {
+                                  "type": "single-text",
+                                  "label": "Author",
+                                  "path": "fileDesc.titleStmt.author.persName._text"
+                              }
+                          ]
+                      },
+                      {
+                          "label": "Digital Version",
+                          "entries": [
+                              {
+                                  "type": "single-text",
+                                  "label": "License",
+                                  "path": "fileDesc.publicationStmt.availability.licence.p._text"
+                              },
+                              {
+                                  "type": "multi-row",
+                                  "path": "fileDesc.publicationStmt.publisher.orgName",
+                                  "entries": [
+                                      {
+                                          "type": "single-text",
+                                          "label": "Publisher",
+                                          "path": "._text"
+                                      }
+                                  ]
                               }
                           ]
                       }

@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import TEIMetadataParser from '@/util/TEIMetadataParser';
 import TEITextParser from '@/util/TEITextParser';
 import deepclone from '@/util/deepclone';
-import { State, Config, MutationSetTextDoc, MutationToggleAnnotation } from '@/interfaces';
+import { State, Config, MutationSetTextDoc, MutationToggleAnnotation, MutationSetMetadata } from '@/interfaces';
 
 Vue.use(Vuex)
 
@@ -27,18 +27,18 @@ export default new Vuex.Store({
         init(state, config: Config) {
             state.sections = config.sections;
             Object.keys(config.sections).forEach((key, idx) => {
-                /*if (config.sections[key].type === 'Metadata') {
-                    state.settings.metadataSection = key;
-                }*/
                 Vue.set(state.content, key, {});
-                Vue.set(state.content[key], 'doc', null);
-                Vue.set(state.content[key], 'nested', {});
+                if (config.sections[key].type === 'Text') {
+                    Vue.set(state.content[key], 'doc', null);
+                    Vue.set(state.content[key], 'nested', {});
+                }
 
                 Vue.set(state.ui.sections, key, {});
                 if (config.sections[key].type === 'Text') {
                     Vue.set(state.ui.sections[key], 'annotations', []);
                     Vue.set(state.ui.sections[key], 'footnote', null);
                 }
+
                 if (idx === 0) {
                     state.ui.selectedSection = key;
                 }
@@ -78,6 +78,10 @@ export default new Vuex.Store({
                     type: path[2],
                 });
             }
+        },
+
+        setMetadata(state, payload: MutationSetMetadata) {
+            Vue.set(state.content, payload.path, payload.metadata);
         },
 
         selectSection(state, section: string) {
@@ -127,8 +131,8 @@ export default new Vuex.Store({
                 Vue.set(state.content[key], 'nested', {});
             });
             Object.entries(state.sections).forEach(([key, config]) => {
-                if (config.type === 'MetadataEditor') {
-                    commit('setMetadata', (new TEIMetadataParser(dom, config)).get())
+                if (config.type === 'Metadata') {
+                    commit('setMetadata', { path: key, metadata: (new TEIMetadataParser(dom, config)).get() });
                 } else if (config.type === 'Text') {
                     const [doc, nestedDocs] = (new TEITextParser(dom, config)).get();
                     commit('setTextDoc', { path: key + '.doc', doc: doc });

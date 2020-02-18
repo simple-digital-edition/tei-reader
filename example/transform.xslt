@@ -2,7 +2,9 @@
   <xsl:template match="tei:TEI">
     <tei:TEI><xsl:apply-templates select="tei:teiHeader|tei:text"/></tei:TEI>
   </xsl:template>
-  <xsl:template match="tei:teiHeader"></xsl:template>
+  <xsl:template match="tei:persName">
+    <tei:persName><xsl:value-of select="tei:forename/text()"/><xsl:text> </xsl:text><xsl:value-of select="tei:surname/text()"/></tei:persName>
+  </xsl:template>
   <xsl:template match="tei:text">
     <tei:text><tei:body><xsl:apply-templates select="tei:front/*|tei:body/*" /></tei:body></tei:text>
   </xsl:template>

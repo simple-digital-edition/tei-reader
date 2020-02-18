@@ -76,6 +76,44 @@ export default class App extends Vue {
         }
     }
 
+    .metadata-reader {
+        > div {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: row;
+
+            > nav:first-child {
+                flex: 0 0 auto;
+            }
+
+            > nav:last-child {
+                flex: 1 1 auto;
+            }
+
+            &.small-menu-open {
+                > nav:first-child a {
+                    visibility: hidden;
+                }
+            }
+        }
+
+        > section {
+            padding: 0 1rem;
+        }
+
+        .field {
+            display: block;
+
+            .label {
+                display: block;
+            }
+
+            .value {
+                display: block;
+            }
+        }
+    }
+
     &.mode-small {
         > div {
             flex: 0 0 auto;
@@ -91,7 +129,7 @@ export default class App extends Vue {
             }
         }
 
-        > main {
+        > main.text-reader {
             flex: 1 1 auto;
             display: flex;
             flex-direction: column;
@@ -150,8 +188,7 @@ export default class App extends Vue {
     }
 
     &.mode-large {
-
-        > main {
+        > main.text-reader {
             flex: 1 1 auto;
             display: flex;
             flex-direction: row;

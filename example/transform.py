@@ -105,6 +105,7 @@ def transform_node(node, parent=None):
 
 def transform(doc):
     transformed_doc = etree.Element('{http://www.tei-c.org/ns/1.0}TEI')
+    transformed_doc.append(doc.xpath('/tei:TEI/tei:teiHeader', namespaces=NS)[0])
     transformed_doc.append(transform_node(doc.xpath('/tei:TEI/tei:text', namespaces=NS)[0]))
     return transformed_doc
 

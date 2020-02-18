@@ -1,4 +1,180 @@
 <tei:TEI xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:room3b="https://www.room3b.eu">
+  <ns0:teiHeader xmlns:ns0="http://www.tei-c.org/ns/1.0">
+<ns0:fileDesc>
+<ns0:titleStmt>
+<ns0:title type="main">Die Frau des Falkensteins</ns0:title>
+<ns0:title type="volume" n="1">Erstes B&#228;ndchen</ns0:title>
+<ns0:author>
+<tei:persName>Caroline de la Motte Fouqu&#233;</tei:persName>
+</ns0:author>
+<ns0:editor corresp="#DTACorpusPublisher">
+<tei:persName>Alexander Geyken</tei:persName>
+</ns0:editor>
+<ns0:editor corresp="#DTACorpusPublisher">
+<tei:persName>Susanne Haaf</tei:persName>
+</ns0:editor>
+<ns0:editor corresp="#DTACorpusPublisher">
+<tei:persName>Bryan Jurish</tei:persName>
+</ns0:editor>
+<ns0:editor corresp="#DTACorpusPublisher">
+<tei:persName>Matthias Boenig</tei:persName>
+</ns0:editor>
+<ns0:editor corresp="#DTACorpusPublisher">
+<tei:persName>Christian Thomas</tei:persName>
+</ns0:editor>
+<ns0:editor corresp="#DTACorpusPublisher">
+<tei:persName>Frank Wiegand</tei:persName>
+</ns0:editor>
+<ns0:respStmt>
+<ns0:orgName>TextGrid</ns0:orgName>
+<ns0:resp>
+<ns0:note type="remarkResponsibility">Bereitstellung der Texttranskription und Auszeichnung in XML/TEI von TextGrid</ns0:note>
+<ns0:note type="remarkRevisionDTA">Bitte beachten Sie, dass die aktuelle Transkription (und Textauszeichnung) mittlerweile nicht mehr dem Stand zum Zeitpunkt der &#220;bernahme aus TextGrid entsprechen muss.</ns0:note>
+<ns0:ref target="http://www.textgridrep.de/browse.html?amp;id=textgrid:n22d.0"/>
+<ns0:date type="importDTA">2013-03-15T15:54:31Z</ns0:date>
+</ns0:resp>
+</ns0:respStmt>
+<ns0:respStmt>
+<ns0:orgName>Bayerische Staatsbibliothek Digital</ns0:orgName>
+<ns0:resp>
+<ns0:note type="remarkResponsibility">Bereitstellung der Bilddigitalisate</ns0:note>
+<ns0:ref target="http://reader.digitale-sammlungen.de/resolve/display/bsb10117334.html"/>
+<ns0:date type="importDTA">2013-03-15T15:54:31Z</ns0:date>
+</ns0:resp>
+</ns0:respStmt>
+<ns0:respStmt>
+<tei:persName>Frederike Neuber</tei:persName>
+<ns0:resp>
+<ns0:note type="remarkResponsibility">Konvertierung nach XML/TEI gem&#228;&#223; DTA-Basisformat.</ns0:note>
+<ns0:date type="importDTA">2013-03-15T15:54:31Z</ns0:date>
+</ns0:resp>
+</ns0:respStmt>
+<ns0:respStmt>
+<ns0:orgName ref="https://www.clarin-d.de">CLARIN-D</ns0:orgName>
+<ns0:resp>
+<ns0:note type="remarkResponsibility">Langfristige Bereitstellung der DTA-Ausgabe</ns0:note>
+<ns0:ref target="https://clarin.bbaw.de"/>
+</ns0:resp>
+</ns0:respStmt>
+</ns0:titleStmt>
+<ns0:editionStmt><ns0:edition>Vollst&#228;ndige digitalisierte Ausgabe.</ns0:edition></ns0:editionStmt>
+<ns0:extent>
+<ns0:measure type="images">175</ns0:measure>
+<ns0:measure type="tokens">31711</ns0:measure>
+<ns0:measure type="types">6790</ns0:measure>
+<ns0:measure type="characters">205537</ns0:measure>
+</ns0:extent>
+<ns0:publicationStmt>
+<ns0:publisher xml:id="DTACorpusPublisher">
+<ns0:email>dta@bbaw.de</ns0:email>
+<ns0:orgName role="project">Deutsches Textarchiv</ns0:orgName>
+<ns0:orgName role="hostingInstitution" xml:lang="en">Berlin-Brandenburg Academy of Sciences and Humanities (BBAW)</ns0:orgName>
+<ns0:orgName role="hostingInstitution" xml:lang="de">Berlin-Brandenburgische Akademie der Wissenschaften (BBAW)</ns0:orgName>
+<ns0:address>
+<ns0:addrLine>J&#228;gerstr. 22/23, 10117 Berlin</ns0:addrLine>
+<ns0:country>Germany</ns0:country>
+</ns0:address>
+</ns0:publisher>
+<ns0:pubPlace>Berlin</ns0:pubPlace>
+<ns0:date type="publication">2019-12-10T10:08:45Z</ns0:date>
+<ns0:availability>
+<ns0:licence target="http://creativecommons.org/licenses/by/3.0/de/"><ns0:p>Distributed under the Creative Commons Attribution 3.0 Unported License.</ns0:p></ns0:licence>
+</ns0:availability>
+<ns0:idno>
+<ns0:idno type="URLWeb">http://www.deutschestextarchiv.de/fouque_falkensteins01_1810</ns0:idno>
+<ns0:idno type="URLXML">http://www.deutschestextarchiv.de/book/download_xml/fouque_falkensteins01_1810</ns0:idno>
+<ns0:idno type="URLHTML">http://www.deutschestextarchiv.de/book/download_html/fouque_falkensteins01_1810</ns0:idno>
+<ns0:idno type="URLText">http://www.deutschestextarchiv.de/book/download_text/fouque_falkensteins01_1810</ns0:idno>
+<ns0:idno type="DTADirName">fouque_falkensteins01_1810</ns0:idno>
+<ns0:idno type="DTAID">30363</ns0:idno>
+<ns0:idno type="URN">urn:nbn:de:kobv:b4-30363-5</ns0:idno>
+</ns0:idno>
+</ns0:publicationStmt>
+<ns0:sourceDesc>
+<ns0:bibl type="MMS">Motte Fouqu&#233;, Caroline de la: Die Frau des Falkensteins. Erstes B&#228;ndchen. Berlin, 1810.</ns0:bibl>
+<ns0:biblFull>
+<ns0:titleStmt>
+<ns0:title level="m" type="main">Die Frau des Falkensteins</ns0:title>
+<ns0:title level="m" type="volume" n="1">Erstes B&#228;ndchen</ns0:title>
+<ns0:author>
+<tei:persName>Caroline de la Motte Fouqu&#233;</tei:persName>
+</ns0:author>
+</ns0:titleStmt>
+<ns0:editionStmt>
+<ns0:edition n="1"/>
+</ns0:editionStmt>
+<ns0:publicationStmt>
+<ns0:publisher><ns0:name>Hitzig</ns0:name></ns0:publisher>
+<ns0:pubPlace>Berlin</ns0:pubPlace>
+<ns0:date type="publication">1810</ns0:date>
+</ns0:publicationStmt>
+<ns0:seriesStmt>
+<ns0:title level="s" type="main">Kleine Romanenbibliothek von und f&#252;r Damen</ns0:title>
+<ns0:biblScope unit="volume">Erste Lieferung</ns0:biblScope>
+</ns0:seriesStmt>
+</ns0:biblFull>
+<ns0:msDesc>
+<ns0:msIdentifier>
+</ns0:msIdentifier>
+<ns0:physDesc>
+<ns0:typeDesc>
+<ns0:p>Fraktur</ns0:p>
+</ns0:typeDesc>
+</ns0:physDesc>
+</ns0:msDesc>
+</ns0:sourceDesc>
+</ns0:fileDesc>
+<ns0:encodingDesc>
+<ns0:editorialDecl>
+<ns0:p>
+
+&lt;p&gt;Anmerkungen zur Transkription:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Wird ein Wort durch einen Seitenumbruch getrennt, so wird es vollst&#228;ndig auf der vorhergehenden Seite &#252;bernommen.&lt;/li&gt;
+&lt;li&gt;Silbentrennungen &#252;ber Zeilengrenzen hinweg werden aufgel&#246;st.&lt;/li&gt;
+&lt;li&gt;Der Zeilenfall wurde aufgehoben, die Abs&#228;tze beibehalten.&lt;/li&gt;
+&lt;/ul&gt;
+
+</ns0:p>
+</ns0:editorialDecl>
+<ns0:tagsDecl>
+<ns0:rendition scheme="css" xml:id="aq">font-family:sans-serif</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="b">font-weight:bold</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="blue">color:blue</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="c">display:block; text-align:center</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="et">display:block; margin-left:2em; text-indent:0</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="et2">display:block; margin-left:4em; text-indent:0</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="et3">display:block; margin-left:6em; text-indent:0</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="f">border:1px dotted silver</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="fr">border:1px dotted silver</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="g">letter-spacing:0.125em</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="i">font-style:italic</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="in">font-size:150%</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="k">font-variant:small-caps</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="larger">font-size:larger</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="red">color:red</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="right">display:block; text-align:right</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="s">text-decoration:line-through</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="smaller">font-size:smaller</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="sub">vertical-align:sub; font-size:.7em</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="sup">vertical-align:super; font-size:.7em</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="u">text-decoration:underline</ns0:rendition>
+<ns0:rendition scheme="css" xml:id="uu">border-bottom:double 3px #000</ns0:rendition>
+</ns0:tagsDecl>
+</ns0:encodingDesc>
+<ns0:profileDesc>
+<ns0:langUsage>
+<ns0:language ident="deu">German</ns0:language>
+</ns0:langUsage>
+<ns0:textClass>
+<ns0:classCode scheme="http://www.deutschestextarchiv.de/doku/klassifikation#dwds1main">Belletristik</ns0:classCode>
+<ns0:classCode scheme="http://www.deutschestextarchiv.de/doku/klassifikation#dwds1sub">Roman</ns0:classCode>
+<ns0:classCode scheme="http://www.deutschestextarchiv.de/doku/klassifikation#DTACorpus">ready</ns0:classCode>
+<ns0:classCode scheme="http://www.deutschestextarchiv.de/doku/klassifikation#DTACorpus">dtae</ns0:classCode>
+<ns0:classCode scheme="http://www.deutschestextarchiv.de/doku/klassifikation#collections">women</ns0:classCode>
+</ns0:textClass>
+</ns0:profileDesc>
+</ns0:teiHeader>
   <tei:text>
     <tei:body>
       <ns0:pb xmlns:ns0="http://www.tei-c.org/ns/1.0" facs="#f0001"/>
@@ -407,8 +583,7 @@ nicht Briefe von Eduard sein? fragte Luise. Nein, erwiederte Mathilde, das K&#22
 </ns0:seg>
         <ns0:pb facs="#f0038" n="30"/>
         <ns0:seg>
-Dir fremd. Du trittst jetzt an der Hand des edelsten Mannes in einem Augenblick hinein, wo sehr ernste Pflichten Deine Aufmerksamkeit fodern. Wie sollte ich an Deinem Gl&#252;ck zweifeln, wie solltest Du je etwas W&#252;nschenswertheres begehren k&#246;nnen? Ich wei&#223; nicht, warum mich dennoch Deine regsame Phantasie, die jedes neue Bild begierig auffa&#223;t, warum mich Dein heftiges Gem&#252;th, selbst in seinen edelsten Aufwallungen, &#228;ngstet. Du bist jetzt so oft gedankenvoll; ich sah Dich wohl fr&#252;her die Hand nach Kleinigkeiten ausstrecken, um sie bald darauf gleichg&#252;ltig zur&#252;ckzuziehen. Dein Sinn schweift umher, auch jetzt &#8212; Du h&#246;rst mich nicht &#8212; Luise! &#8212; Liebe Mutter, erwiederte jene, ich denke an Julius, und wie es m&#246;glich ist, da&#223; er seinen beiden Eltern so un&#228;hnlich ward. M&#246;chtest Du ihn anders? fragte Mathilde ernst. Auch ist er ihnen, fuhr sie fort, nicht so un&#228;hnlich als Du denkst; ihre g&#228;nzlich widersprechende Naturen haben sich sehr gl&#252;cklich in ihm verschmolzen, und was &#228;u&#223;erlich schwer und tr&#252;be an ihm haftet, das hat ihm des Grafen absichtsvolle Erziehung gegeben, der, allen nat&#252;rlichen Anlagen zuwider, einen schlauen Weltmann aus ihm bilden wollte, und eben dadurch den freim&#252;thigen Knaben mi&#223;m&#252;thig und unsicher machte. Wie es wohl auf dem Falkenstein aussehen mag? fragte Luise, durch neue Vorstellungen
-</ns0:seg>
+Dir fremd. Du trittst jetzt an der Hand des edelsten Mannes in einem Augenblick hinein, wo sehr ernste Pflichten Deine Aufmerksamkeit fodern. Wie sollte ich an Deinem Gl&#252;ck zweifeln, wie solltest Du je etwas W&#252;nschenswertheres begehren k&#246;nnen? Ich wei&#223; nicht, warum mich dennoch Deine regsame Phantasie, die jedes neue Bild begierig auffa&#223;t, warum mich Dein heftiges Gem&#252;th, selbst in seinen edelsten Aufwallungen, &#228;ngstet. Du bist jetzt so oft gedankenvoll; ich sah Dich wohl fr&#252;her die Hand nach Kleinigkeiten ausstrecken, um sie bald darauf gleichg&#252;ltig zur&#252;ckzuziehen. Dein Sinn schweift umher, auch jetzt &#8212; Du h&#246;rst mich nicht &#8212; Luise! &#8212; Liebe Mutter, erwiederte jene, ich denke an Julius, und wie es m&#246;glich ist, da&#223; er seinen beiden Eltern so un&#228;hnlich ward. M&#246;chtest Du ihn anders? fragte Mathilde ernst. Auch ist er ihnen, fuhr sie fort, nicht so un&#228;</ns0:seg>
         <ns0:pb facs="#f0039" n="31"/>
         <ns0:seg>
 abgezogen: hat die Zeit nicht allm&#228;hlig alle Spuren von Violas Glanz verwischt? Ich wei&#223; es nicht, erwiederte Mathilde, seit dem Tode Deines Vaters, der der Gr&#228;fin bald folgte, bin ich nicht dort gewesen. Allein sowohl der Graf, als neuerlich der Baron Veltheim, Julius Vormund, sollen alles wohl erhalten haben. Sie schwieg hier, durch Luisens stetes Abspringen verletzt, und beide trennten sich bald darauf, beklommen, und im Gef&#252;hl eines innern Mi&#223;verstehens, ge&#228;ngstet.</ns0:seg>
@@ -648,8 +823,7 @@ Ankunft benachrichtigt, entgegen. Luise ward durch die Sch&#246;nheit und W&#252
         <ns0:seg>
 Gen&#252;sse der Menschen, und ist bem&#252;ht uns durch die Fr&#252;chte seines Witzes die Augen zu &#246;ffnen. Ich wiederhole nur, erwiederte jener, gleichg&#252;ltig mit seinen L&#252;netten spielend, die er eben abgenommen hatte, um Emiliens Stickerei genauer zu betrachten, ich wiederhole nur, was die &#246;ffentlichen Bl&#228;tter sagen. Ein von der gn&#228;digen Frau besch&#252;tztes Buch, </ns0:seg>
         <ns0:hi style="letter-spacing">Rodrich</ns0:hi>
-        <ns0:seg>, ist darin wie ein Rezept zu einer Torte zerlegt, so und so viel Orangenbl&#252;then, Citronen nach Belieben, mehrere poetische S&#252;&#223;igkeiten, einige ergreifende Scenen als pikante Gew&#252;rze, und zuletzt zur Dekoration die Gruppe des Laokoon. Was meinen Sie dazu, Herr Professor, unterbrach ihn die Dame heftig, sich zu demjenigen wendend, welchen sie zuvor anredete, ich bitte Sie, was hei&#223;t das? &#8212; So viel als nichts, erwiederte dieser, das k&#246;nnte man so ziemlich von den mehrsten Romanen sagen, die im S&#252;den spielen; das bezeichnet &#228;u&#223;re Zuf&#228;lligkeiten, die keinesweges die Idee des Ganzen darstellen. Allein wer diese richtig auffa&#223;t und sie angreift, ist meiner Meinung. &#8212; Werner lachte in sich. Ihrer Meinung? wiederholte die h&#252;bsche kleine Frau ganz betroffen, und stand von ihrem Stuhl auf, als wolle sie jenes nachtheilige Urtheil fliehn. R&#228;ume ihnen nicht das Feld, liebe Auguste! rief Emilie, vertheidige den armen Rodrich, Du wei&#223;t wohl &#8212; Gn&#228;dige Frau, hub der Professor
-</ns0:seg>
+        <ns0:seg>, ist darin wie ein Rezept zu einer Torte zerlegt, so und so viel Orangenbl&#252;then, Citronen nach Belieben, mehrere poetische S&#252;&#223;igkeiten, einige ergreifende Scenen als pikante Gew&#252;rze, und zuletzt zur Dekoration die Gruppe des Laokoon. Was meinen Sie dazu, Herr Professor, unterbrach ihn die Dame heftig, sich zu demjenigen wendend, welchen sie zuvor anredete, ich bitte Sie, was hei&#223;t das? &#8212; So viel als nichts, erwiederte dieser, das k&#246;</ns0:seg>
         <ns0:pb facs="#f0078" n="70"/>
         <ns0:seg>
 aufs neue an, Sie forderten mich auf; ich kann nicht anders als wahr sein. Nun denn, erwiederte Auguste, auf alles gefa&#223;t, so sagen Sie nur was Sie denken. Ich denke, fuhr jener fort, was Ihrem Scharfsinn bei n&#228;herer Betrachtung nicht entgehen kann, wenn der erste Eindruck mancher anziehenden Verh&#228;ltnisse verwischt sein wird. Es ist in dem Buche nicht sowohl die Rede von der Nichtigkeit des menschlichen Thun und Treibens in seinen verworrenen Richtungen, sondern ein v&#246;llig abw&#228;rts gehendes Streben bei fr&#252;h erkanntem Ziel. Der S&#252;ndenfall </ns0:seg>
@@ -908,7 +1082,7 @@ und Sie von dessen pl&#246;tzlicher Erscheinung benach richtigen will. Er ist wi
       </ns0:p>
       <ns0:pb xmlns:ns0="http://www.tei-c.org/ns/1.0" facs="#f0104" n="96"/>
       <ns0:p xmlns:ns0="http://www.tei-c.org/ns/1.0">
-        <ns0:seg> Als Luise siegelte, h&#246;rte sie im Hofe ein italienisches Lied singen; gleichwohl war Julius mit seinem Freunde im Nebenzimmer. Francesca &#8212; dachte sie, und sprang zum Fenster. Ein finstres, &#228;ltliches Gesicht sah ihr zwischen zwei Mantels&#228;cken entgegen, die Fernandos Bedienter auf beiden Schultern geladen, dem Hause singend entgegen trug. Sie holte tief Athem. &#8212;</ns0:seg>
+        <ns0:seg> Als Luise siegelte, h&#246;rte sie im Hofe ein italienisches Lied singen; gleichwohl war Julius mit seinem Freunde im Nebenzimmer. Francesca &#8212; dachte sie, und sprang zum Fenster. Ein finstres, &#228;ltliches Gesicht sah ihr zwischen zwei Mantels&#228;cken entgegen, die Fernandos Bedienter auf beiden Schultern geladen, dem Hause singend entgegen trug. Sie holte tief Athem. &#8212; Warum auch </ns0:seg>
         <tei:ref type="choice" target="#choice-9">nicht</tei:ref>
         <tei:choice xml:id="choice-9">
           <ns0:corr>nicht</ns0:corr>
@@ -1691,8 +1865,7 @@ auch noch die f&#252;gen, sch&#246;ne K&#246;nigstochter, einem th&#246;richten,
         <ns0:seg> Als Stein geendet hatte, legte er das Buch schweigend aus der Hand. Niemand redete. Manchem hatte die Erz&#228;hlung Langeweile gemacht, Andren riefen jene einfache T&#246;ne alter fester Zeit wehm&#252;thige Vergleiche mit der zerfallnen, zerst&#252;ckelten, Gegenwart herauf. Luise allein lebte ganz in den vor&#252;bergef&#252;hrten Begebenheiten. Diese stille Sicherheit, im schwersten Kampf zwischen Neigung und Pflicht, dies reine Wollen und Vollbringen, ja die ganze prunklose Tugend altdeutscher Sitte, der ungetr&#252;bte Spiegel einer jungfr&#228;ulichen Seele, warf einen so klaren Schein zur&#252;ck, da&#223; sie scheu in sich zur&#252;ckbebte. Ich will fliehen, dachte sie, weit weg von hier, zu dem Grabe meiner Mutter. Ach meine Mutter! sie schlug die sch&#246;nen Augen gen Himmel, rufe mich zu dir, sagte sie leise, wo keine S&#252;nde ist, und kein Verbrechen dein schwaches Kind irre leitet!</ns0:seg>
       </ns0:p>
       <ns0:p xmlns:ns0="http://www.tei-c.org/ns/1.0">
-        <ns0:seg>Wollen wir noch einen Gang im Freien machen? sagte die Baronin aufstehend. Die Luft wird Allen nach dem gestrigen Tanze wohlthun. Sie hatte nicht viel auf die Vorlesung geachtet, ihr lagen andre Dinge im Sinne, daher sie auch, sobald sie einige Schritte mit Luisen vorausger&#252;ckt war, anhub: Wir verlassen Sie diesen Nachmittag, liebes Kind, es ist Zeit, glauben Sie mir, auch f&#252;r Emilien! &#8212; F&#252;rchten Sie, fiel Luise ein, da&#223;
-</ns0:seg>
+        <ns0:seg>Wollen wir noch einen Gang im Freien machen? sagte die Baronin aufstehend. Die Luft wird Allen nach dem gestrigen Tanze wohlthun. Sie hatte nicht viel auf die Vorlesung geachtet, ihr lagen andre Dinge im Sinne, daher sie auch, sobald sie einige Schritte mit Luisen vorausger&#252;ckt war, anhub: Wir verlassen Sie diesen Nachmittag, liebes Kind, es ist Zeit, glauben Sie mir, auch f&#252;r Emilien! &#8212;</ns0:seg>
         <ns0:pb facs="#f0167" n="159"/>
         <ns0:seg>
 Fernando? &#8212; hier&#252;ber bin ich eben so wenig als irgend jemand im Irrthum, erwiederte sie etwas heftig, allein, Emilie wird unsicher in sich selbst, und das k&#246;nnte ihrem Gef&#252;hl grade eine Richtung geben, die mir nicht willkommen w&#228;re. Wenn ich sie bis jetzt mit scheinbarer Sorglosigkeit sich selbst &#252;berlie&#223;, so geschahe das auf die Ueberzeugung hin, da&#223; ich sie in jedem Augenblick verstehe, und bei der Gewalt, die ich &#252;ber sie habe, einlenken kann wenn ich will. Emilie ist sehr unbefangen hingebend, aber auch eben so f&#252;gsam in die Nothwendigkeit &#228;u&#223;rer Verh&#228;ltnisse. Sie schlie&#223;t sich an, und wendet sich ab, wenn es die Umst&#228;nde gebieten, ohne sonderlichen Kummer zu empfinden. Mein Gott, unterbrach sie Luise, f&#252;rchten Sie denn nicht, da&#223;, bey diesem steten Herumschweifen, ihr eigentliches Gef&#252;hl zu Grunde geht? Ihr eigentliches Gef&#252;hl? erwiederte die Baronin; verwechseln Sie doch damit ein fl&#252;chtiges Wohlwollen nicht. Die jungen Leute halten gemeinhin Eins f&#252;r das Andre, und wenn man denn recht viel Aufhebens damit macht, so k&#252;nsteln sie sich eine Leidenschaft zusammen, die sie und Andre erschreckt. Ueber die gro&#223;e Ruhe, ja Nichtachtung, mit der ich jede Bewegung in Emiliens Herzen kom men und schwinden sah, ist es bei ihr niemals recht zur Sprache gelangt, und ich denke, sie soll die Tiefe

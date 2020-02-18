@@ -47,6 +47,10 @@ export interface ConfigSections {
     [x:string]: any;
 }
 
+export interface ConfigMetadataNodeSchema {
+
+}
+
 export interface MutationSetTextDoc {
     path: string;
     doc: any;
@@ -54,6 +58,19 @@ export interface MutationSetTextDoc {
 
 export interface MutationToggleAnnotation {
     path: string;
+}
+
+export interface MutationSetMetadata {
+    path: string;
+    metadata: MetadataNodeSet;
+}
+
+export interface MetadataNodeSet {
+    [x: string]: MetadataNode;
+}
+
+export interface MetadataNode {
+    [x: string]: MetadataNode;
 }
 
 export interface SerialisedNode {

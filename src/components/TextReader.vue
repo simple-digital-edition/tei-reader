@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <main class="text-reader">
         <div v-if="isSmall && headings.length > 0" :class="isSmallMenuOpen ? 'small-menu-open' : null">
             <nav>
                 <ul>
