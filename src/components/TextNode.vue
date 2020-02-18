@@ -23,14 +23,14 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { StringKeyValueDict } from '@/interfaces';
+import { StringKeyValueDict, SerialisedNode } from '@/interfaces';
 
 @Component({
     name: 'text-node',
 })
 export default class TextNode extends Vue {
     @Prop() section!: string;
-    @Prop() node!: any;
+    @Prop() node!: SerialisedNode;
 
     public get isSmall() {
         return this.$store.state.ui.mode === 'small';
@@ -76,17 +76,17 @@ export default class TextNode extends Vue {
         }
     }
 
-    public marks(node: any) {
+    public marks(node: SerialisedNode) {
         if (node.marks) {
-            return node.marks.map((mark: any) => { return 'mark-' + mark.type; });
+            return node.marks.map((mark) => { return 'mark-' + mark.type; });
         }
         return [];
     }
 
-    public markAttrs(node: any) {
+    public markAttrs(node: SerialisedNode) {
         if (node.marks) {
             const attrs = {} as StringKeyValueDict;
-            node.marks.forEach((mark: any) => {
+            node.marks.forEach((mark) => {
                 if (mark.attrs) {
                     Object.entries(mark.attrs).forEach(([key, value]) => {
                         if (value) {

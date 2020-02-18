@@ -1,20 +1,21 @@
 import XPathEvaluator from './XPathEvaluator';
-import get from './get';
+import { SerialisedNode, NestedDocSet, SerialisedAttrs, ParseAttributesSchema, ParseParserSchema, TEITextParserConfig,
+    ParseNodeSchema, SerialisedNodeMark } from '@/interfaces';
 
 export default class TEIParser {
     private dom: XMLDocument;
     private xpath: XPathEvaluator;
-    private config: any;
-    private doc: any;
-    private nestedDocs: any;
+    private config: TEITextParserConfig;
+    private doc: SerialisedNode | null = null;
+    private nestedDocs: NestedDocSet = {} as NestedDocSet;
 
-    constructor(dom: XMLDocument, config: any) {
+    constructor(dom: XMLDocument, config: TEITextParserConfig) {
         this.dom = dom;
         this.xpath = new XPathEvaluator(this.dom);
         this.config = config;
     }
 
-    public get() {
+    public get(): [SerialisedNode, NestedDocSet] {
         if (!this.doc) {
             this.doc = {
                 type: 'doc',
@@ -26,7 +27,7 @@ export default class TEIParser {
                 if (node) {
                     for(let idx = 0; idx < node.children.length; idx++) {
                         const tmp = this.parseContentNode(node.children[idx], this.config);
-                        if (tmp && !tmp.nestedDoc) {
+                        if (tmp && !tmp.nestedDoc && this.doc.content) {
                             this.doc.content.push(tmp);
                         } else if (tmp && tmp.nestedDoc) {
                             this.addNestedDoc(tmp);
@@ -38,11 +39,11 @@ export default class TEIParser {
         return [this.doc, this.nestedDocs];
     }
 
-    private parseContentAttributes(node: Element, attrs: any) {
+    private parseContentAttributes(node: Element, attrs: ParseAttributesSchema) {
         // Parse attributes for nodes or marks. Attributes can have a type which is boolean, number, static, or string (default).
-        const result = {} as any;
-        Object.entries(attrs).forEach(([key, schema]: any) => {
-            let parsers = [] as any;
+        const result = {} as SerialisedAttrs;
+        Object.entries(attrs).forEach(([key, schema]) => {
+            let parsers = [] as ParseParserSchema[];
             if (schema.parser) {
                 parsers.push(schema.parser);
             } else if (schema.parsers) {
@@ -79,12 +80,12 @@ export default class TEIParser {
         return result;
     }
 
-    private parseContentMarks(node: Element, schema: any) {
+    private parseContentMarks(node: Element, schema: ParseNodeSchema[]) {
         // Parse the marks of a text node
-        const result = [] as any;
-        schema.forEach((entry: any) => {
+        const result = [] as SerialisedNodeMark[];
+        schema.forEach((entry: ParseNodeSchema) => {
             if (entry.type === 'mark') {
-                let parsers = [] as any;
+                let parsers = [] as ParseParserSchema[];
                 if (entry.parser) {
                     parsers.push(entry.parser);
                 } else if (entry.parsers) {
@@ -94,7 +95,7 @@ export default class TEIParser {
                     if (this.xpath.booleanValue(node, parsers[idx].selector)) {
                         const mark = {
                             type: entry.name
-                        } as any;
+                        } as SerialisedNodeMark;
                         if (entry.attrs) {
                             mark.attrs = this.parseContentAttributes(node, entry.attrs);
                         }
@@ -106,13 +107,13 @@ export default class TEIParser {
         return result;
     }
 
-    private parseContentNode(node: Element, section: any) {
+    private parseContentNode(node: Element, section: TEITextParserConfig) {
         // Parse a single content node
         const entries = Object.entries(section.schema);
         for (let idx = 0; idx < entries.length; idx++) {
             //let key = entries[idx][0];
-            const nodeSchema = entries[idx][1] as any;
-            let parsers = [] as any;
+            const nodeSchema = entries[idx][1] as ParseNodeSchema;
+            let parsers = [] as ParseParserSchema[];
             if (nodeSchema.parser) {
                 parsers.push(nodeSchema.parser);
             } else if (nodeSchema.parsers) {
@@ -124,7 +125,7 @@ export default class TEIParser {
                     // The first schema node where the parser selector matches is chosen as the result
                     const result = {
                         type: nodeSchema.name
-                    } as any;
+                    } as SerialisedNode;
                     if (nodeSchema.attrs) {
                         result.attrs = this.parseContentAttributes(node, nodeSchema.attrs);
                     }
@@ -134,19 +135,23 @@ export default class TEIParser {
                     if (nodeSchema.type === 'inline') {
                         // Inline nodes are either loaded as text nodes with marks or as complex text nodes
                         if (nodeSchema.name === 'text') {
-                            result.text = this.xpath.stringValue(node, parser.text);
+                            if (parser.text) {
+                                result.text = this.xpath.stringValue(node, parser.text);
+                            }
                             result.marks = this.parseContentMarks(node, section.schema);
                             if (node.children.length === 1) {
                                 const temp = this.parseContentNode(node.children[0], section);
-                                if (temp.text && temp.text !== '') {
+                                if (temp && temp.text && temp.text !== '') {
                                     result.text = temp.text;
                                 }
-                                result.marks = result.marks.concat(temp.marks);
+                                if (temp && temp.marks) {
+                                    result.marks = result.marks.concat(temp.marks);
+                                }
                             }
                         } else {
                             if (node.children.length === 0) {
                                 // Inline nodes without children need a virtual text node added if they have text
-                                if (this.xpath.stringValue(node, parser.text)) {
+                                if (parser.text && this.xpath.stringValue(node, parser.text)) {
                                     result.content = [
                                         {
                                             type: 'text',
@@ -185,7 +190,7 @@ export default class TEIParser {
         return null;
     }
 
-    private addNestedDoc(nestedParent: any) {
+    private addNestedDoc(nestedParent: SerialisedNode) {
         if (nestedParent.attrs && nestedParent.attrs.id) {
             if (!this.nestedDocs[nestedParent.type]) {
                 this.nestedDocs[nestedParent.type] = {};

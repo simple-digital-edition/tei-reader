@@ -15,13 +15,13 @@
             </nav>
         </div>
         <template v-for="value, key in sections">
-            <text-reader v-if="key === selectedSection && value.type === 'TextReader'" :key="key" :section="key"></text-reader>
+            <text-reader v-if="key === selectedSection && value.type === 'Text'" :key="key" :section="key"></text-reader>
         </template>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import TextReader from './TextReader.vue';
 
 @Component({

@@ -41,7 +41,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TextNode from './TextNode.vue';
 import get from '@/util/get';
-import { StringKeyValueDict, NumberKeyValueDict } from '@interfaces';
+import { StringKeyValueDict, NumberKeyValueDict, SerialisedNode } from '@/interfaces';
 
 @Component({
     components: {
@@ -83,7 +83,7 @@ export default class TextReader extends Vue {
     }
 
     public get annotations() {
-        return this.$store.state.ui.sections[this.$props.section].annotations.map((annotation) => {
+        return this.$store.state.ui.sections[this.$props.section].annotations.map((annotation: string) => {
             const annotationDoc = get(this.$store.state.content, annotation);
             if (annotationDoc) {
                 return [annotation, annotationDoc.content[0]];
@@ -108,26 +108,28 @@ export default class TextReader extends Vue {
         if (this.doc) {
             const schema = this.$store.state.sections[this.$props.section].schema;
             const cache = {} as StringKeyValueDict;
-            return this.doc.content.map((node) => {
-                if (!cache[node.type]) {
-                    cache[node.type] = 'false';
-                    for(let idx = 0; idx < schema.length; idx++) {
-                        if (schema[idx].name === node.type) {
-                            if (schema[idx].navigation) {
-                                cache[node.type] = 'true';
+            return this.doc.content.map((node: SerialisedNode) => {
+                if (node.attrs) {
+                    if (!cache[node.type]) {
+                        cache[node.type] = 'false';
+                        for(let idx = 0; idx < schema.length; idx++) {
+                            if (schema[idx].name === node.type) {
+                                if (schema[idx].navigation) {
+                                    cache[node.type] = 'true';
+                                }
                             }
                         }
                     }
+                    if (cache[node.type] === 'true') {
+                        return {
+                            target: node.attrs['id'],
+                            label: this.getText(node),
+                        };
+                    } else {
+                        return null;
+                    }
                 }
-                if (cache[node.type] === 'true') {
-                    return {
-                        target: node.attrs['id'],
-                        label: this.getText(node),
-                    };
-                } else {
-                    return null;
-                }
-            }).filter((node) => { return node });
+            }).filter((node: SerialisedNode) => { return node });
         }
         return [];
     }
@@ -161,20 +163,25 @@ export default class TextReader extends Vue {
     }
 
     public scrollReader(ev: UIEvent, scroll: NumberKeyValueDict) {
-        const headings = this.$el.querySelectorAll(this.headings.map((heading: StringKeyValueDict) => { return '[data-id="' + heading.target + '"]' }).join(', '));
-        if (headings.length > 0) {
-            this.activeHeading = '';
-            if (scroll.scrollTop > 0) {
-                scroll.scrollTop = scroll.scrollTop + this.$el.querySelector('article').clientHeight * 0.25;
-            }
-            for (let idx = 0; idx < headings.length; idx++) {
-                if (idx < headings.length - 1) {
-                    if (scroll.scrollTop >= headings[idx].offsetTop && scroll.scrollTop < headings[idx + 1].offsetTop) {
-                        this.activeHeading = headings[idx].getAttribute('data-id');
+        if (this && this.$el) {
+            const headings = this.$el.querySelectorAll(this.headings.map((heading: StringKeyValueDict) => { return '[data-id="' + heading.target + '"]' }).join(', '));
+            if (headings.length > 0) {
+                this.activeHeading = '';
+                if (scroll.scrollTop > 0) {
+                    const article = this.$el.querySelector('article');
+                    if (article) {
+                        scroll.scrollTop = scroll.scrollTop + article.clientHeight * 0.25;
                     }
-                } else {
-                    if (scroll.scrollTop >= headings[idx].offsetTop) {
-                        this.activeHeading = headings[idx].getAttribute('data-id');
+                }
+                for (let idx = 0; idx < headings.length; idx++) {
+                    if (idx < headings.length - 1) {
+                        if (scroll.scrollTop >= headings[idx].offsetTop && scroll.scrollTop < headings[idx + 1].offsetTop) {
+                            this.activeHeading = headings[idx].getAttribute('data-id');
+                        }
+                    } else {
+                        if (scroll.scrollTop >= headings[idx].offsetTop) {
+                            this.activeHeading = headings[idx].getAttribute('data-id');
+                        }
                     }
                 }
             }
@@ -185,8 +192,8 @@ export default class TextReader extends Vue {
     // Private methods
     // ===============
 
-    private getText(node: any) {
-        if (node.type === 'text') {
+    private getText(node: SerialisedNode): string {
+        if (node.type === 'text' && node.text) {
             return node.text;
         } else {
             if (node.content) {

@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import TEIMetadataParser from '@/util/TEIMetadataParser';
 import TEITextParser from '@/util/TEITextParser';
 import deepclone from '@/util/deepclone';
-import get from '@/util/get';
+import { State, Config, MutationSetTextDoc, MutationToggleAnnotation } from '@/interfaces';
 
 Vue.use(Vuex)
 
@@ -22,20 +22,20 @@ export default new Vuex.Store({
             selectedSection: null,
             sections: {}
         }
-    },
+    } as State,
     mutations: {
-        init(state, config) {
+        init(state, config: Config) {
             state.sections = config.sections;
             Object.keys(config.sections).forEach((key, idx) => {
-                if (config.sections[key].type === 'MetadataEditor') {
+                /*if (config.sections[key].type === 'Metadata') {
                     state.settings.metadataSection = key;
-                }
+                }*/
                 Vue.set(state.content, key, {});
                 Vue.set(state.content[key], 'doc', null);
                 Vue.set(state.content[key], 'nested', {});
 
                 Vue.set(state.ui.sections, key, {});
-                if (config.sections[key].type === 'TextReader') {
+                if (config.sections[key].type === 'Text') {
                     Vue.set(state.ui.sections[key], 'annotations', []);
                     Vue.set(state.ui.sections[key], 'footnote', null);
                 }
@@ -43,12 +43,16 @@ export default new Vuex.Store({
                     state.ui.selectedSection = key;
                 }
             });
+            // eslint-disable-next-line
+            // @ts-ignore
             if (window.TEIReader && window.TEIReader.callbacks) {
+                // eslint-disable-next-line
+                // @ts-ignore
                 Vue.set(state.callbacks, 'autoLoad', window.TEIReader.callbacks.autoLoad);
             }
         },
 
-        setTextDoc(state, payload: any) {
+        setTextDoc(state, payload: MutationSetTextDoc) {
             const path = payload.path.split('.');
             if (path.length === 2) {
                 Vue.set(state.content[path[0]], path[1], payload.doc);
@@ -57,7 +61,7 @@ export default new Vuex.Store({
             }
         },
 
-        addNestedDoc(state, payload: any) {
+        addNestedDoc(state, payload: MutationSetTextDoc) {
             const path = payload.path.split('.');
             if (path.length === 4) {
                 if (!state.content[path[0]].nested[path[2]]) {
@@ -80,7 +84,7 @@ export default new Vuex.Store({
             state.ui.selectedSection = section;
         },
 
-        toggleAnnotation(state, payload: any) {
+        toggleAnnotation(state, payload: MutationToggleAnnotation) {
             const path = payload.path.split('.');
             if (path.length === 4) {
                 const annotations = deepclone(state.ui.sections[path[0]].annotations);
@@ -93,7 +97,7 @@ export default new Vuex.Store({
             }
         },
 
-        toggleFootnote(state, payload: any) {
+        toggleFootnote(state, payload: MutationToggleAnnotation) {
             const path = payload.path.split('.');
             if (path.length === 4) {
                 if (state.ui.sections[path[0]].footnote === payload.path) {
@@ -109,7 +113,7 @@ export default new Vuex.Store({
         },
 
         setMode(state, payload: string) {
-            this.state.ui.mode = payload;
+            state.ui.mode = payload;
         },
     },
     actions: {
@@ -117,7 +121,7 @@ export default new Vuex.Store({
             const domParser = new DOMParser();
             const dom = domParser.parseFromString(sourceData, 'application/xml');
             Vue.set(state, 'content', {});
-            Object.keys(state.sections).forEach((key, idx) => {
+            Object.keys(state.sections).forEach((key) => {
                 Vue.set(state.content, key, {});
                 Vue.set(state.content[key], 'doc', null);
                 Vue.set(state.content[key], 'nested', {});
@@ -125,12 +129,14 @@ export default new Vuex.Store({
             Object.entries(state.sections).forEach(([key, config]) => {
                 if (config.type === 'MetadataEditor') {
                     commit('setMetadata', (new TEIMetadataParser(dom, config)).get())
-                } else if (config.type === 'TextReader') {
+                } else if (config.type === 'Text') {
                     const [doc, nestedDocs] = (new TEITextParser(dom, config)).get();
                     commit('setTextDoc', { path: key + '.doc', doc: doc });
-                    Object.entries(nestedDocs).forEach(([nestedKey, docs]: any) => {
-                        Object.entries(docs).forEach(([docKey, doc]: any) => {
-                            commit('addNestedDoc', {path: key + '.nested.' + nestedKey + '.' + docKey, doc: doc.content[0]});
+                    Object.entries(nestedDocs).forEach(([nestedKey, docs]) => {
+                        Object.entries(docs).forEach(([docKey, doc]) => {
+                            if (doc.content) {
+                                commit('addNestedDoc', {path: key + '.nested.' + nestedKey + '.' + docKey, doc: doc.content[0]});
+                            }
                         });
                     });
                 }
