@@ -2,7 +2,7 @@ import XPathEvaluator from './XPathEvaluator';
 import { SerialisedNode, NestedDocSet, SerialisedAttrs, ParseAttributesSchema, ParseParserSchema, TEITextParserConfig,
     ParseNodeSchema, SerialisedNodeMark } from '@/interfaces';
 
-export default class TEIParser {
+export default class TEITextParser {
     private dom: XMLDocument;
     private xpath: XPathEvaluator;
     private config: TEITextParserConfig;
