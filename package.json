@@ -1,7 +1,10 @@
 {
   "name": "tei-reader",
   "version": "0.1.0",
-  "private": true,
+  "license": "MIT",
+  "repository": "https://github.com/scmmmh/tei-reader",
+  "description": "A highly configurable TEI reader that can be embedded as a custom HTML component.",
+  "author": "Mark Hall <mark.hall@work.room3b.eu>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -30,5 +33,11 @@
     "sass-loader": "^8.0.2",
     "typescript": "~3.7.5",
     "vue-template-compiler": "^2.6.11"
-  }
+  },
+  "files": [
+    "dist",
+    "public",
+    "src",
+    "example"
+  ]
 }
