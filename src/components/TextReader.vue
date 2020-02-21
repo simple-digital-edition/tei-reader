@@ -107,29 +107,9 @@ export default class TextReader extends Vue {
     public get headings() {
         if (this.doc) {
             const schema = this.$store.state.sections[this.$props.section].schema;
-            const cache = {} as StringKeyValueDict;
-            return this.doc.content.map((node: SerialisedNode) => {
-                if (node.attrs) {
-                    if (!cache[node.type]) {
-                        cache[node.type] = 'false';
-                        for(let idx = 0; idx < schema.length; idx++) {
-                            if (schema[idx].name === node.type) {
-                                if (schema[idx].navigation) {
-                                    cache[node.type] = 'true';
-                                }
-                            }
-                        }
-                    }
-                    if (cache[node.type] === 'true') {
-                        return {
-                            target: node.attrs['id'],
-                            label: this.getText(node),
-                        };
-                    } else {
-                        return null;
-                    }
-                }
-            }).filter((node: SerialisedNode) => { return node });
+            const headings = [] as StringKeyValueDict[];
+            this.walkTreeForHeadings(this.doc, schema, headings)
+            return headings;
         }
         return [];
     }
@@ -200,6 +180,24 @@ export default class TextReader extends Vue {
                 return node.content.map((child) => { return this.getText(child); }).join('');
             } else {
                 return '';
+            }
+        }
+    }
+
+    private walkTreeForHeadings(node: SerialisedNode, schema: any, headings: StringKeyValueDict[]) {
+        if (node) {
+            for (let idx = 0; idx < schema.length; idx++) {
+                if (schema[idx].name === node.type && schema[idx].navigation && node.attrs[schema[idx].navigation.attr]) {
+                    headings.push({
+                        target: node.attrs[schema[idx].navigation.attr] as string,
+                        label: this.getText(node),
+                    });
+                }
+            }
+            if (node.content) {
+                for (let idx = 0; idx < node.content.length; idx++) {
+                    this.walkTreeForHeadings(node.content[idx], schema, headings)
+                }
             }
         }
     }

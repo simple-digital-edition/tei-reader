@@ -1,5 +1,9 @@
 # Changelog
 
+## DEV
+
+* **Bugfix**: Fix a bug in the headings generation that ignored nested headings
+
 ## 0.3.0
 
 * **New**: Rewritten in Vue.js
