@@ -1,5 +1,5 @@
 <template>
-    <div :class="'tei-reader mode-' + this.$store.state.ui.mode">
+    <div class="tei-reader">
         <div :class="this.$store.state.ui.smallMenuOpen ? 'small-menu-open' : null">
             <nav v-if="isSmall && isSmallMenuOpen">
                 <ul>

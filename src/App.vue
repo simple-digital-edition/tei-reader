@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="'mode-' + this.$store.state.ui.mode">
     <TeiReader/>
   </div>
 </template>
@@ -113,74 +113,78 @@ export default class App extends Vue {
             }
         }
     }
+}
 
+#app {
     &.mode-small {
-        > div {
-            flex: 0 0 auto;
-            display: flex;
-            flex-direction: row;
-
-            > nav:first-child {
-                flex: 0 0 auto;
-            }
-
-            > nav:last-child {
-                flex: 1 1 auto;
-            }
-        }
-
-        > main.text-reader {
-            flex: 1 1 auto;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-
+        .tei-reader {
             > div {
                 flex: 0 0 auto;
                 display: flex;
                 flex-direction: row;
 
-                nav {
-                    &:first-child {
-                        flex: 0 0 auto;
-                    }
-
-                    &:last-child {
-                        flex: 1 1 auto;
-                    }
+                > nav:first-child {
+                    flex: 0 0 auto;
                 }
 
-                &.small-menu-open {
-                    > nav:first-child a {
-                        visibility: hidden;
-                    }
+                > nav:last-child {
+                    flex: 1 1 auto;
                 }
             }
 
-            > article {
+            > main.text-reader {
                 flex: 1 1 auto;
                 display: flex;
                 flex-direction: column;
                 overflow: hidden;
 
                 > div {
-                    position: relative;
-                    overflow-y: auto;
-                    padding: 1rem;
-                    flex: 1 1 auto;
+                    flex: 0 0 auto;
+                    display: flex;
+                    flex-direction: row;
+
+                    nav {
+                        &:first-child {
+                            flex: 0 0 auto;
+                        }
+
+                        &:last-child {
+                            flex: 1 1 auto;
+                        }
+                    }
+
+                    &.small-menu-open {
+                        > nav:first-child a {
+                            visibility: hidden;
+                        }
+                    }
                 }
 
-                > aside {
-                    flex: 0 0 auto;
-                    padding: 0.5rem 1rem;
-                    position: relative;
+                > article {
+                    flex: 1 1 auto;
+                    display: flex;
+                    flex-direction: column;
+                    overflow: hidden;
 
-                    > a {
-                        position: absolute;
-                        right: 0.5rem;
-                        top: 0.2rem;
-                        z-index: 1;
-                        cursor: pointer;
+                    > div {
+                        position: relative;
+                        overflow-y: auto;
+                        padding: 1rem;
+                        flex: 1 1 auto;
+                    }
+
+                    > aside {
+                        flex: 0 0 auto;
+                        padding: 0.5rem 1rem;
+                        position: relative;
+
+                        > a {
+                            position: absolute;
+                            right: 0.5rem;
+                            top: 0.2rem;
+                            z-index: 1;
+                            cursor: pointer;
+                        }
                     }
                 }
             }
@@ -188,76 +192,78 @@ export default class App extends Vue {
     }
 
     &.mode-large {
-        > main.text-reader {
-            flex: 1 1 auto;
-            display: flex;
-            flex-direction: row;
-            overflow: hidden;
-
-            > nav {
-                flex: 0 0 auto;
-                width: 15rem;
-                overflow-y: auto;
-            }
-
-            > article {
+        .tei-reader {
+            > main.text-reader {
                 flex: 1 1 auto;
-                overflow-y: hidden;
                 display: flex;
-                flex-flow: column;
+                flex-direction: row;
+                overflow: hidden;
 
-                > div {
-                    position: relative;
+                > nav {
+                    flex: 0 0 auto;
+                    width: 15rem;
                     overflow-y: auto;
-                    padding: 1rem;
+                }
+
+                > article {
                     flex: 1 1 auto;
+                    overflow-y: hidden;
+                    display: flex;
+                    flex-flow: column;
+
+                    > div {
+                        position: relative;
+                        overflow-y: auto;
+                        padding: 1rem;
+                        flex: 1 1 auto;
+                    }
+
+                    > aside {
+                        flex: 0 0 auto;
+                        padding: 0.5rem 1rem;
+                        position: relative;
+
+                        > a {
+                            position: absolute;
+                            right: 0.5rem;
+                            top: 0.2rem;
+                            z-index: 1;
+                            cursor: pointer;
+                            display: none;
+
+                        }
+
+                        &:hover {
+                            > a {
+                                display: block;
+                            }
+                        }
+                    }
                 }
 
                 > aside {
                     flex: 0 0 auto;
-                    padding: 0.5rem 1rem;
-                    position: relative;
+                    width: 15rem;
+                    padding: 0 1rem;
+                    overflow-y: auto;
 
-                    > a {
-                        position: absolute;
-                        right: 0.5rem;
-                        top: 0.2rem;
-                        z-index: 1;
-                        cursor: pointer;
-                        display: none;
+                    > section {
+                        position: relative;
 
-                    }
-
-                    &:hover {
                         > a {
-                            display: block;
+                            position: absolute;
+                            right: 0.5rem;
+                            top: 0;
+                            z-index: 1;
+                            cursor: pointer;
+                            display: none;
+
                         }
-                    }
-                }
-            }
 
-            > aside {
-                flex: 0 0 auto;
-                width: 15rem;
-                padding: 0 1rem;
-                overflow-y: auto;
-
-                > section {
-                    position: relative;
-
-                    > a {
-                        position: absolute;
-                        right: 0.5rem;
-                        top: 0;
-                        z-index: 1;
-                        cursor: pointer;
-                        display: none;
-
-                    }
-
-                    &:hover {
-                        > a {
-                            display: block;
+                        &:hover {
+                            > a {
+                                display: block;
+                            }
                         }
                     }
                 }

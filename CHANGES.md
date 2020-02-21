@@ -1,5 +1,9 @@
 # Changelog
 
+## Dev
+
+* **Update**: Move the mode class to the root app element
+
 ## 0.3.4
 
 * **Bugfix**: Fix a bug in the active heading calculation
