@@ -159,7 +159,8 @@ export default class TextReader extends Vue {
                 for (let idx = 0; idx < headings.length; idx++) {
                     const heading = headings[idx] as HTMLElement;
                     if (idx < headings.length - 1) {
-                        if (scroll.scrollTop >= heading.offsetTop && scroll.scrollTop < heading.offsetTop) {
+                        const nextHeading = headings[idx + 1] as HTMLElement;
+                        if (scroll.scrollTop >= heading.offsetTop && scroll.scrollTop < nextHeading.offsetTop) {
                             this.activeHeading = heading.getAttribute('data-id');
                         }
                     } else {

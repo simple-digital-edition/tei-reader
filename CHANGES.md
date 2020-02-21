@@ -1,5 +1,9 @@
 # Changelog
 
+## Dev
+
+* **Bugfix**: Fix a bug in the active heading calculation
+
 ## 0.3.3
 
 * **Bugfix**: Finally fix the scrolling issue
