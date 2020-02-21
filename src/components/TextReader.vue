@@ -51,7 +51,7 @@ import { StringKeyValueDict, NumberKeyValueDict, SerialisedNode } from '@/interf
 export default class TextReader extends Vue {
     @Prop() section!: string;
 
-    activeHeading = '';
+    activeHeading: string | null = '';
 
     // ===================
     // Computed properties
@@ -146,7 +146,7 @@ export default class TextReader extends Vue {
         if (this && this.$el) {
             const headings = this.$el.querySelectorAll(this.headings.map((heading: StringKeyValueDict) => { return '[data-id="' + heading.target + '"]' }).join(', '));
             if (headings.length > 0) {
-                this.activeHeading = '';
+                this.activeHeading = null;
                 if (scroll.scrollTop > 0) {
                     const article = this.$el.querySelector('article');
                     if (article) {
@@ -154,13 +154,14 @@ export default class TextReader extends Vue {
                     }
                 }
                 for (let idx = 0; idx < headings.length; idx++) {
+                    const heading = headings[idx] as HTMLElement;
                     if (idx < headings.length - 1) {
-                        if (scroll.scrollTop >= headings[idx].offsetTop && scroll.scrollTop < headings[idx + 1].offsetTop) {
-                            this.activeHeading = headings[idx].getAttribute('data-id');
+                        if (scroll.scrollTop >= heading.offsetTop && scroll.scrollTop < heading.offsetTop) {
+                            this.activeHeading = heading.getAttribute('data-id');
                         }
                     } else {
-                        if (scroll.scrollTop >= headings[idx].offsetTop) {
-                            this.activeHeading = headings[idx].getAttribute('data-id');
+                        if (scroll.scrollTop >= heading.offsetTop) {
+                            this.activeHeading = heading.getAttribute('data-id');
                         }
                     }
                 }
@@ -187,7 +188,7 @@ export default class TextReader extends Vue {
     private walkTreeForHeadings(node: SerialisedNode, schema: any, headings: StringKeyValueDict[]) {
         if (node) {
             for (let idx = 0; idx < schema.length; idx++) {
-                if (schema[idx].name === node.type && schema[idx].navigation && node.attrs[schema[idx].navigation.attr]) {
+                if (schema[idx].name === node.type && schema[idx].navigation && node.attrs && node.attrs[schema[idx].navigation.attr]) {
                     headings.push({
                         target: node.attrs[schema[idx].navigation.attr] as string,
                         label: this.getText(node),
