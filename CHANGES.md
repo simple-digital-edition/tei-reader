@@ -1,6 +1,6 @@
 # Changelog
 
-## Dev
+## 0.4.0
 
 * **Update**: Move the mode class to the root app element
 
