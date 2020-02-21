@@ -1,6 +1,6 @@
 # Changelog
 
-## Dev
+## 0.4.1
 
 * **New**: Added a close callback menu item
 

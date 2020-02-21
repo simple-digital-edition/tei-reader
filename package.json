@@ -1,6 +1,6 @@
 {
   "name": "tei-reader",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "license": "MIT",
   "repository": "https://github.com/scmmmh/tei-reader",
   "description": "A highly configurable TEI reader that can be embedded as a custom HTML component.",
