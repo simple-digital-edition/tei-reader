@@ -129,9 +129,15 @@ export default class TextReader extends Vue {
     public navigateTo(heading: string) {
         const element = document.querySelector('[data-id="' + heading + '"]');
         if (element) {
-            element.scrollIntoView({
-                behavior: 'smooth',
-            });
+            if ('scrollBehavior' in document.documentElement.style) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'end',
+                    inline: 'nearest',
+                });
+            } else {
+                element.scrollIntoView(false);
+            }
         }
         if (this.isSmallMenuOpen) {
             this.toggleSmallMenu();

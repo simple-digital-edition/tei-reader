@@ -1,5 +1,9 @@
 # Changelog
 
+## DEV
+
+* **Bugfix**: Fix a scrolling bug
+
 ## 0.3.1
 
 * **Update**: Generate fewer unneeded text nodes
