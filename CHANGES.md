@@ -1,6 +1,6 @@
 # Changelog
 
-## DEV
+## 0.3.2
 
 * **Bugfix**: Fix a scrolling bug
 
