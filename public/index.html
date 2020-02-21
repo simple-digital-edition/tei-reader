@@ -18,8 +18,9 @@
     #app nav, #app aside {
         background: #dddddd;
     }
-    #app .tei-reader.mode-large > nav {
-        padding: 0.5rem 0;
+    #app .tei-reader > div > nav li:last-child {
+        flex: 1 1 auto;
+        text-align: right;
     }
     #app .tei-reader > nav a {
         padding: 0.5rem 1rem;
@@ -465,6 +466,9 @@
                       }
                   ]
               }
+          },
+          "ui": {
+              "closeLabel": "Close"
           }
       }
     </script>
@@ -479,6 +483,9 @@
                       })
                   });
               },
+              close: function() {
+                  alert('There is nothing else to see here');
+              }
           }
       }
     </script>

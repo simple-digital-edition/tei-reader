@@ -22,6 +22,7 @@ export interface StateUI {
     smallMenuOpen: boolean;
     selectedSection: string | null;
     sections: StateUISections;
+    closeLabel: string | null;
 }
 
 export interface StateSections {
@@ -38,13 +39,19 @@ export interface StateUISections {
 
 export interface StateCallbacks {
     autoLoad?: (callback: (data: any) => {}) => {};
+    close?: () => {};
 }
 export interface Config {
     sections: ConfigSections;
+    ui: ConfigUI;
 }
 
 export interface ConfigSections {
     [x:string]: any;
+}
+
+export interface ConfigUI {
+    closeLabel?: string;
 }
 
 export interface ConfigMetadataNodeSchema {

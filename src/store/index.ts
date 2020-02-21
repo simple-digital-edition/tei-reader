@@ -20,7 +20,8 @@ export default new Vuex.Store({
             mode: 'small',
             smallMenuOpen: false,
             selectedSection: null,
-            sections: {}
+            sections: {},
+            closeLabel: null,
         }
     } as State,
     mutations: {
@@ -49,6 +50,12 @@ export default new Vuex.Store({
                 // eslint-disable-next-line
                 // @ts-ignore
                 Vue.set(state.callbacks, 'autoLoad', window.TEIReader.callbacks.autoLoad);
+                // eslint-disable-next-line
+                // @ts-ignore
+                Vue.set(state.callbacks, 'close', window.TEIReader.callbacks.close);
+            }
+            if (config.ui && config.ui.closeLabel) {
+                state.ui.closeLabel = config.ui.closeLabel;
             }
         },
 

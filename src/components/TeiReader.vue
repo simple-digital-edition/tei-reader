@@ -11,6 +11,9 @@
                     <li v-for="value, key in sections" :key="key" role="presentation">
                         <a role="menuitem" v-html="value.label" @click="selectSection(key)" :aria-checked="key === selectedSection ? 'true' : 'false'"></a>
                     </li>
+                    <li v-if="closeLabel && closeCallback" role="presentation">
+                        <a role="menuitem" v-html="closeLabel" @click="close"></a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -53,6 +56,15 @@ export default class TeiReader extends Vue {
         return this.$store.state.ui.selectedSection;
     }
 
+
+    public get closeLabel() {
+        return this.$store.state.ui.closeLabel;
+    }
+
+    public get closeCallback() {
+        return this.$store.state.callbacks.close;
+    }
+
     public selectSection(key: string) {
         this.$store.commit('selectSection', key);
         if (this.isSmall) {
@@ -62,6 +74,13 @@ export default class TeiReader extends Vue {
 
     public toggleSmallMenu() {
         this.$store.commit('toggleSmallMenu');
+    }
+
+    public close() {
+        if (this.isSmall) {
+            this.$store.commit('toggleSmallMenu');
+        }
+        this.closeCallback();
     }
 }
 </script>
