@@ -1,6 +1,6 @@
 # Changelog
 
-## Dev
+## 0.3.4
 
 * **Bugfix**: Fix a bug in the active heading calculation
 
