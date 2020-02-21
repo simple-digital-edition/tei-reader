@@ -2,6 +2,7 @@
 
 ## DEV
 
+* **Update**: Generate fewer unneeded text nodes
 * **Bugfix**: Fix a bug in the headings generation that ignored nested headings
 
 ## 0.3.0

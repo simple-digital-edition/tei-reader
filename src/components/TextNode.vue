@@ -2,20 +2,23 @@
     <a v-if="isReference" :class="'node-' + node.type" v-bind="nodeAttrs" @click="toggleReference">
         <span v-if="node.text">{{ node.text }}</span>
         <template v-for="child, idx in node.content">
-            <span v-if="child.type === 'text'" :key="idx" :class="marks(child)" v-bind="markAttrs(child)">{{ child.text }}</span>
+            <span v-if="child.type === 'text' && marks(child).length > 0" :key="idx" :class="marks(child)" v-bind="markAttrs(child)">{{ child.text }}</span>
+            <template v-else-if="child.type === 'text'">{{ child.text }}</template>
             <text-node v-else :key="idx" :section="section" :node="child"/>
         </template>
     </a>
     <span v-else-if="isInline" :class="'node-' + node.type" v-bind="nodeAttrs">
         <span v-if="node.text">{{ node.text }}</span>
         <template v-for="child, idx in node.content">
-            <span v-if="child.type === 'text'" :key="idx" :class="marks(child)" v-bind="markAttrs(child)">{{ child.text }}</span>
+            <span v-if="child.type === 'text' && marks(child).length > 0" :key="idx" :class="marks(child)" v-bind="markAttrs(child)">{{ child.text }}</span>
+            <template v-else-if="child.type === 'text'">{{ child.text }}</template>
             <text-node v-else :key="idx" :section="section" :node="child"/>
         </template>
     </span>
     <div v-else :class="'node-' + node.type" v-bind="nodeAttrs">
         <template v-for="child, idx in node.content">
-            <span v-if="child.type === 'text'" :key="idx" :class="marks(child)" v-bind="markAttrs(child)">{{ child.text }}</span>
+            <span v-if="child.type === 'text' && marks(child).length > 0" :key="idx" :class="marks(child)" v-bind="markAttrs(child)">{{ child.text }}</span>
+            <template v-else-if="child.type === 'text'">{{ child.text }}</template>
             <text-node v-else :key="idx" :section="section" :node="child"/>
         </template>
     </div>
