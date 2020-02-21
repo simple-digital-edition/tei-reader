@@ -147,25 +147,28 @@ export default class TextReader extends Vue {
 
     public scrollReader(ev: UIEvent, scroll: NumberKeyValueDict) {
         if (this && this.$el) {
-            const headings = this.$el.querySelectorAll(this.headings.map((heading: StringKeyValueDict) => { return '[data-id="' + heading.target + '"]' }).join(', '));
-            if (headings.length > 0) {
-                this.activeHeading = null;
-                if (scroll.scrollTop > 0) {
-                    const article = this.$el.querySelector('article');
-                    if (article) {
-                        scroll.scrollTop = scroll.scrollTop + article.clientHeight * 0.25;
-                    }
-                }
-                for (let idx = 0; idx < headings.length; idx++) {
-                    const heading = headings[idx] as HTMLElement;
-                    if (idx < headings.length - 1) {
-                        const nextHeading = headings[idx + 1] as HTMLElement;
-                        if (scroll.scrollTop >= heading.offsetTop && scroll.scrollTop < nextHeading.offsetTop) {
-                            this.activeHeading = heading.getAttribute('data-id');
+            const headingsSelector = this.headings.map((heading: StringKeyValueDict) => { return '[data-id="' + heading.target + '"]' }).join(', ');
+            if (headingsSelector !== '') {
+                const headings = this.$el.querySelectorAll(headingsSelector);
+                if (headings.length > 0) {
+                    this.activeHeading = null;
+                    if (scroll.scrollTop > 0) {
+                        const article = this.$el.querySelector('article');
+                        if (article) {
+                            scroll.scrollTop = scroll.scrollTop + article.clientHeight * 0.25;
                         }
-                    } else {
-                        if (scroll.scrollTop >= heading.offsetTop) {
-                            this.activeHeading = heading.getAttribute('data-id');
+                    }
+                    for (let idx = 0; idx < headings.length; idx++) {
+                        const heading = headings[idx] as HTMLElement;
+                        if (idx < headings.length - 1) {
+                            const nextHeading = headings[idx + 1] as HTMLElement;
+                            if (scroll.scrollTop >= heading.offsetTop && scroll.scrollTop < nextHeading.offsetTop) {
+                                this.activeHeading = heading.getAttribute('data-id');
+                            }
+                        } else {
+                            if (scroll.scrollTop >= heading.offsetTop) {
+                                this.activeHeading = heading.getAttribute('data-id');
+                            }
                         }
                     }
                 }

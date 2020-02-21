@@ -1,5 +1,9 @@
 # Changelog
 
+## Dev
+
+* **Bugfix**: Fix a bug in the active heading selection when there are no headings
+
 ## 0.4.1
 
 * **New**: Added a close callback menu item
