@@ -1,5 +1,9 @@
 # Changelog
 
+## Dev
+
+* **Bugfix**: Finally fix the scrolling issue
+
 ## 0.3.2
 
 * **Bugfix**: Fix a scrolling bug

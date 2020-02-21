@@ -42,6 +42,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import TextNode from './TextNode.vue';
 import get from '@/util/get';
 import { StringKeyValueDict, NumberKeyValueDict, SerialisedNode } from '@/interfaces';
+// @ts-ignore
+import { tween } from 'femtotween';
 
 @Component({
     components: {
@@ -127,16 +129,11 @@ export default class TextReader extends Vue {
     }
 
     public navigateTo(heading: string) {
-        const element = document.querySelector('[data-id="' + heading + '"]');
+        const element = document.querySelector('[data-id="' + heading + '"]') as HTMLElement;
         if (element) {
-            if ('scrollBehavior' in document.documentElement.style) {
-                element.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'end',
-                    inline: 'nearest',
-                });
-            } else {
-                element.scrollIntoView(false);
+            const container = this.$el.querySelector('article > div') as HTMLElement;
+            if (container) {
+                tween(container.scrollTop, element.offsetTop, (value: number) => { container.scrollTop = value; });
             }
         }
         if (this.isSmallMenuOpen) {

@@ -3539,6 +3539,11 @@ faye-websocket@~0.11.1:
   dependencies:
     websocket-driver ">=0.5.1"
 
+femtotween@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/femtotween/-/femtotween-1.0.2.tgz#62867b4c75348366bdb16ca730f55a24f9db1767"
+  integrity sha512-E0g3TtYVVy5ntu2lcEIbCqx1I4a0MG/B94V71yhyQoU102FuvPuxTms9+KgEYjuFqjvTpuFHkwuZUV4daPu1rA==
+
 figgy-pudding@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/figgy-pudding/-/figgy-pudding-3.5.1.tgz#862470112901c727a0e495a80744bd5baa1d6790"
