@@ -1,6 +1,6 @@
 # Changelog
 
-## DEV
+## 0.5.1
 
 * **Bugfix**: Fix the scroll storage code
 
