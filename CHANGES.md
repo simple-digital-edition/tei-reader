@@ -1,6 +1,6 @@
 # Changelog
 
-## Dev
+## 0.4.2
 
 * **Bugfix**: Fix a bug in the active heading selection when there are no headings
 * **Update**: Improve the rendering speed of the main text
