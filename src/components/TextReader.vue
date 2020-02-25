@@ -36,10 +36,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import TextNode from './TextNode.vue';
 import get from '@/util/get';
-import { StringKeyValueDict, NumberKeyValueDict, SerialisedNode } from '@/interfaces';
+import { StringKeyValueDict, NumberKeyValueDict, SerialisedNode, AnyKeyValueDict } from '@/interfaces';
 // eslint-disable-next-line
 // @ts-ignore
 import { tween } from 'femtotween';
@@ -128,8 +128,7 @@ export default class TextReader extends Vue {
     // ==================
 
     public mounted() {
-        const container = this.$el.querySelector('article > div') as HTMLElement;
-        container.scrollTop = 0;
+        this.docUpdated();
     }
 
     // ==============
@@ -189,6 +188,19 @@ export default class TextReader extends Vue {
                     }
                 }
             }
+            const teiReaderSrc = window.localStorage.getItem('tei-reader');
+            let teiReader = {} as AnyKeyValueDict;
+            if (teiReaderSrc) {
+                teiReader = JSON.parse(teiReaderSrc);
+            }
+            if (!teiReader[this.$store.state.ui.identifier]) {
+                teiReader[this.$store.state.ui.identifier] = {};
+            }
+            if (!teiReader[this.$store.state.ui.identifier][this.$props.section]) {
+                teiReader[this.$store.state.ui.identifier][this.$props.section] = 0;
+            }
+            teiReader[this.$store.state.ui.identifier][this.$props.section] = scroll.scrollTop;
+            window.localStorage.setItem('tei-reader', JSON.stringify(teiReader));
         }
     }
 
@@ -210,6 +222,34 @@ export default class TextReader extends Vue {
             } else if (target.getAttribute('data-reference-mode') === 'footnote') {
                 this.$store.commit('toggleFootnote', { path: target.getAttribute('data-reference-path') });
             }
+        }
+    }
+
+    // =======
+    // Watches
+    // =======
+
+    @Watch('doc')
+    public docUpdated() {
+        const container = this.$el.querySelector('article > div') as HTMLElement;
+        container.scrollTop = 0;
+        if (window.localStorage && this.$store.state.ui.identifier && this.$props.section) {
+            const teiReaderSrc = window.localStorage.getItem('tei-reader');
+            let teiReader = {} as AnyKeyValueDict;
+            if (teiReaderSrc) {
+                teiReader = JSON.parse(teiReaderSrc);
+            }
+            if (!teiReader[this.$store.state.ui.identifier]) {
+                teiReader[this.$store.state.ui.identifier] = {};
+            }
+            if (!teiReader[this.$store.state.ui.identifier][this.$props.section]) {
+                teiReader[this.$store.state.ui.identifier][this.$props.section] = 0;
+            }
+            const container = this.$el.querySelector('article > div') as HTMLElement;
+            Vue.nextTick(() => {
+                container.scrollTop = teiReader[this.$store.state.ui.identifier][this.$props.section];
+            });
+            window.localStorage.setItem('tei-reader', JSON.stringify(teiReader));
         }
     }
 

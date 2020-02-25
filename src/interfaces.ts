@@ -23,6 +23,7 @@ export interface StateUI {
     selectedSection: string | null;
     sections: StateUISections;
     closeLabel: string | null;
+    identifier: string;
 }
 
 export interface StateSections {
@@ -41,6 +42,12 @@ export interface StateCallbacks {
     autoLoad?: (callback: (data: any) => {}) => {};
     close?: () => {};
 }
+
+export interface LoadActionParameters {
+    content: string;
+    identifier: string;
+}
+
 export interface Config {
     sections: ConfigSections;
     ui: ConfigUI;

@@ -479,7 +479,10 @@
                   const request = window.fetch('text.tei');
                   request.then((response) => {
                       response.text().then((text) => {
-                          callback(text);
+                          callback({
+                              content: text,
+                              identifier: 'tei-reader-demo',
+                          });
                       })
                   });
               },

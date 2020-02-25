@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import TEIMetadataParser from '@/util/TEIMetadataParser';
 import TEITextParser from '@/util/TEITextParser';
 import deepclone from '@/util/deepclone';
-import { State, Config, MutationSetTextDoc, MutationToggleAnnotation, MutationSetMetadata } from '@/interfaces';
+import { State, Config, MutationSetTextDoc, MutationToggleAnnotation, MutationSetMetadata, LoadActionParameters } from '@/interfaces';
 
 Vue.use(Vuex)
 
@@ -22,6 +22,7 @@ export default new Vuex.Store({
             selectedSection: null,
             sections: {},
             closeLabel: null,
+            identifier: '',
         }
     } as State,
     mutations: {
@@ -126,11 +127,16 @@ export default new Vuex.Store({
         setMode(state, payload: string) {
             state.ui.mode = payload;
         },
+
+        setDocIdentifier(state, payload: string) {
+            state.ui.identifier = payload;
+        },
     },
     actions: {
-        load({ commit, state }, sourceData: string) {
+        load({ commit, state }, newDoc: LoadActionParameters) {
+            commit('setDocIdentifier', newDoc.identifier);
             const domParser = new DOMParser();
-            const dom = domParser.parseFromString(sourceData, 'application/xml');
+            const dom = domParser.parseFromString(newDoc.content, 'application/xml');
             Vue.set(state, 'content', {});
             Object.keys(state.sections).forEach((key) => {
                 Vue.set(state.content, key, {});

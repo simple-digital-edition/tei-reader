@@ -2,7 +2,7 @@
 
 ## DEV
 
-* **Update**: Scroll to the top on mounting
+* **New**: Save and restore the latest scroll position
 
 ## 0.4.2
 
