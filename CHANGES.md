@@ -1,6 +1,6 @@
 # Changelog
 
-## DEV
+## 0.5.0
 
 * **New**: Save and restore the latest scroll position
 
