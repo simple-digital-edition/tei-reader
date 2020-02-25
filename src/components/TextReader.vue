@@ -164,6 +164,21 @@ export default class TextReader extends Vue {
         if (this && this.$el) {
             const headingsSelector = this.headings.map((heading: StringKeyValueDict) => { return '[data-id="' + heading.target + '"]' }).join(', ');
             if (headingsSelector !== '') {
+                // Store scroll
+                const teiReaderSrc = window.localStorage.getItem('tei-reader');
+                let teiReader = {} as AnyKeyValueDict;
+                if (teiReaderSrc) {
+                    teiReader = JSON.parse(teiReaderSrc);
+                }
+                if (!teiReader[this.$store.state.ui.identifier]) {
+                    teiReader[this.$store.state.ui.identifier] = {};
+                }
+                if (!teiReader[this.$store.state.ui.identifier][this.$props.section]) {
+                    teiReader[this.$store.state.ui.identifier][this.$props.section] = 0;
+                }
+                teiReader[this.$store.state.ui.identifier][this.$props.section] = scroll.scrollTop;
+                window.localStorage.setItem('tei-reader', JSON.stringify(teiReader));
+                // Update Headings
                 const headings = this.$el.querySelectorAll(headingsSelector);
                 if (headings.length > 0) {
                     this.activeHeading = null;
@@ -188,19 +203,6 @@ export default class TextReader extends Vue {
                     }
                 }
             }
-            const teiReaderSrc = window.localStorage.getItem('tei-reader');
-            let teiReader = {} as AnyKeyValueDict;
-            if (teiReaderSrc) {
-                teiReader = JSON.parse(teiReaderSrc);
-            }
-            if (!teiReader[this.$store.state.ui.identifier]) {
-                teiReader[this.$store.state.ui.identifier] = {};
-            }
-            if (!teiReader[this.$store.state.ui.identifier][this.$props.section]) {
-                teiReader[this.$store.state.ui.identifier][this.$props.section] = 0;
-            }
-            teiReader[this.$store.state.ui.identifier][this.$props.section] = scroll.scrollTop;
-            window.localStorage.setItem('tei-reader', JSON.stringify(teiReader));
         }
     }
 

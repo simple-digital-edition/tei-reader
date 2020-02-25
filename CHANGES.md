@@ -1,5 +1,9 @@
 # Changelog
 
+## DEV
+
+* **Bugfix**: Fix the scroll storage code
+
 ## 0.5.0
 
 * **New**: Save and restore the latest scroll position
