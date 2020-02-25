@@ -123,6 +123,15 @@ export default class TextReader extends Vue {
         return this.generateHTML(this.doc, this.schema).join('');
     }
 
+    // ==================
+    // Lifecycle handlers
+    // ==================
+
+    public mounted() {
+        const container = this.$el.querySelector('article > div') as HTMLElement;
+        container.scrollTop = 0;
+    }
+
     // ==============
     // Event handlers
     // ==============
