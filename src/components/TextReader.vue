@@ -20,9 +20,7 @@
             </ul>
         </nav>
         <article>
-            <div v-scroll="scrollReader">
-                <text-node v-if="doc" :section="section" :node="doc"/>
-            </div>
+            <div v-scroll="scrollReader" v-html="text" @click="textClick"></div>
             <aside v-if="footnote">
                 <a @click="hideFootnote(footnote[0])">&#x2716;</a>
                 <text-node :section="section" :node="footnote[1]"></text-node>
@@ -42,6 +40,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import TextNode from './TextNode.vue';
 import get from '@/util/get';
 import { StringKeyValueDict, NumberKeyValueDict, SerialisedNode } from '@/interfaces';
+// eslint-disable-next-line
 // @ts-ignore
 import { tween } from 'femtotween';
 
@@ -110,10 +109,18 @@ export default class TextReader extends Vue {
         if (this.doc) {
             const schema = this.$store.state.sections[this.$props.section].schema;
             const headings = [] as StringKeyValueDict[];
-            this.walkTreeForHeadings(this.doc, schema, headings)
+            this.generateHeadings(this.doc, schema, headings)
             return headings;
         }
         return [];
+    }
+
+    public get schema() {
+        return this.$store.state.sections[this.$props.section].schema;
+    }
+
+    public get text() {
+        return this.generateHTML(this.doc, this.schema).join('');
     }
 
     // ==============
@@ -176,9 +183,39 @@ export default class TextReader extends Vue {
         }
     }
 
+    public textClick(ev: MouseEvent) {
+        let target = ev.target as HTMLElement;
+        while (target) {
+            if (target.localName === 'a') {
+                break;
+            }
+            target = target.parentElement as HTMLElement;
+        }
+        if (target && target.getAttribute('data-reference-path')) {
+            if (target.getAttribute('data-reference-mode') === 'sidebar') {
+                if (this.$store.state.ui.mode === 'small') {
+                    this.$store.commit('toggleFootnote', { path: target.getAttribute('data-reference-path') });
+                } else {
+                    this.$store.commit('toggleAnnotation', { path: target.getAttribute('data-reference-path') });
+                }
+            } else if (target.getAttribute('data-reference-mode') === 'footnote') {
+                this.$store.commit('toggleFootnote', { path: target.getAttribute('data-reference-path') });
+            }
+        }
+    }
+
     // ===============
     // Private methods
     // ===============
+
+    private nodeSchema(name: string, schema: any) {
+        for (let idx = 0; idx < schema.length; idx++) {
+            if (schema[idx].name === name) {
+                return schema[idx];
+            }
+        }
+        return null;
+    }
 
     private getText(node: SerialisedNode): string {
         if (node.type === 'text' && node.text) {
@@ -192,7 +229,7 @@ export default class TextReader extends Vue {
         }
     }
 
-    private walkTreeForHeadings(node: SerialisedNode, schema: any, headings: StringKeyValueDict[]) {
+    private generateHeadings(node: SerialisedNode, schema: any, headings: StringKeyValueDict[]) {
         if (node) {
             for (let idx = 0; idx < schema.length; idx++) {
                 if (schema[idx].name === node.type && schema[idx].navigation && node.attrs && node.attrs[schema[idx].navigation.attr]) {
@@ -204,10 +241,96 @@ export default class TextReader extends Vue {
             }
             if (node.content) {
                 for (let idx = 0; idx < node.content.length; idx++) {
-                    this.walkTreeForHeadings(node.content[idx], schema, headings)
+                    this.generateHeadings(node.content[idx], schema, headings)
                 }
             }
         }
+    }
+
+    private generateHTML(node: SerialisedNode, schema: any) {
+        let textElements = [] as string[];
+        if (node) {
+            const nodeSchema = this.nodeSchema(node.type, schema);
+            if (nodeSchema) {
+                if (nodeSchema.name === 'text') {
+                    if (node.marks) {
+                        textElements.push('<span class="');
+                        node.marks.forEach((mark, idx) => {
+                            if (idx > 0) {
+                                textElements.push(' mark-' + mark.type);
+                            } else {
+                                textElements.push('mark-' + mark.type);
+                            }
+                        });
+                        textElements.push('"');
+                        node.marks.forEach((mark) => {
+                            if (mark.attrs) {
+                                Object.entries(mark.attrs).forEach(([key, value]) => {
+                                    textElements.push(' data-' + key + '="' + value + '"');
+                                });
+                            }
+                        });
+                        textElements.push('>');
+                    }
+                } else if (nodeSchema.reference) {
+                    textElements.push('<a class="node-' + node.type + '"');
+                    if (node.attrs) {
+                        Object.entries(node.attrs).forEach(([key, value]) => {
+                            textElements.push(' data-' + key + '="' + value + '"');
+                        });
+                    }
+                    if (node.attrs && nodeSchema.reference && nodeSchema.reference.attr && node.attrs[nodeSchema.reference.attr]) {
+                        textElements.push(' data-reference-path="' + this.$props.section + '.nested.' + nodeSchema.reference.type + '.' + (node.attrs[nodeSchema.reference.attr] as string).substring(1) + '"');
+                        textElements.push(' data-reference-mode="' + nodeSchema.reference.display + '"');
+                    }
+                    textElements.push('>');
+                } else if (nodeSchema.type === 'inline') {
+                    textElements.push('<span class="node-' + node.type + '"');
+                    if (node.attrs) {
+                        Object.entries(node.attrs).forEach(([key, value]) => {
+                            textElements.push(' data-' + key + '="' + value + '"');
+                        });
+                    }
+                    textElements.push('>');
+                } else {
+                    textElements.push('<div class="node-' + node.type + '"');
+                    if (node.attrs) {
+                        Object.entries(node.attrs).forEach(([key, value]) => {
+                            textElements.push(' data-' + key + '="' + value + '"');
+                        });
+                    }
+                    textElements.push('>');
+                }
+                if (node.text) {
+                    textElements.push(node.text);
+                }
+                if (node.content) {
+                    for (let idx = 0; idx < node.content.length; idx++) {
+                        const tmpElements = this.generateHTML(node.content[idx], schema);
+                        textElements = textElements.concat(tmpElements);
+                    }
+                }
+                if (nodeSchema.name === 'text') {
+                    if (node.marks) {
+                        textElements.push('</span>');
+                    }
+                } else if (nodeSchema.reference) {
+                    textElements.push('</a>');
+                } else if (nodeSchema.type === 'inline') {
+                    textElements.push('</span>');
+                } else {
+                    textElements.push('</div>');
+                }
+            } else if (node.type === 'doc') {
+                if (node.content) {
+                    for (let idx = 0; idx < node.content.length; idx++) {
+                        const tmpElements = this.generateHTML(node.content[idx], schema);
+                        textElements = textElements.concat(tmpElements);
+                    }
+                }
+            }
+        }
+        return textElements;
     }
 }
 </script>

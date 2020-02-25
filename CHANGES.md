@@ -3,6 +3,7 @@
 ## Dev
 
 * **Bugfix**: Fix a bug in the active heading selection when there are no headings
+* **Update**: Improve the rendering speed of the main text
 
 ## 0.4.1
 
