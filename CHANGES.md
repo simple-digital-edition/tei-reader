@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.2
+
+* **Bugfix**: Dependency update
+
 ## 0.5.1
 
 * **Bugfix**: Fix the scroll storage code
