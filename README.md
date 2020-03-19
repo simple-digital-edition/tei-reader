@@ -1,24 +1,9 @@
-# tei-reader
+# TEI Reader
 
-## Project setup
-```
-yarn install
-```
+The TEI Reader is a JavaScript web component that lets users read TEI documents in a modern, user-friendly interface.
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+**Documentation**: https://tei-reader.readthedocs.io/en/latest/ [![Documentation Status](https://readthedocs.org/projects/tei-reader/badge/?version=latest)](https://tei-reader.readthedocs.io/en/latest/?badge=latest)
 
-### Compiles and minifies for production
-```
-yarn build
-```
+**Source Code**: https://github.com/scmmmh/tei-reader
 
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+**NPM Package**: https://www.npmjs.com/package/tei-reader

@@ -1,5 +1,9 @@
 # Changelog
 
+## Dev
+
+* **Update**: Documentation update
+
 ## 0.5.2
 
 * **Bugfix**: Dependency update
