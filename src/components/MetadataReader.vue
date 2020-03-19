@@ -1,6 +1,6 @@
 <template>
     <main class="metadata-reader">
-        <div v-if="isSmall" :class="isSmallMenuOpen ? 'small-menu-open' : null">
+        <div v-if="isSmall && !isSmallMenuOpen" :class="isSmallMenuOpen ? 'small-menu-open' : null">
             <nav>
                 <ul>
                     <li><a @click="toggleSmallMenu">&#x2630;</a></li>

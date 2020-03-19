@@ -76,6 +76,53 @@ export default class App extends Vue {
         }
     }
 
+    .nested-list-reader {
+        flex: 1 1 auto;
+        overflow: hidden;
+
+        > div {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: row;
+
+            > nav:first-child {
+                flex: 0 0 auto;
+            }
+
+            > nav:last-child {
+                flex: 1 1 auto;
+            }
+
+            &.small-menu-open {
+                > nav:first-child a {
+                    visibility: hidden;
+                }
+            }
+        }
+
+        > article {
+            overflow: hidden;
+            height: 100%;
+
+            > div {
+                height: 100%;
+                padding: 1rem;
+                overflow: auto;
+                position: relative;
+
+                > ol {
+                    margin: 0;
+                    padding: 0;
+
+                    > li {
+                        list-style-type: none;
+                        margin-bottom: 1rem;
+                    }
+                }
+            }
+        }
+    }
+
     .metadata-reader {
         > div {
             flex: 0 0 auto;

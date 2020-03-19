@@ -32,7 +32,7 @@ The top-level configuration object is structured as follows:
 
   {
     "sections": {
-      "+SectionIdentifier": "TextSection | MetadataSection"
+      "+SectionIdentifier": "TextSection | NestedListSection | MetadataSection"
     }
     "ui": "ReaderUI"
   }
@@ -172,10 +172,29 @@ When used in the ``ElementAttribute``, the attribute's value by default is set t
 However, if the ``type`` is specified with the value ``"static"``, then if the ``selector`` matches, the attribute's
 value is set to the value specified in ``value``.
 
+NestedListSection
+-----------------
+
+The ``NestedListSection`` represents a section where the user can read a list of nested documents.
+
+.. sourcecode:: json
+
+  {
+    "label": "AnyString",
+    "type": "NestedList",
+    "source": "SectionName",
+    "nodeName": "TagElementName"
+  }
+
+The ``label`` can be any string value and is used in the UI to allow the user to navigate to this section. The ``type``
+must be ``"NestedList"``. The ``source`` is the name of the ``TextSection`` that contains the document from which to
+show the nested documents. The ``nodeName`` specifies the name of the nested ``TagElement`` to show the individual
+nested documents for.
+
 MetadataSection
 ---------------
 
-The ``MetadataSection`` configures the metadata Reader.
+The ``MetadataSection`` configures the Metadata reader.
 
 .. sourcecode:: json
 

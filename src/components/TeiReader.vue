@@ -19,7 +19,8 @@
         </div>
         <template v-for="value, key in sections">
             <text-reader v-if="key === selectedSection && value.type === 'Text'" :key="key" :section="key"></text-reader>
-            <metadata-reader v-if="key === selectedSection && value.type === 'Metadata'" :key="key" :section="key"></metadata-reader>
+            <metadata-reader v-else-if="key === selectedSection && value.type === 'Metadata'" :key="key" :section="key"></metadata-reader>
+            <nested-list-reader v-else-if="key === selectedSection && value.type === 'NestedList'" :key="key" :section="key"></nested-list-reader>
         </template>
     </div>
 </template>
@@ -28,11 +29,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import TextReader from './TextReader.vue';
 import MetadataReader from './MetadataReader.vue';
+import NestedListReader from './NestedListReader.vue';
 
 @Component({
     components: {
         TextReader,
         MetadataReader,
+        NestedListReader,
     },
 })
 export default class TeiReader extends Vue {

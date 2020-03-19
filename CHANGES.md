@@ -1,5 +1,9 @@
 # Changelog
 
+## Dev
+
+* **New**: Added a list display for nested documents
+
 ## 0.5.3
 
 * **Update**: Documentation update
