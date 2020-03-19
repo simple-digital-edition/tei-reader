@@ -1,6 +1,6 @@
 # Changelog
 
-## Dev
+## 0.6.0
 
 * **New**: Added a list display for nested documents
 
