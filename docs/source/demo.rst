@@ -232,6 +232,12 @@ The reader above uses the following configuration:
                   }
               ]
           },
+          "changes": {
+              "label": "Edits",
+              "type": "NestedList",
+              "source": "body",
+              "nodeName": "choice"
+          },
           "metadata": {
               "label": "About",
               "type": "Metadata",
