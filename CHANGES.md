@@ -1,6 +1,6 @@
 # Changelog
 
-## Dev
+## 0.5.3
 
 * **Update**: Documentation update
 
