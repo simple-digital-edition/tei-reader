@@ -1,12 +1,12 @@
 <template>
     <main class="nested-list-reader">
         <div v-if="isSmall && !isSmallMenuOpen" :class="isSmallMenuOpen ? 'small-menu-open' : null">
-            <nav>
+            <nav class="main">
                 <ul>
                     <li><a @click="toggleSmallMenu">&#x2630;</a></li>
                 </ul>
             </nav>
-            <nav class="vertical">
+            <nav class="main vertical">
                 <ul>
                     <li><a @click="toggleSmallMenu">{{ $store.state.sections[section].label }}</a></li>
                 </ul>
