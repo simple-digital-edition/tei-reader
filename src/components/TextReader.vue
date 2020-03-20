@@ -1,16 +1,21 @@
 <template>
     <main class="text-reader">
-        <div v-if="isSmall && headings.length > 0" :class="isSmallMenuOpen ? 'small-menu-open' : null">
+        <div v-if="isSmall && (!isSmallMenuOpen || headings.length > 0)" :class="isSmallMenuOpen ? 'small-menu-open' : null">
             <nav class="main">
                 <ul>
                     <li><a @click="toggleSmallMenu">&#x2630;</a></li>
                 </ul>
             </nav>
-            <nav class="main vertical">
+            <nav v-if="headings.length > 0" class="main vertical">
                 <ul>
                     <template v-for="heading, idx in headings">
-                        <li v-if="heading.target === activeHeading || (!activeHeading && idx === 0) || isSmallMenuOpen" :key="idx"><a v-html="heading.label" :aria-checked="heading.target === activeHeading ? 'true' : 'false'" @click="isSmallMenuOpen ? navigateTo(heading.target) : toggleSmallMenu()"></a></li>
+                        <li v-if="heading.target === activeHeading || (!activeHeading && idx === 0) || isSmallMenuOpen" :key="idx"><a v-html="heading.label" :aria-checked="heading.target === activeHeading ? 'true' : 'false'" @click="isSmallMenuOpen ? navigateTo(heading) : toggleSmallMenu()"></a></li>
                     </template>
+                </ul>
+            </nav>
+            <nav v-else class="main">
+                <ul>
+                    <li><a @click="toggleSmallMenu">{{ $store.state.sections[section].label }}</a></li>
                 </ul>
             </nav>
         </div>
