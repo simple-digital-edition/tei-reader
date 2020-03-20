@@ -4,6 +4,7 @@
 
 * **Update**: Added some CSS classes to the navigation blocks
 * **Bugfix**: Fixed a bug in the navigation generation
+* **Bugfix**: Fixed a bug in the annotation display
 
 ## 0.6.0
 

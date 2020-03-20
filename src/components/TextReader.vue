@@ -331,7 +331,7 @@ export default class TextReader extends Vue {
                         });
                     }
                     if (node.attrs && nodeSchema.reference && nodeSchema.reference.attr && node.attrs[nodeSchema.reference.attr]) {
-                        textElements.push(' data-reference-path="' + this.$props.section + '.nested.' + nodeSchema.reference.type + '.' + (node.attrs[nodeSchema.reference.attr] as string).substring(1) + '"');
+                        textElements.push(' data-reference-path="' + this.$props.section + '.nested.' + nodeSchema.reference.type + '.' + node.attrs[nodeSchema.reference.attr] + '"');
                         textElements.push(' data-reference-mode="' + nodeSchema.reference.display + '"');
                     }
                     textElements.push('>');
