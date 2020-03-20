@@ -78,7 +78,8 @@ The ``TagElement`` represents one markup tag that is used in the TEI text edited
     "?parser": "ParserElement",
     "?parsers": ["ParserElement"],
     "?content": "ElementName",
-    "?reference": "NestedReferenceElement"
+    "?reference": "NestedReferenceElement",
+    "?navigation": "NavigationElement"
   }
 
 The ``name`` can be any value, but each ``name`` **must** be unique within the ``TextSection``. The ``type`` defines the
@@ -146,6 +147,19 @@ The ``type`` specifies the ``name`` of the ``TagElement`` that represents the ne
 the attribute on the reference element that contains the nested document's unique identifier. The ``display`` configures
 whether the nested document is to be shown in the sidebar or in the footer of the user interface. However, if the
 device used by the user is small, then all nested documents are shown in the footer.
+
+NavigationElement
+*****************
+
+The ``NavigationElement`` configures which attribute to use to generate the in-text navigation elements.
+
+.. sourcecode:: json
+
+  {
+    "attr": "AttributeName"
+  }
+
+The ``attr`` to use for navigation.
 
 ParserElement
 +++++++++++++

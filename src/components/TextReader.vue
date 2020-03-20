@@ -16,7 +16,7 @@
         </div>
         <nav v-if="!isSmall && headings.length > 0" class="headings vertical">
             <ul>
-                <li v-for="heading, idx in headings" :key="idx"><a v-html="heading.label" :aria-checked="heading.target === activeHeading ? 'true' : 'false'" @click="navigateTo(heading.target)"></a></li>
+                <li v-for="heading, idx in headings" :key="idx"><a v-html="heading.label" :aria-checked="heading.target === activeHeading ? 'true' : 'false'" @click="navigateTo(heading)"></a></li>
             </ul>
         </nav>
         <article>
@@ -143,8 +143,8 @@ export default class TextReader extends Vue {
         this.$store.commit('toggleFootnote', { path: annotation });
     }
 
-    public navigateTo(heading: string) {
-        const element = document.querySelector('[data-id="' + heading + '"]') as HTMLElement;
+    public navigateTo(heading: StringKeyValueDict) {
+        const element = document.querySelector('[data-' + heading.attr + '="' + heading.target + '"]') as HTMLElement;
         if (element) {
             const container = this.$el.querySelector('article > div') as HTMLElement;
             if (container) {
@@ -162,43 +162,42 @@ export default class TextReader extends Vue {
 
     public scrollReader(ev: UIEvent, scroll: NumberKeyValueDict) {
         if (this && this.$el) {
-            const headingsSelector = this.headings.map((heading: StringKeyValueDict) => { return '[data-id="' + heading.target + '"]' }).join(', ');
-            if (headingsSelector !== '') {
-                // Store scroll
-                const teiReaderSrc = window.localStorage.getItem('tei-reader');
-                let teiReader = {} as AnyKeyValueDict;
-                if (teiReaderSrc) {
-                    teiReader = JSON.parse(teiReaderSrc);
-                }
-                if (!teiReader[this.$store.state.ui.identifier]) {
-                    teiReader[this.$store.state.ui.identifier] = {};
-                }
-                if (!teiReader[this.$store.state.ui.identifier][this.$props.section]) {
-                    teiReader[this.$store.state.ui.identifier][this.$props.section] = 0;
-                }
-                teiReader[this.$store.state.ui.identifier][this.$props.section] = scroll.scrollTop;
-                window.localStorage.setItem('tei-reader', JSON.stringify(teiReader));
-                // Update Headings
-                const headings = this.$el.querySelectorAll(headingsSelector);
-                if (headings.length > 0) {
-                    this.activeHeading = null;
-                    if (scroll.scrollTop > 0) {
-                        const article = this.$el.querySelector('article');
-                        if (article) {
-                            scroll.scrollTop = scroll.scrollTop + article.clientHeight * 0.25;
-                        }
+            // Store scroll
+            const teiReaderSrc = window.localStorage.getItem('tei-reader');
+            let teiReader = {} as AnyKeyValueDict;
+            if (teiReaderSrc) {
+                teiReader = JSON.parse(teiReaderSrc);
+            }
+            if (!teiReader[this.$store.state.ui.identifier]) {
+                teiReader[this.$store.state.ui.identifier] = {};
+            }
+            if (!teiReader[this.$store.state.ui.identifier][this.$props.section]) {
+                teiReader[this.$store.state.ui.identifier][this.$props.section] = 0;
+            }
+            teiReader[this.$store.state.ui.identifier][this.$props.section] = scroll.scrollTop;
+            window.localStorage.setItem('tei-reader', JSON.stringify(teiReader));
+            // Update Headings
+            const headings = Array.prototype.slice.call(this.$el.querySelectorAll('[data-navigation-attr]')).filter((heading: HTMLElement) => {
+                return heading.getAttribute('data-' + heading.getAttribute('data-navigation-attr'));
+            });
+            if (headings.length > 0) {
+                this.activeHeading = null;
+                if (scroll.scrollTop > 0) {
+                    const article = this.$el.querySelector('article');
+                    if (article) {
+                        scroll.scrollTop = scroll.scrollTop + article.clientHeight * 0.25;
                     }
-                    for (let idx = 0; idx < headings.length; idx++) {
-                        const heading = headings[idx] as HTMLElement;
-                        if (idx < headings.length - 1) {
-                            const nextHeading = headings[idx + 1] as HTMLElement;
-                            if (scroll.scrollTop >= heading.offsetTop && scroll.scrollTop < nextHeading.offsetTop) {
-                                this.activeHeading = heading.getAttribute('data-id');
-                            }
-                        } else {
-                            if (scroll.scrollTop >= heading.offsetTop) {
-                                this.activeHeading = heading.getAttribute('data-id');
-                            }
+                }
+                for (let idx = 0; idx < headings.length; idx++) {
+                    const heading = headings[idx] as HTMLElement;
+                    if (idx < headings.length - 1) {
+                        const nextHeading = headings[idx + 1] as HTMLElement;
+                        if (scroll.scrollTop >= heading.offsetTop && scroll.scrollTop < nextHeading.offsetTop) {
+                            this.activeHeading = heading.getAttribute('data-' + heading.getAttribute('data-navigation-attr'));
+                        }
+                    } else {
+                        if (scroll.scrollTop >= heading.offsetTop) {
+                            this.activeHeading = heading.getAttribute('data-' + heading.getAttribute('data-navigation-attr'));
                         }
                     }
                 }
@@ -285,6 +284,7 @@ export default class TextReader extends Vue {
             for (let idx = 0; idx < schema.length; idx++) {
                 if (schema[idx].name === node.type && schema[idx].navigation && node.attrs && node.attrs[schema[idx].navigation.attr]) {
                     headings.push({
+                        attr: schema[idx].navigation.attr,
                         target: node.attrs[schema[idx].navigation.attr] as string,
                         label: this.getText(node),
                     });
@@ -349,6 +349,9 @@ export default class TextReader extends Vue {
                         Object.entries(node.attrs).forEach(([key, value]) => {
                             textElements.push(' data-' + key + '="' + value + '"');
                         });
+                    }
+                    if (nodeSchema.navigation) {
+                        textElements.push(' data-navigation-attr="' + nodeSchema.navigation.attr.toLowerCase() + '"');
                     }
                     textElements.push('>');
                 }
