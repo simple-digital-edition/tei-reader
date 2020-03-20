@@ -1,6 +1,6 @@
 # Changelog
 
-## Dev
+## 0.6.1
 
 * **Update**: Added some CSS classes to the navigation blocks
 * **Bugfix**: Fixed a bug in the navigation generation
