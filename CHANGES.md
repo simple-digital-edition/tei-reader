@@ -1,5 +1,9 @@
 # Changelog
 
+## Dev
+
+* **Update**: Added some CSS classes to the navigation blocks
+
 ## 0.6.0
 
 * **New**: Added a list display for nested documents

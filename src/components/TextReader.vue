@@ -1,12 +1,12 @@
 <template>
     <main class="text-reader">
         <div v-if="isSmall && headings.length > 0" :class="isSmallMenuOpen ? 'small-menu-open' : null">
-            <nav>
+            <nav class="main">
                 <ul>
                     <li><a @click="toggleSmallMenu">&#x2630;</a></li>
                 </ul>
             </nav>
-            <nav class="vertical">
+            <nav class="main vertical">
                 <ul>
                     <template v-for="heading, idx in headings">
                         <li v-if="heading.target === activeHeading || (!activeHeading && idx === 0) || isSmallMenuOpen" :key="idx"><a v-html="heading.label" :aria-checked="heading.target === activeHeading ? 'true' : 'false'" @click="isSmallMenuOpen ? navigateTo(heading.target) : toggleSmallMenu()"></a></li>
@@ -14,7 +14,7 @@
                 </ul>
             </nav>
         </div>
-        <nav v-if="!isSmall && headings.length > 0" class="vertical">
+        <nav v-if="!isSmall && headings.length > 0" class="headings vertical">
             <ul>
                 <li v-for="heading, idx in headings" :key="idx"><a v-html="heading.label" :aria-checked="heading.target === activeHeading ? 'true' : 'false'" @click="navigateTo(heading.target)"></a></li>
             </ul>

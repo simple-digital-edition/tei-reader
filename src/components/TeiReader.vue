@@ -1,12 +1,12 @@
 <template>
     <div class="tei-reader">
         <div :class="this.$store.state.ui.smallMenuOpen ? 'small-menu-open' : null">
-            <nav v-if="isSmall && isSmallMenuOpen">
+            <nav v-if="isSmall && isSmallMenuOpen" class="main">
                 <ul>
                     <li><a @click="toggleSmallMenu">&#x2630;</a></li>
                 </ul>
             </nav>
-            <nav v-if="(!isSmall && hasMultipleSections) || (isSmall && isSmallMenuOpen)">
+            <nav v-if="(!isSmall && hasMultipleSections) || (isSmall && isSmallMenuOpen)" class="main">
                 <ul role="menubar">
                     <li v-for="value, key in sections" :key="key" role="presentation">
                         <a role="menuitem" v-html="value.label" @click="selectSection(key)" :aria-checked="key === selectedSection ? 'true' : 'false'"></a>
