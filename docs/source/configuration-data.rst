@@ -140,13 +140,13 @@ from the reference element to the nested document.
   {
     "type": "ElementName",
     "attr": "AttributeName",
-    "display": "sidebar | footer"
+    "display": "sidebar | footnote"
   }
 
 The ``type`` specifies the ``name`` of the ``TagElement`` that represents the nested documents. The ``attr`` specifies
 the attribute on the reference element that contains the nested document's unique identifier. The ``display`` configures
-whether the nested document is to be shown in the sidebar or in the footer of the user interface. However, if the
-device used by the user is small, then all nested documents are shown in the footer.
+whether the nested document is to be shown in the sidebar or in the footnote area of the user interface. However, if the
+device used by the user is small, then all nested documents are shown in the footnote area.
 
 NavigationElement
 *****************
