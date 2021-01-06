@@ -1,6 +1,6 @@
 # Changelog
 
-## Dev
+## 0.7.0
 
 * **Update**: Only show the sidebar if there are annotations to show
 
