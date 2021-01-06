@@ -1,5 +1,9 @@
 # Changelog
 
+## Dev
+
+* **Update**: Only show the sidebar if there are annotations to show
+
 ## 0.6.1
 
 * **Update**: Added some CSS classes to the navigation blocks

@@ -31,7 +31,7 @@
                 <text-node :section="section" :node="footnote[1]"></text-node>
             </aside>
         </article>
-        <aside v-if="!isSmall && hasNestedDocs">
+        <aside v-if="!isSmall && hasSidebarAnnotations">
             <section v-for="[annotationId, annotation], idx in annotations" :key="idx">
                 <a @click="hideAnnotation(annotationId)">&#x2716;</a>
                 <text-node v-if="annotation" :section="section" :node="annotation"></text-node>
@@ -79,9 +79,10 @@ export default class TextReader extends Vue {
         }
     }
 
-    public get hasNestedDocs() {
-        if (this.$store.state.content[this.$props.section].nested) {
-            if (Object.keys(this.$store.state.content[this.$props.section].nested).length > 0) {
+    public get hasSidebarAnnotations(): boolean {
+        const schema = this.$store.state.sections[this.$props.section].schema;
+        for (let idx = 0; idx < schema.length; idx++) {
+            if (schema[idx].reference && schema[idx].reference.display === 'sidebar') {
                 return true;
             }
         }
