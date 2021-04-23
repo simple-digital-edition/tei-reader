@@ -336,6 +336,9 @@ export default class TextReader extends Vue {
                             textElements.push(' data-' + key + '="' + value + '"');
                         });
                     }
+                    if (node.attrs && nodeSchema.reference && nodeSchema.reference.external && node.attrs[nodeSchema.reference.external]) {
+                        textElements.push(' href="' + node.attrs[nodeSchema.reference.external] + '" target="_blank"');
+                    }
                     if (node.attrs && nodeSchema.reference && nodeSchema.reference.attr && node.attrs[nodeSchema.reference.attr]) {
                         textElements.push(' data-reference-path="' + this.$props.section + '.nested.' + nodeSchema.reference.type + '.' + node.attrs[nodeSchema.reference.attr] + '"');
                         textElements.push(' data-reference-mode="' + nodeSchema.reference.display + '"');

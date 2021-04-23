@@ -206,8 +206,8 @@ Romanenbibliothek</ns0:hi>
           <ns0:seg>
 von</ns0:seg>
           <ns0:lb/>
-          <ns0:seg>
-Caroline Baronin de la Motte Fouqu&#233;. </ns0:seg>
+          <ns0:ref type="external" target="https://de.wikipedia.org/wiki/Caroline_de_la_Motte_Fouqu%C3%A9">Caroline Baronin de la Motte Fouqu&#233;</ns0:ref>
+          <ns0:seg>. </ns0:seg>
         </ns0:titlePart>
         <ns0:lb/>
         <ns0:docEdition>

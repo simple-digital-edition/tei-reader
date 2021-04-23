@@ -78,7 +78,7 @@ The ``TagElement`` represents one markup tag that is used in the TEI text edited
     "?parser": "ParserElement",
     "?parsers": ["ParserElement"],
     "?content": "ElementName",
-    "?reference": "NestedReferenceElement",
+    "?reference": "NestedReferenceElement | ExternalReferenceElement",
     "?navigation": "NavigationElement"
   }
 
@@ -131,9 +131,7 @@ document.
 NestedReferenceElement
 **********************
 
-Editing nested documents consists of two steps. First, the user needs to mark up the text that represents the reference
-to the nested document. Then they need to edit the nested document. The ``NestedReferenceElement`` specifies the link
-from the reference element to the nested document.
+The ``NestedReferenceElement`` configures a link to a nested document.
 
 .. sourcecode:: json
 
@@ -143,10 +141,23 @@ from the reference element to the nested document.
     "display": "sidebar | footnote"
   }
 
-The ``type`` specifies the ``name`` of the ``TagElement`` that represents the nested documents. The ``attr`` specifies
-the attribute on the reference element that contains the nested document's unique identifier. The ``display`` configures
-whether the nested document is to be shown in the sidebar or in the footnote area of the user interface. However, if the
-device used by the user is small, then all nested documents are shown in the footnote area.
+The ``type`` attribute specifies the ``name`` of the ``TagElement`` that represents the nested documents. The ``attr``
+specifies the attribute on the reference element that contains the nested document's unique identifier. The ``display``
+configures whether the nested document is to be shown in the sidebar or in the footnote area of the user interface.
+However, if the device used by the user is small, then all nested documents are shown in the footnote area.
+
+ExternalReferenceElement
+**********************
+
+The ``ExternalReferenceElement`` links to an external URL.
+
+.. sourcecode:: json
+
+  {
+    "external": "AttributeName"
+  }
+
+The ``external`` attribute specifies the name of the attribute that contains the external reference URL.
 
 NavigationElement
 *****************

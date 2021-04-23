@@ -335,6 +335,24 @@
                           }
                       },
                       {
+                          "name": "externalLink",
+                          "type": "inline",
+                          "parser": {
+                              "selector": "tei:ref[@type=\"external\"]",
+                              "text": "text()"
+                          },
+                          "attrs": {
+                              "href": {
+                                  "parser": {
+                                      "selector": "@target"
+                                  }
+                              }
+                          },
+                          "reference": {
+                              "external": "href"
+                          }
+                      },
+                      {
                           "name": "sic",
                           "type": "inline",
                           "parsers": [

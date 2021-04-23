@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.0
+
+* **Update**: Support showing external links
+
 ## 0.7.0
 
 * **Update**: Only show the sidebar if there are annotations to show
