@@ -1,6 +1,6 @@
 # Changelog
 
-## DEV
+## 0.8.1
 
 * **Bugfix**: Standardise the node rendering
 
