@@ -20,7 +20,6 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import TextNode from './TextNode.vue';
 import { NumberKeyValueDict, SerialisedNode, AnyKeyValueDict } from '@/interfaces';
 // eslint-disable-next-line
 // @ts-ignore
@@ -28,7 +27,6 @@ import { tween } from 'femtotween';
 
 @Component({
     components: {
-        TextNode,
     },
 })
 export default class NestedListReader extends Vue {

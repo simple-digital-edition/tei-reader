@@ -1,5 +1,9 @@
 # Changelog
 
+## DEV
+
+* **Bugfix**: Standardise the node rendering
+
 ## 0.8.0
 
 * **Update**: Support showing external links

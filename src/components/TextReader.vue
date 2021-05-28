@@ -28,13 +28,13 @@
             <div v-scroll="scrollReader" v-html="text" @click="textClick"></div>
             <aside v-if="footnote">
                 <a @click="hideFootnote(footnote[0])">&#x2716;</a>
-                <text-node :section="section" :node="footnote[1]"></text-node>
+                <div v-html="renderNode(footnote[1])" @click="textClick"></div>
             </aside>
         </article>
         <aside v-if="!isSmall && hasSidebarAnnotations">
             <section v-for="[annotationId, annotation], idx in annotations" :key="idx">
                 <a @click="hideAnnotation(annotationId)">&#x2716;</a>
-                <text-node v-if="annotation" :section="section" :node="annotation"></text-node>
+                <div v-html="renderNode(annotation)" @click="textClick"></div>
             </section>
         </aside>
     </main>
@@ -42,16 +42,16 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import TextNode from './TextNode.vue';
-import get from '@/util/get';
-import { StringKeyValueDict, NumberKeyValueDict, SerialisedNode, AnyKeyValueDict } from '@/interfaces';
 // eslint-disable-next-line
 // @ts-ignore
 import { tween } from 'femtotween';
 
+import get from '@/util/get';
+import { StringKeyValueDict, NumberKeyValueDict, SerialisedNode, AnyKeyValueDict } from '@/interfaces';
+import { renderHTML } from '@/util/render';
+
 @Component({
     components: {
-        TextNode,
     },
 })
 export default class TextReader extends Vue {
@@ -126,7 +126,11 @@ export default class TextReader extends Vue {
     }
 
     public get text() {
-        return this.generateHTML(this.doc, this.schema).join('');
+        return renderHTML(this.doc, this.schema, this.$props.section).join('');
+    }
+
+    public renderNode(node: SerialisedNode) {
+        return renderHTML(node, this.schema, this.$props.section).join('');
     }
 
     // ==================
@@ -264,15 +268,6 @@ export default class TextReader extends Vue {
     // Private methods
     // ===============
 
-    private nodeSchema(name: string, schema: any) {
-        for (let idx = 0; idx < schema.length; idx++) {
-            if (schema[idx].name === name) {
-                return schema[idx];
-            }
-        }
-        return null;
-    }
-
     private getText(node: SerialisedNode): string {
         if (node.type === 'text' && node.text) {
             return node.text;
@@ -302,98 +297,6 @@ export default class TextReader extends Vue {
                 }
             }
         }
-    }
-
-    private generateHTML(node: SerialisedNode, schema: any) {
-        let textElements = [] as string[];
-        if (node) {
-            const nodeSchema = this.nodeSchema(node.type, schema);
-            if (nodeSchema) {
-                if (nodeSchema.name === 'text') {
-                    if (node.marks) {
-                        textElements.push('<span class="');
-                        node.marks.forEach((mark, idx) => {
-                            if (idx > 0) {
-                                textElements.push(' mark-' + mark.type);
-                            } else {
-                                textElements.push('mark-' + mark.type);
-                            }
-                        });
-                        textElements.push('"');
-                        node.marks.forEach((mark) => {
-                            if (mark.attrs) {
-                                Object.entries(mark.attrs).forEach(([key, value]) => {
-                                    textElements.push(' data-' + key + '="' + value + '"');
-                                });
-                            }
-                        });
-                        textElements.push('>');
-                    }
-                } else if (nodeSchema.reference) {
-                    textElements.push('<a class="node-' + node.type + '"');
-                    if (node.attrs) {
-                        Object.entries(node.attrs).forEach(([key, value]) => {
-                            textElements.push(' data-' + key + '="' + value + '"');
-                        });
-                    }
-                    if (node.attrs && nodeSchema.reference && nodeSchema.reference.external && node.attrs[nodeSchema.reference.external]) {
-                        textElements.push(' href="' + node.attrs[nodeSchema.reference.external] + '" target="_blank"');
-                    }
-                    if (node.attrs && nodeSchema.reference && nodeSchema.reference.attr && node.attrs[nodeSchema.reference.attr]) {
-                        textElements.push(' data-reference-path="' + this.$props.section + '.nested.' + nodeSchema.reference.type + '.' + node.attrs[nodeSchema.reference.attr] + '"');
-                        textElements.push(' data-reference-mode="' + nodeSchema.reference.display + '"');
-                    }
-                    textElements.push('>');
-                } else if (nodeSchema.type === 'inline') {
-                    textElements.push('<span class="node-' + node.type + '"');
-                    if (node.attrs) {
-                        Object.entries(node.attrs).forEach(([key, value]) => {
-                            textElements.push(' data-' + key + '="' + value + '"');
-                        });
-                    }
-                    textElements.push('>');
-                } else {
-                    textElements.push('<div class="node-' + node.type + '"');
-                    if (node.attrs) {
-                        Object.entries(node.attrs).forEach(([key, value]) => {
-                            textElements.push(' data-' + key + '="' + value + '"');
-                        });
-                    }
-                    if (nodeSchema.navigation) {
-                        textElements.push(' data-navigation-attr="' + nodeSchema.navigation.attr.toLowerCase() + '"');
-                    }
-                    textElements.push('>');
-                }
-                if (node.text) {
-                    textElements.push(node.text);
-                }
-                if (node.content) {
-                    for (let idx = 0; idx < node.content.length; idx++) {
-                        const tmpElements = this.generateHTML(node.content[idx], schema);
-                        textElements = textElements.concat(tmpElements);
-                    }
-                }
-                if (nodeSchema.name === 'text') {
-                    if (node.marks) {
-                        textElements.push('</span>');
-                    }
-                } else if (nodeSchema.reference) {
-                    textElements.push('</a>');
-                } else if (nodeSchema.type === 'inline') {
-                    textElements.push('</span>');
-                } else {
-                    textElements.push('</div>');
-                }
-            } else if (node.type === 'doc') {
-                if (node.content) {
-                    for (let idx = 0; idx < node.content.length; idx++) {
-                        const tmpElements = this.generateHTML(node.content[idx], schema);
-                        textElements = textElements.concat(tmpElements);
-                    }
-                }
-            }
-        }
-        return textElements;
     }
 }
 </script>
