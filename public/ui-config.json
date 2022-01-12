@@ -1,0 +1,34 @@
+{
+    "sections": [
+        {
+            "name": "main",
+            "type": "text",
+            "label": "Main Text",
+            "links": [
+                {
+                    "name": "externalReference",
+                    "attr": "target"
+                }
+            ],
+            "footnotes": [
+                {
+                    "name": "choiceMarker",
+                    "targetName": "choice",
+                    "attr": "nestedtarget"
+                }
+            ],
+            "headings": [
+                {
+                    "name": "heading",
+                    "titleAttr": "headingTitle",
+                    "levelAttr": "headingType"
+                }
+            ]
+        },
+        {
+            "name": "metadata",
+            "type": "metadata",
+            "label": "Metadata"
+        }
+    ]
+}
