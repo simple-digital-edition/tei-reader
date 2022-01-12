@@ -88,8 +88,8 @@ export const document = derived([sourceDocument, sourceSchema, uiConfig], ([teiD
         for (let uiSection of uiConfig.sections) {
             const section = schema.sections.filter((section) => { return section.name === uiSection.name; })[0];
             if (section) {
-                const sect = {};
                 if (section.type === 'text') {
+                    const sect = {};
                     if ((uiSection as UIConfigTextSection).headings) {
                         sect.headings = extractHeadings((teiDocument[section.name] as TEITextDocumentCollection).main, (uiSection as UIConfigTextSection).headings);
                     } else {
@@ -105,8 +105,10 @@ export const document = derived([sourceDocument, sourceSchema, uiConfig], ([teiD
                             }
                         }
                     }
+                    doc[section.name] = sect;
+                } else if (section.type === 'metadata') {
+                    doc[section.name] = teiDocument[section.name];
                 }
-                doc[section.name] = sect;
             }
         }
         return doc;

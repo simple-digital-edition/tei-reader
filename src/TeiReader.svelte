@@ -2,9 +2,11 @@
 
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
+	import deepcopy from 'deepcopy';
 
 	import { ready, load, uiConfig, currentSectionName, currentSection, document, currentFootnote } from './store';
 	import { localStoreValue, localLoadValue } from './storage';
+import type { TEIMetadataNode } from 'tei-util/dist/types';
 
 	let uiConfigSrc = '';
 	let teiSchema = '';
@@ -86,6 +88,45 @@
 		}, 50);
 	}
 
+	function getSingleMetadataValue(node: TEIMetadataNode, path: string) {
+		function traverse(current: TEIMetadataNode, pathElements: string[]) {
+			const pathElement = pathElements[0];
+			if (pathElement === 'text()') {
+				return current.text;
+			} else if (pathElement.startsWith('@')) {
+				return current.attributes[pathElement.substring(1)];
+			} else {
+				for (let child of current.children) {
+					if (child.tag === pathElement) {
+						return traverse(child, pathElements.slice(1));
+					}
+				}
+				return '';
+			}
+		}
+		return traverse(node, path.split('/').slice(1));
+	}
+
+	function getMultiMetadataValue(node: TEIMetadataNode, path: string) {
+		function traverse(current: TEIMetadataNode, pathElements: string[]) {
+			const pathElement = pathElements[0];
+			if (pathElement === 'text()') {
+				return [current.text];
+			} else if (pathElement.startsWith('@')) {
+				return [current.attributes[pathElement.substring(1)]];
+			} else {
+				let result = [];
+				for (let child of current.children) {
+					if (child.tag === pathElement) {
+						result = result.concat(traverse(child, pathElements.slice(1)));
+					}
+				}
+				return result;
+			}
+		}
+		return traverse(node, path.split('/').slice(1));
+	}
+
 	const currentSectionUnsubscribe = currentSection.subscribe((currentSection) => {
 		if (currentSection) {
 			setTimeout(() => {
@@ -143,8 +184,28 @@
 			</ol>
 		</nav>
 	{/if}
-	{#if $currentSection && $currentSection.type === 'text' && $document && $document[$currentSectionName]}
-		<article bind:this={articleElement} id="tr-text" on:click={handleContentClick} on:scroll={scrollTracking}>{@html $document[$currentSectionName].main}</article>
+	{#if $currentSection && $document && $document[$currentSectionName]}
+		{#if $currentSection.type === 'text'}
+			<article bind:this={articleElement} id="tr-text" on:click={handleContentClick} on:scroll={scrollTracking}>{@html $document[$currentSectionName].main}</article>
+		{:else if $currentSection.type === 'metadata'}
+			<article bind:this={articleElement} id="tr-metadata" on:scroll={scrollTracking}>
+				{#each $currentSection.entries as section}
+					<section>
+						<h2>{section.label}</h2>
+						{#each section.entries as entry}
+							<h3>{entry.label}</h3>
+							{#if entry.type === 'single-text'}
+								<p>{getSingleMetadataValue($document[$currentSectionName], entry.path)}</p>
+							{:else if entry.type === 'multi-text'}
+								{#each getMultiMetadataValue($document[$currentSectionName], entry.path) as value}
+									<p>{value}</p>
+								{/each}
+							{/if}
+						{/each}
+					</section>
+				{/each}
+			</article>
+		{/if}
 	{/if}
 	{#if $currentFootnote}
 		<aside id="tr-footnote">
@@ -187,7 +248,7 @@
 		width: 15rem;
 	}
 
-	#tr-text {
+	#tr-text, #tr-metadata {
 		grid-row: 2 / 3;
 		grid-column: 2 / 3;
 	}
@@ -265,6 +326,12 @@
 
 	/* Text styling */
 	#tr-text {
+		padding: 0 0.5rem;
+		overflow: auto;
+	}
+
+	/* Metadata styling */
+	#tr-metadata {
 		padding: 0 0.5rem;
 		overflow: auto;
 	}

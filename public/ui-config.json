@@ -3,7 +3,7 @@
         {
             "name": "main",
             "type": "text",
-            "label": "Main Text",
+            "label": "Text",
             "links": [
                 {
                     "name": "externalReference",
@@ -28,7 +28,39 @@
         {
             "name": "metadata",
             "type": "metadata",
-            "label": "Metadata"
+            "label": "About",
+            "entries": [
+                {
+                    "label": "Bibliography",
+                    "entries": [
+                        {
+                            "label": "Title",
+                            "type": "single-text",
+                            "path": "tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title/text()"
+                        },
+                        {
+                            "label": "Author",
+                            "type": "single-text",
+                            "path": "tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author/tei:persName/text()"
+                        }
+                    ]
+                },
+                {
+                    "label": "Digital Version",
+                    "entries": [
+                        {
+                            "label": "License",
+                            "type": "single-text",
+                            "path": "tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence/tei:p/text()"
+                        },
+                        {
+                            "label": "Publisher",
+                            "type": "multi-text",
+                            "path": "tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:publisher/tei:orgName/text()"
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
