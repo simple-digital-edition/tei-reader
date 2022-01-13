@@ -199,9 +199,10 @@ function extractHeadings(node: TEITextNode, schema: UIConfigHeading[]) {
             if (heading.levelAttr) {
                 headingEntry.level = node.attrs[heading.levelAttr];
             }
-            headings.push(headingEntry);
-
-            node.attrs['_tr-heading-id'] = headingEntry.id;
+            if (headingEntry.label) {
+                headings.push(headingEntry);
+                node.attrs['_tr-heading-id'] = headingEntry.id;
+            }
         }
     }
     for (let child of node.content) {
