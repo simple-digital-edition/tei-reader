@@ -25,28 +25,37 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 
 	function handleContentClick(ev: Event) {
 		if ($currentSection) {
-			const target = ev.target as HTMLElement;
-			let type = target.getAttribute('data-type');
-			if (type) {
-				if (type.indexOf('-') >= 0) {
-					type = type.substring(type.indexOf('-') + 1);
+			let target = ev.target as HTMLElement;
+			let targets = [];
+			while (target && target !== articleElement) {
+				if (target.getAttribute('data-type')) {
+					targets.push(target)
 				}
-				if ($currentSection.links) {
-					for (let link of $currentSection.links) {
+				target = target.parentElement as HTMLElement;
+			}
+			let type = target.getAttribute('data-type');
+			if ($currentSection.links) {
+				for (let link of $currentSection.links) {
+					const linkElements = targets.filter((target) => {
+						const type = target.getAttribute('data-type');
 						const linkTarget = target.getAttribute('data-attr-' + link.attr);
-						if (link.name === type && linkTarget) {
-							window.open(linkTarget, '_blank', 'noopener,noreferrer');
-							break;
-						}
+						return type && linkTarget && type.substring(type.indexOf('-') + 1) === link.name;
+					});
+					if (linkElements.length > 0) {
+						window.open(linkElements[0].getAttribute('data-attr-' + link.attr), '_blank', 'noopener,noreferrer');
 					}
 				}
-				if ($currentSection.footnotes) {
-					for (let footnote of $currentSection.footnotes) {
+			}
+			if ($currentSection.footnotes) {
+				for (let footnote of $currentSection.footnotes) {
+					const footnoteElements = targets.filter((target) => {
+						const type = target.getAttribute('data-type');
 						const footnoteTarget = target.getAttribute('data-attr-' + footnote.attr);
-						if (footnote.name === type && footnoteTarget && $document[$currentSectionName].nested[footnote.targetName] && $document[$currentSectionName].nested[footnote.targetName][footnoteTarget]) {
-							currentFootnote.set($document[$currentSectionName].nested[footnote.targetName][footnoteTarget]);
-							break;
-						}
+						return type && footnoteTarget && footnote.name === type.substring(type.indexOf('-') + 1) && $document[$currentSectionName].nested[footnote.targetName] && $document[$currentSectionName].nested[footnote.targetName][footnoteTarget];
+					});
+					if (footnoteElements.length > 0) {
+						currentFootnote.set($document[$currentSectionName].nested[footnote.targetName][footnoteElements[0].getAttribute('data-attr-' + footnote.attr)]);
+						break;
 					}
 				}
 			}
@@ -55,31 +64,40 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 
 	function handleNestedListClick(ev: Event) {
 		if ($currentSection) {
-			const target = ev.target as HTMLElement;
-			let type = target.getAttribute('data-type');
-			if (type) {
-				if (type.indexOf('-') >= 0) {
-					type = type.substring(type.indexOf('-') + 1);
+			let target = ev.target as HTMLElement;
+			let targets = [];
+			while (target && target !== articleElement) {
+				if (target.getAttribute('data-type')) {
+					targets.push(target)
 				}
-				if ($currentSection.links) {
-					for (let link of $currentSection.links) {
+				target = target.parentElement as HTMLElement;
+			}
+			let type = target.getAttribute('data-type');
+			if ($currentSection.links) {
+				for (let link of $currentSection.links) {
+					const linkElements = targets.filter((target) => {
+						const type = target.getAttribute('data-type');
 						const linkTarget = target.getAttribute('data-attr-' + link.attr);
-						if (link.name === type && linkTarget) {
-							window.open(linkTarget, '_blank', 'noopener,noreferrer');
-							break;
-						}
+						return type && linkTarget && type.substring(type.indexOf('-') + 1) === link.name;
+					});
+					if (linkElements.length > 0) {
+						window.open(linkElements[0].getAttribute('data-attr-' + link.attr), '_blank', 'noopener,noreferrer');
 					}
 				}
-				if ($currentSection.footnotes) {
-					for (let footnote of $currentSection.footnotes) {
+			}
+			if ($currentSection.footnotes) {
+				for (let footnote of $currentSection.footnotes) {
+					const footnoteElements = targets.filter((target) => {
+						const type = target.getAttribute('data-type');
 						const footnoteTarget = target.getAttribute('data-attr-' + footnote.attr);
-						if (footnote.name === type && footnoteTarget && $document[$currentSection.sectionName].nested[footnote.targetName] && $document[$currentSection.sectionName].nested[footnote.targetName][footnoteTarget]) {
-							const nestedElement = articleElement.querySelector('#' + footnoteTarget);
+						return type && footnoteTarget && footnote.name === type.substring(type.indexOf('-') + 1) && $document[$currentSection.sectionName].nested[footnote.targetName] && $document[$currentSection.sectionName].nested[footnote.targetName][footnoteTarget];
+					});
+					if (footnoteElements.length > 0) {
+						const nestedElement = articleElement.querySelector('#' + footnoteElements[0].getAttribute('data-attr-' + footnote.attr));
 							if (nestedElement) {
 								nestedElement.scrollIntoView();
 							}
-							break;
-						}
+						break;
 					}
 				}
 			}
