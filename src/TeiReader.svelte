@@ -198,15 +198,16 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 			</svg>
 		</div>
 	{/if}
-	<nav id="tr-sections">
-		<ol>
-			{#if $uiConfig && $uiConfig.sections}
+	{#if $uiConfig && $uiConfig.sections}
+		<nav id="tr-sections">
+			<ol>
 				{#each $uiConfig.sections as section}
-					<li><button on:click={() => { selectSection(section.name); }} aria-current={section.name === $currentSectionName ? 'true' : 'false'}>{section.label}</button></li>
+					<li role="presentation"><button on:click={() => { selectSection(section.name); }} aria-current={section.name === $currentSectionName ? 'true' : 'false'}>{section.label}</button></li>
 				{/each}
-			{/if}
-		</ol>
-	</nav>
+				<li role="presentation"></li>
+			</ol>
+		</nav>
+	{/if}
 	{#if $currentSection && $currentSection.type === 'text' && $document && $document[$currentSectionName] && $document[$currentSectionName].headings.length > 0}
 		<nav id="tr-headings">
 			<ol>
