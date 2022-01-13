@@ -86,29 +86,92 @@ export const document = derived([sourceDocument, sourceSchema, uiConfig], ([teiD
         }
         const doc = {};
         for (let uiSection of uiConfig.sections) {
-            const section = schema.sections.filter((section) => { return section.name === uiSection.name; })[0];
-            if (section) {
-                if (section.type === 'text') {
-                    const sect = {};
-                    if ((uiSection as UIConfigTextSection).headings) {
-                        sect.headings = extractHeadings((teiDocument[section.name] as TEITextDocumentCollection).main, (uiSection as UIConfigTextSection).headings);
-                    } else {
-                        sect.headings = [];
-                    }
-                    sect.main = generateHTML((teiDocument[section.name] as TEITextDocumentCollection).main, extensions);
-                    sect.nested = {};
-                    if ((teiDocument[section.name] as TEITextDocumentCollection).nested) {
-                        for (let [nestedKey, nestedDocs] of Object.entries((teiDocument[section.name] as TEITextDocumentCollection).nested)) {
-                            sect.nested[nestedKey] = {};
-                            for (let [nestedDocKey, nestedDoc] of Object.entries(nestedDocs)) {
-                                sect.nested[nestedKey][nestedDocKey] = generateHTML(nestedDoc.doc, extensions);
-                            }
+            if (uiSection.type === 'text') {
+                const section = schema.sections.filter((section) => { return section.name === uiSection.name; })[0];
+                const sect = {};
+                if ((uiSection as UIConfigTextSection).headings) {
+                    sect.headings = extractHeadings((teiDocument[section.name] as TEITextDocumentCollection).main, (uiSection as UIConfigTextSection).headings);
+                } else {
+                    sect.headings = [];
+                }
+                sect.main = generateHTML((teiDocument[section.name] as TEITextDocumentCollection).main, extensions);
+                sect.nested = {};
+                if ((teiDocument[section.name] as TEITextDocumentCollection).nested) {
+                    for (let [nestedKey, nestedDocs] of Object.entries((teiDocument[section.name] as TEITextDocumentCollection).nested)) {
+                        sect.nested[nestedKey] = {};
+                        for (let [nestedDocKey, nestedDoc] of Object.entries(nestedDocs)) {
+                            sect.nested[nestedKey][nestedDocKey] = generateHTML(nestedDoc.doc, extensions);
                         }
                     }
-                    doc[section.name] = sect;
-                } else if (section.type === 'metadata') {
-                    doc[section.name] = teiDocument[section.name];
                 }
+                doc[section.name] = sect;
+            } else if (uiSection.type === 'nestedList') {
+                if (teiDocument[uiSection.sectionName] && (teiDocument[uiSection.sectionName] as TEITextDocumentCollection).nested[uiSection.nestedName]) {
+                    const values = Object.values((teiDocument[uiSection.sectionName] as TEITextDocumentCollection).nested[uiSection.nestedName]).map((nested) => {
+                        return {
+                            type: nested.type,
+                            id: nested.id,
+                            content: generateHTML(nested.doc, extensions),
+                            text: extractText(nested.doc),
+                        }
+                    });
+                    if (!uiSection.sort || uiSection.sort === 'alphabetical') {
+                        values.sort((a, b) => {
+                            if (a.text < b.text) {
+                                return -1;
+                            } else if (a.text > b.text) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        });
+                    } else if (!uiSection.sort || uiSection.sort === 'id') {
+                        values.sort((a, b) => {
+                            if (a.id < b.id) {
+                                return -1;
+                            } else if (a.id > b.id) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        });
+                    } else if (!uiSection.sort || uiSection.sort === 'page-line') {
+                        values.sort((a, b) => {
+                            const aMatch = a.text.match(/^([0-9,.\-]+)/);
+                            const bMatch = b.text.match(/^([0-9,.\-]+)/);
+                            if (aMatch && bMatch) {
+                                const aParts = aMatch[1].split(/[.,\-]/).map((value) => { return Number.parseInt(value); });
+                                const bParts = bMatch[1].split(/[.,\-]/).map((value) => { return Number.parseInt(value); });
+                                for (let idx = 0; idx < aParts.length && idx < bParts.length; idx++) {
+                                    if (aParts[idx] < bParts[idx]) {
+                                        return -1;
+                                    } else if (aParts[idx] > bParts[idx]) {
+                                        return 1;
+                                    }
+                                }
+                                if (aParts.length < bParts.length) {
+                                    return -1;
+                                } else if (aParts.length > bParts.length) {
+                                    return 1;
+                                }
+                            } else if (aMatch) {
+                                return -1;
+                            } else if (bMatch) {
+                                return 1;
+                            } else if (a.text < b.text) {
+                                return -1;
+                            } else if (a.text > b.text) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        });
+                    }
+                    doc[uiSection.name] = values;
+                }
+            } else if (uiSection.type === 'metadata') {
+                const section = schema.sections.filter((section) => { return section.name === uiSection.name; })[0];
+                doc[section.name] = teiDocument[section.name];
             }
         }
         return doc;
@@ -145,4 +208,14 @@ function extractHeadings(node: TEITextNode, schema: UIConfigHeading[]) {
         headings = headings.concat(extractHeadings(child, schema));
     }
     return headings;
+}
+
+function extractText(node: TEITextNode) {
+    if (node.type === 'text') {
+        return node.text;
+    } else {
+        return node.content.reduce((acc, child) => {
+            return acc + extractText(child);
+        }, '');
+    }
 }

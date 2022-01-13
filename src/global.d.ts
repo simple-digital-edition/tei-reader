@@ -4,7 +4,7 @@ type UIConfig = {
     sections: UIConfigSection[];
 };
 
-type UIConfigSection = UIConfigTextSection | UIConfigMetadataSection;
+type UIConfigSection = UIConfigTextSection | UIConfigNestedListSection | UIConfigMetadataSection;
 
 type UIConfigTextSection = {
     name: string;
@@ -32,6 +32,14 @@ type UIConfigHeading = {
     levelAttr?: string;
 };
 
+type UIConfigNestedListSection = {
+    name: string;
+    type: 'nestedList';
+    label: string;
+    sectionName: string;
+    nestedName: string;
+    sort?: 'alphabetical' | 'id' | 'page-line';
+}
 type UIConfigMetadataSection = {
     name: string;
     type: 'metadata';

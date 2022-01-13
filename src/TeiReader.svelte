@@ -28,7 +28,6 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 			const target = ev.target as HTMLElement;
 			let type = target.getAttribute('data-type');
 			if (type) {
-				console.log(type);
 				if (type.indexOf('-') >= 0) {
 					type = type.substring(type.indexOf('-') + 1);
 				}
@@ -46,6 +45,39 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 						const footnoteTarget = target.getAttribute('data-attr-' + footnote.attr);
 						if (footnote.name === type && footnoteTarget && $document[$currentSectionName].nested[footnote.targetName] && $document[$currentSectionName].nested[footnote.targetName][footnoteTarget]) {
 							currentFootnote.set($document[$currentSectionName].nested[footnote.targetName][footnoteTarget]);
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	function handleNestedListClick(ev: Event) {
+		if ($currentSection) {
+			const target = ev.target as HTMLElement;
+			let type = target.getAttribute('data-type');
+			if (type) {
+				if (type.indexOf('-') >= 0) {
+					type = type.substring(type.indexOf('-') + 1);
+				}
+				if ($currentSection.links) {
+					for (let link of $currentSection.links) {
+						const linkTarget = target.getAttribute('data-attr-' + link.attr);
+						if (link.name === type && linkTarget) {
+							window.open(linkTarget, '_blank', 'noopener,noreferrer');
+							break;
+						}
+					}
+				}
+				if ($currentSection.footnotes) {
+					for (let footnote of $currentSection.footnotes) {
+						const footnoteTarget = target.getAttribute('data-attr-' + footnote.attr);
+						if (footnote.name === type && footnoteTarget && $document[$currentSection.sectionName].nested[footnote.targetName] && $document[$currentSection.sectionName].nested[footnote.targetName][footnoteTarget]) {
+							const nestedElement = articleElement.querySelector('#' + footnoteTarget);
+							if (nestedElement) {
+								nestedElement.scrollIntoView();
+							}
 							break;
 						}
 					}
@@ -187,6 +219,12 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 	{#if $currentSection && $document && $document[$currentSectionName]}
 		{#if $currentSection.type === 'text'}
 			<article bind:this={articleElement} id="tr-text" on:click={handleContentClick} on:scroll={scrollTracking}>{@html $document[$currentSectionName].main}</article>
+		{:else if $currentSection.type === 'nestedList'}
+			<article bind:this={articleElement} id="tr-nested-list" on:click={handleNestedListClick} on:scroll={scrollTracking}>
+				{#each $document[$currentSectionName] as nestedDoc}
+					<section id={nestedDoc.id}>{@html nestedDoc.content}</section>
+				{/each}
+			</article>
 		{:else if $currentSection.type === 'metadata'}
 			<article bind:this={articleElement} id="tr-metadata" on:scroll={scrollTracking}>
 				{#each $currentSection.entries as section}
@@ -209,7 +247,7 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 	{/if}
 	{#if $currentFootnote}
 		<aside id="tr-footnote">
-			<div>{@html $currentFootnote}</div>
+			<div on:click={handleContentClick}>{@html $currentFootnote}</div>
 			<div>
 				<button on:click={() => { currentFootnote.set(null); }} aria-label="Close">
 					<svg viewBox="0 0 24 24">
@@ -248,7 +286,7 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 		width: 15rem;
 	}
 
-	#tr-text, #tr-metadata {
+	#tr-text, #tr-nested-list, #tr-metadata {
 		grid-row: 2 / 3;
 		grid-column: 2 / 3;
 	}
@@ -328,6 +366,16 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 	#tr-text {
 		padding: 0 0.5rem;
 		overflow: auto;
+	}
+
+	/* Nested-List styling*/
+	#tr-nested-list {
+		padding: 0 0.5rem;
+		overflow: auto;
+	}
+
+	#tr-nested-list section {
+		margin-bottom: 0.5rem;
 	}
 
 	/* Metadata styling */

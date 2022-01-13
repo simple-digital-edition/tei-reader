@@ -34,37 +34,37 @@
 }
 
 /* Text styling */
-#tr-text [data-type="node-titlePage"] {
+[data-type="node-titlePage"] {
     text-align: center;
 }
 
-#tr-text [data-type="node-titlePart"] {
+[data-type="node-titlePart"] {
     margin-bottom: 2rem;
 }
 
-#tr-text [data-type="node-heading"] {
+[data-type="node-heading"] {
     font-size: 14pt;
     font-weight: bold;
     margin: 1rem 0;
 }
 
-#tr-text [data-type="node-paragraph"] {
+[data-type="node-paragraph"] {
     margin-bottom: 1rem;
 }
 
-#tr-text [data-type="node-lineGroup"] {
+[data-type="node-lineGroup"] {
     margin-bottom: 1rem;
 }
 
-#tr-text [data-type="node-paragraph"][data-attr-rendition="#right"] {
+[data-type="node-paragraph"][data-attr-rendition="#right"] {
     text-align: right;
 }
 
-#tr-text [data-type="node-pageBegin"] {
+[data-type="node-pageBegin"] {
     display: inline;
 }
 
-#tr-text [data-type="node-pageBegin"]::after {
+[data-type="node-pageBegin"]::after {
     display: inline;
     content: attr(data-attr-n);
     font-size: 80%;
@@ -72,41 +72,48 @@
     padding: 0 0.2rem;
 }
 
-#tr-text [data-type="mark-lineBegin"] {
+[data-type="mark-lineBegin"] {
     display: block;
 }
 
-#tr-text [data-type="mark-byline"] {
+[data-type="mark-byline"] {
     display: block;
     margin-bottom: 2rem;
 }
 
-#tr-text [data-type="mark-letterSpacing"] {
+[data-type="mark-letterSpacing"] {
     letter-spacing: 2pt;
 }
 
-#tr-text [data-type="mark-firstLetter"] {
+[data-type="mark-firstLetter"] {
     font-size: 150%;
 }
 
-#tr-text [data-type="mark-externalReference"] {
+[data-type="mark-externalReference"] {
     text-decoration: underline dotted;
     cursor: pointer;
 }
 
-#tr-text [data-type="mark-externalReference"]::after {
+[data-type="mark-externalReference"]::after {
     display: inline-block;
     content: '\1F855';
     margin-left: 0.2rem;
 }
 
-#tr-text [data-type="mark-choiceMarker"] {
+[data-type="mark-choiceMarker"] {
     text-decoration: underline dotted;
     cursor: pointer;
 }
 
-#tr-footnote [data-type="mark-corr"]::after {
+[data-type="mark-corr"]::after {
     content: '] ';
+}
+
+/* Edits styling */
+#tr-nested-list section {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #F3F4F6;
 }
 
 /* Metadata styling*/

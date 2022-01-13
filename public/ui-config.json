@@ -26,6 +26,27 @@
             ]
         },
         {
+            "name": "choice",
+            "type": "nestedList",
+            "label": "Edits",
+            "sectionName": "main",
+            "nestedName": "choice",
+            "sort": "page-line",
+            "links": [
+                {
+                    "name": "externalReference",
+                    "attr": "target"
+                }
+            ],
+            "footnotes": [
+                {
+                    "name": "choiceMarker",
+                    "targetName": "choice",
+                    "attr": "nestedtarget"
+                }
+            ]
+        },
+        {
             "name": "metadata",
             "type": "metadata",
             "label": "About",

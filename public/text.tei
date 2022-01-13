@@ -602,6 +602,9 @@ Theilnahme auf seine Klagen h&#246;rte. Luise hatte inde&#223; die Vorh&#228;nge
         <tei:choice xml:id="choice-2">
           <ns0:corr>vermag</ns0:corr>
           <ns0:sic>mag</ns0:sic>
+          <ns0:seg> (as an example, see also: </ns0:seg>
+          <tei:ref type="choice" target="#choice-1">verschleierten</tei:ref>
+          <ns0:seg>)</ns0:seg>
         </tei:choice>
         <ns0:seg> Gott allein, erwiederte er; thun will ich, was ich kann, das Uebrige mu&#223; man erwarten. Erwarten &#8212; dachte Luise; wer hat hier Muth und Besonnenheit, auf eine langsame Wirkung der angewandten Mittel zu hoffen! Das Schrecklichste sieht mir ganz nahe, ich mu&#223; es wegger&#228;umt wissen, oder erliegen!</ns0:seg>
       </ns0:p>
