@@ -1,27 +1,29 @@
 <svelte:options tag="tei-reader"/>
 
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
-	import deepcopy from 'deepcopy';
+	import { onMount, onDestroy, tick } from 'svelte';
 
 	import { ready, load, uiConfig, currentSectionName, currentSection, document, currentFootnote } from './store';
 	import { localStoreValue, localLoadValue } from './storage';
-import type { TEIMetadataNode } from 'tei-util/dist/types';
+	import type { TEIMetadataNode } from 'tei-util/dist/types';
 
 	let uiConfigSrc = '';
 	let teiSchema = '';
 	let teiSrc = '';
 	let stylingSrc = '';
+	let documentId = '';
+	let breakpointMedium = 640;
+	let breakpointLarge = 1024;
+	export {teiSchema as teischema, uiConfigSrc as uiconfig, teiSrc as teisrc, stylingSrc as stylingsrc, documentId as documentid, breakpointMedium as breakpointmedium, breakpointLarge as breakpointlarge};
+
 	let articleElement = null as HTMLElement;
+	let mainElement = null as HTMLElement;
 	let currentHeadingId = '';
 	let scrollTrackingTimeout = -1;
-	let documentId = '';
-
-	export {teiSchema as teischema, uiConfigSrc as uiconfig, teiSrc as teisrc, stylingSrc as stylingsrc, documentId as documentid};
-
-	onMount(() => {
-		load(uiConfigSrc, teiSchema, teiSrc);
-	});
+	let breakpoint = 0;
+	let breakpointCls = 'breakpoint-0';
+	let showSections = false;
+	let showHeadings = false;
 
 	function handleContentClick(ev: Event) {
 		if ($currentSection) {
@@ -123,19 +125,21 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 
 	function scrollTracking(ev: Event) {
 		window.clearTimeout(scrollTrackingTimeout);
-		scrollTrackingTimeout = window.setTimeout(() => {
-			const boundary = articleElement.scrollTop + articleElement.clientHeight / 2;
-			const headings = articleElement.querySelectorAll('[data-attr-_tr-heading-id]');
-			currentHeadingId = '';
-			for (let heading of headings) {
-				if ((heading as HTMLElement).offsetTop < boundary) {
-					currentHeadingId = heading.getAttribute('data-attr-_tr-heading-id');
-				} else {
-					break;
+		if (articleElement) {
+			scrollTrackingTimeout = window.setTimeout(() => {
+				const boundary = articleElement.scrollTop + articleElement.clientHeight / 2;
+				const headings = articleElement.querySelectorAll('[data-attr-_tr-heading-id]');
+				currentHeadingId = '';
+				for (let heading of headings) {
+					if ((heading as HTMLElement).offsetTop < boundary) {
+						currentHeadingId = heading.getAttribute('data-attr-_tr-heading-id');
+					} else {
+						break;
+					}
 				}
-			}
-			localStoreValue(documentId + '.' + $currentSectionName + '.scroll', articleElement.scrollTop);
-		}, 50);
+				localStoreValue(documentId + '.' + $currentSectionName + '.scroll', articleElement.scrollTop);
+			}, 50);
+		}
 	}
 
 	function getSingleMetadataValue(node: TEIMetadataNode, path: string) {
@@ -182,19 +186,44 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 			setTimeout(() => {
 				if (articleElement) {
 					articleElement.scrollTop = localLoadValue(documentId + '.' + currentSection.name + '.scroll', 0) as number;
+					scrollTracking(null);
 				}
 			}, 50);
 		}
 	});
 
-	onDestroy(currentSectionUnsubscribe);
+	function resize() {
+		if (mainElement) {
+			if (mainElement.clientWidth > breakpointLarge) {
+				breakpoint = 2;
+				breakpointCls = 'breakpoint-0 breakpoint-1 breakpoint-2';
+			} else if (mainElement.clientWidth > breakpointMedium) {
+				breakpoint = 1;
+				breakpointCls = 'breakpoint-0 breakpoint-1';
+			} else {
+				breakpoint = 0;
+				breakpointCls = 'breakpoint-0';
+			}
+		}
+	}
+
+	onMount(() => {
+		load(uiConfigSrc, teiSchema, teiSrc);
+		window.addEventListener('resize', resize);
+		tick().then(resize);
+	});
+
+	onDestroy(() => {
+		window.removeEventListener('resize', resize);
+		currentSectionUnsubscribe();
+	});
 </script>
 
 {#if stylingSrc}
 	<link rel="stylesheet" href={stylingSrc}/>
 {/if}
 
-<main>
+<main bind:this={mainElement} class="{breakpointCls}">
 	{#if !$ready}
 		<div id="tr-loading">
 			<!-- By Sam Herbert (@sherb), for everyone. More @ http://goo.gl/7AJzbL -->
@@ -217,22 +246,65 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 		</div>
 	{/if}
 	{#if $uiConfig && $uiConfig.sections}
-		<nav id="tr-sections">
+		<nav id="tr-sections" class="{showSections ? 'show-sections' : ''}">
+			{#if breakpoint === 0}
+				{#if showSections}
+					<button on:click={() => { showSections = false; }} aria-label="Hide sections">
+						<svg viewBox="0 0 24 24">
+							<path fill="currentColor" d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z" />
+						</svg>
+					</button>
+				{:else}
+					<button on:click={() => { showSections = true; }} aria-label="Show sections">
+						<svg viewBox="0 0 24 24">
+							<path fill="currentColor" d="M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z" />
+						</svg>
+					</button>
+				{/if}
+			{/if}
 			<ol>
 				{#each $uiConfig.sections as section}
-					<li role="presentation"><button on:click={() => { selectSection(section.name); }} aria-current={section.name === $currentSectionName ? 'true' : 'false'}>{section.label}</button></li>
+					{#if breakpoint === 0 && !showSections && section.name === $currentSectionName}
+						<li role="presentation"><button on:click={() => { showSections = true; }} aria-current={section.name === $currentSectionName ? 'true' : 'false'} aria-label="Show sections">{section.label}</button></li>
+					{/if}
+					{#if breakpoint > 0 || showSections}
+						<li role="presentation"><button on:click={() => { selectSection(section.name); showSections = false; }} aria-current={section.name === $currentSectionName ? 'true' : 'false'}>{section.label}</button></li>
+					{/if}
 				{/each}
 				<li role="presentation"></li>
 			</ol>
 		</nav>
 	{/if}
 	{#if $currentSection && $currentSection.type === 'text' && $document && $document[$currentSectionName] && $document[$currentSectionName].headings.length > 0}
-		<nav id="tr-headings">
+		<nav id="tr-headings" class="{showHeadings ? 'show-headings' : ''}">
 			<ol>
 				{#each $document[$currentSectionName].headings as heading}
-					<li><button on:click={() => { scrollToHeading(heading); }} data-level={heading.level} aria-current={heading.id === currentHeadingId ? 'true' : 'false'}>{heading.label}</button></li>
+					{#if breakpoint === 0 && !showHeadings && heading.id === currentHeadingId}
+						<li><button on:click={() => { showHeadings = true; }} aria-label="Show headings">{heading.label}</button></li>
+					{/if}
+					{#if breakpoint > 0 || showHeadings}
+						<li><button on:click={() => { scrollToHeading(heading); showHeadings = false; }} data-level={heading.level} aria-current={heading.id === currentHeadingId ? 'true' : 'false'}>{heading.label}</button></li>
+					{/if}
 				{/each}
+				{#if breakpoint === 0 && !showHeadings && !currentHeadingId}
+					<li><button on:click={() => { showHeadings = true; }} aria-label="Show headings">&nbsp;</button></li>
+				{/if}
 			</ol>
+			{#if breakpoint === 0}
+				{#if showHeadings}
+					<button on:click={() => { showHeadings = false; }} aria-label="Hide headings">
+						<svg viewBox="0 0 24 24">
+							<path fill="currentColor" d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" />
+						</svg>
+					</button>
+				{:else}
+					<button on:click={() => { showHeadings = true; }} aria-label="Show headings">
+						<svg viewBox="0 0 24 24">
+							<path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+						</svg>
+					</button>
+				{/if}
+			{/if}
 		</nav>
 	{/if}
 	{#if $currentSection && $document && $document[$currentSectionName]}
@@ -290,40 +362,34 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 		display: grid;
 		width: 100%;
 		height: 100%;
+		grid-template-columns: 1fr;
+		grid-template-rows: min-content min-content 1fr min-content;
+	}
+
+	main.breakpoint-1 {
 		grid-template-columns: max-content 1fr;
 		grid-template-rows: min-content 1fr min-content;
 	}
 
-	#tr-sections {
+	.breakpoint-1 #tr-sections {
 		grid-row: 1 / 2;
 		grid-column: 1 / 3;
 	}
 
-	#tr-headings {
+	.breakpoint-1 #tr-headings {
 		grid-row: 2 / 4;
 		grid-column: 1 / 2;
 		width: 15rem;
 	}
 
-	#tr-text, #tr-nested-list, #tr-metadata {
+	.breakpoint-1 #tr-text, .breakpoint-1 #tr-nested-list, .breakpoint-1 #tr-metadata {
 		grid-row: 2 / 3;
 		grid-column: 2 / 3;
 	}
 
-	#tr-footnote {
+	.breakpoint-1 #tr-footnote {
 		grid-row: 3 / 4;
 		grid-column: 2 / 3;
-		display: flex;
-		flex-direction: row;
-	}
-
-	#tr-footnote > div:nth-child(1) {
-		flex: 1 1 auto;
-	}
-
-	#tr-footnote > div:nth-child(2) {
-		flex: 0 0 auto;
-		align-self: flex-start;
 	}
 
 	#tr-loading {
@@ -347,20 +413,23 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 	}
 
 	nav ol li button {
+		width: 100%;
+	}
+
+	button {
 		display: block;
 		border: 0;
 		background: transparent;
 		cursor: pointer;
 		box-sizing: border-box;
-		width: 100%;
 		text-align: left;
 		color: inherit;
 		padding: 0.2rem 0.5rem;
 	}
 
 	button svg {
-		width: 24px;
-		height: 24px;
+		width: 1.5rem;
+		height: 1.5rem;
 	}
 
 	/* Loading styling */
@@ -372,13 +441,59 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 	}
 
 	/* Sections nav styling */
+	#tr-sections {
+		display: flex;
+		flex-direction: row;
+	}
+
+	#tr-sections ol {
+		flex-direction: column;
+		flex: 1 1 auto;
+	}
+
+	#tr-sections > button {
+		flex: 0 0 auto;
+		align-self: flex-start;
+		padding-top: 0.2rem;
+	}
+
+	.breakpoint-1 #tr-sections ol {
+		flex-direction: row;
+	}
+
 	#tr-sections button {
 		font-size: 90%;
 	}
 
+	#tr-sections button svg {
+		width: 1.3rem;
+		height: 1.3rem;
+	}
+
 	/* Headings nav styling */
+	#tr-headings {
+		display: flex;
+		flex-direction: row;
+	}
+
 	#tr-headings ol {
 		flex-direction: column;
+		flex: 1 1 auto;
+		overflow: auto;
+	}
+
+	#tr-headings > button {
+		display: block;
+		flex: 0 0 auto;
+		background: transparent;
+		border: 0;
+		padding: 0.2rem 0.3rem;
+		align-self: flex-start;
+	}
+
+	#tr-headings svg {
+		width: 1rem;
+		height: 1rem;
 	}
 
 	/* Text styling */
@@ -406,6 +521,8 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 	/* Footnote styling */
 	#tr-footnote {
 		padding: 0.2rem 0.3rem;
+		display: flex;
+		flex-direction: row;
 	}
 
 	#tr-footnote button {
@@ -413,4 +530,14 @@ import type { TEIMetadataNode } from 'tei-util/dist/types';
 		background: transparent;
 		cursor: pointer;
 	}
+
+	#tr-footnote > div:nth-child(1) {
+		flex: 1 1 auto;
+	}
+
+	#tr-footnote > div:nth-child(2) {
+		flex: 0 0 auto;
+		align-self: flex-start;
+	}
+
 </style>
