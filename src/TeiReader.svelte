@@ -366,6 +366,26 @@
 		grid-template-rows: min-content min-content 1fr min-content;
 	}
 
+	#tr-sections {
+		grid-row: 1 / 2;
+		grid-column: 1 / 2;
+	}
+
+	#tr-headings {
+		grid-row: 2 / 3;
+		grid-column: 1 / 2;
+	}
+
+	#tr-text, #tr-nested-list, #tr-metadata {
+		grid-row: 3 / 4;
+		grid-column: 1 / 2;
+	}
+
+	#tr-footnote {
+		grid-row: 4 / 5;
+		grid-column: 1 / 2;
+	}
+
 	main.breakpoint-1 {
 		grid-template-columns: max-content 1fr;
 		grid-template-rows: min-content 1fr min-content;
