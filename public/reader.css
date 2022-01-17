@@ -1,0 +1,142 @@
+/* General styling */
+#tr-sections {
+    background: #FBBF24;
+    color: #222222;
+}
+
+#tr-sections button[aria-current="true"] {
+    font-weight: bold;
+}
+
+#tr-sections li:last-child {
+    flex: 1 1 auto;
+}
+
+#tr-headings button[aria-current="true"] {
+    font-weight: bold;
+}
+
+#tr-headings button[data-level="level-2"] {
+    font-size: 80%;
+}
+
+#tr-text {
+    box-shadow: 0 0 5px inset #D1D5DB;
+}
+
+#tr-footnote {
+    border-left: 1px solid #F3F4F6;
+    padding: 0.5rem 0.5rem;
+}
+
+#tr-loading {
+    background: #D1D5DBaa;
+}
+
+#tr-loading svg {
+    color: #B45309;
+}
+
+/* Text styling */
+[data-type="node-titlePage"] {
+    text-align: center;
+}
+
+[data-type="node-titlePart"] {
+    margin-bottom: 2rem;
+}
+
+[data-type="node-heading"] {
+    font-size: 14pt;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+[data-type="node-paragraph"] {
+    margin-bottom: 1rem;
+}
+
+[data-type="node-lineGroup"] {
+    margin-bottom: 1rem;
+}
+
+[data-type="node-paragraph"][data-attr-rendition="#right"] {
+    text-align: right;
+}
+
+[data-type="node-pageBegin"] {
+    display: inline;
+}
+
+[data-type="node-pageBegin"]::after {
+    display: inline;
+    content: attr(data-attr-n);
+    font-size: 80%;
+    font-style: italic;
+    padding: 0 0.2rem;
+}
+
+[data-type="mark-lineBegin"] {
+    display: block;
+}
+
+[data-type="mark-byline"] {
+    display: block;
+    margin-bottom: 2rem;
+}
+
+[data-type="mark-letterSpacing"] {
+    letter-spacing: 2pt;
+}
+
+[data-type="mark-firstLetter"] {
+    font-size: 150%;
+}
+
+[data-type="mark-externalReference"] {
+    text-decoration: underline dotted;
+    cursor: pointer;
+}
+
+[data-type="mark-externalReference"]::after {
+    display: inline-block;
+    content: '\1F855';
+    margin-left: 0.2rem;
+}
+
+[data-type="mark-choiceMarker"] {
+    text-decoration: underline dotted;
+    cursor: pointer;
+}
+
+[data-type="mark-corr"]::after {
+    content: '] ';
+}
+
+/* Edits styling */
+#tr-nested-list section {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+/* Metadata styling*/
+#tr-metadata h2 {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 16pt;
+}
+
+#tr-metadata section {
+    margin-bottom: 1rem;
+}
+
+#tr-metadata h3 {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    font-size: 12pt;
+}
+
+#tr-metadata p {
+    margin: 0;
+}

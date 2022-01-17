@@ -1,0 +1,87 @@
+{
+    "sections": [
+        {
+            "name": "main",
+            "type": "text",
+            "label": "Text",
+            "links": [
+                {
+                    "name": "externalReference",
+                    "attr": "target"
+                }
+            ],
+            "footnotes": [
+                {
+                    "name": "choiceMarker",
+                    "targetName": "choice",
+                    "attr": "nestedtarget"
+                }
+            ],
+            "headings": [
+                {
+                    "name": "heading",
+                    "titleAttr": "headingTitle",
+                    "levelAttr": "headingType"
+                }
+            ]
+        },
+        {
+            "name": "choice",
+            "type": "nestedList",
+            "label": "Edits",
+            "sectionName": "main",
+            "nestedName": "choice",
+            "sort": "page-line",
+            "links": [
+                {
+                    "name": "externalReference",
+                    "attr": "target"
+                }
+            ],
+            "footnotes": [
+                {
+                    "name": "choiceMarker",
+                    "targetName": "choice",
+                    "attr": "nestedtarget"
+                }
+            ]
+        },
+        {
+            "name": "metadata",
+            "type": "metadata",
+            "label": "About",
+            "entries": [
+                {
+                    "label": "Bibliography",
+                    "entries": [
+                        {
+                            "label": "Title",
+                            "type": "single-text",
+                            "path": "tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title/text()"
+                        },
+                        {
+                            "label": "Author",
+                            "type": "single-text",
+                            "path": "tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author/tei:persName/text()"
+                        }
+                    ]
+                },
+                {
+                    "label": "Digital Version",
+                    "entries": [
+                        {
+                            "label": "License",
+                            "type": "single-text",
+                            "path": "tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence/tei:p/text()"
+                        },
+                        {
+                            "label": "Publisher",
+                            "type": "multi-text",
+                            "path": "tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:publisher/tei:orgName/text()"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,258 @@
+{
+    "sections": [
+        {
+            "name": "metadata",
+            "type": "metadata"
+        },
+        {
+            "name": "main",
+            "type": "text",
+            "parse": {
+                "rule": "tei:text/tei:body"
+            }
+        }
+    ],
+    "elements": [
+        {
+            "name": "doc",
+            "parse": {
+                "rule": "tei:body"
+            }
+        },
+        {
+            "name": "paragraph",
+            "parse": {
+                "rule": "tei:p"
+            },
+            "attrs": [
+                "rendition"
+            ]
+        },
+        {
+            "name": "heading",
+            "parse": {
+                "rule": "tei:head",
+                "text": "text()"
+            },
+            "attrs": [
+                "headingTitle",
+                "headingType"
+            ]
+        },
+        {
+            "name": "pageBegin",
+            "parse": {
+                "rule": "tei:pb"
+            },
+            "attrs": [
+                "n"
+            ]
+        },
+        {
+            "name": "titlePage",
+            "parse": {
+                "rule": "tei:titlePage"
+            },
+            "content": "block*"
+        },
+        {
+            "name": "lineGroup",
+            "parse": {
+                "rule": "tei:lg"
+            },
+            "content": "line*"
+        },
+        {
+            "name": "line",
+            "parse": {
+                "rule": "tei:l"
+            }
+        },
+        {
+            "name": "text",
+            "type": "text",
+            "parse": {
+                "rule": "tei:seg",
+                "text": "text()"
+            }
+        },
+        {
+            "name": "titlePart",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:titlePart"
+            }
+        },
+        {
+            "name": "byline",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:byline",
+                "text": "text()"
+            }
+        },
+        {
+            "name": "docEdition",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:docEdition",
+                "text": "text()"
+            }
+        },
+        {
+            "name": "docImprint",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:docImprint",
+                "text": "text()"
+            }
+        },
+        {
+            "name": "pubPlace",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:pubPlace",
+                "text": "text()"
+            }
+        },
+        {
+            "name": "publisher",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:publisher",
+                "text": "text()"
+            }
+        },
+        {
+            "name": "docDate",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:docDate",
+                "text": "text()"
+            }
+        },
+        {
+            "name": "lineBegin",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:lb",
+                "text": "\" \""
+            }
+        },
+        {
+            "name": "letterSpacing",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:hi[contains(@style, \"letter-spacing\")]",
+                "text": "text()"
+            }
+        },
+        {
+            "name": "externalReference",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:ref[@type=\"external\"]",
+                "text": "text()"
+            },
+            "attrs": [
+                "target"
+            ]
+        },
+        {
+            "name": "firstLetter",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:hi[contains(@style, \"initial-letter\")]",
+                "text": "text()"
+            }
+        },
+        {
+            "name": "corr",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:corr",
+                "text": "text()"
+            }
+        },
+        {
+            "name": "sic",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:sic",
+                "text": "text()"
+            }
+        },
+        {
+            "name": "choiceMarker",
+            "type": "mark",
+            "parse": {
+                "rule": "tei:ref[@type=\"choice\"]",
+                "text": "text()"
+            },
+            "attrs": [
+                "nestedTarget"
+            ]
+        },
+        {
+            "name": "choice",
+            "type": "nested",
+            "parse": {
+                "rule": "tei:choice"
+            },
+            "attrs": [
+                "xmlid"
+            ]
+        }
+    ],
+    "attributes": [
+        {
+            "name": "n",
+            "parse": {
+                "rule": "@n",
+                "value": "@n"
+            }
+        },
+        {
+            "name": "rendition",
+            "parse": {
+                "rule": "@rendition",
+                "value": "@rendition"
+            }
+        },
+        {
+            "name": "xmlid",
+            "parse": {
+                "rule": "@xml:id",
+                "value": "@xml:id"
+            }
+        },
+        {
+            "name": "nestedTarget",
+            "parse": {
+                "rule": "@target",
+                "value": "substring(@target, 2)"
+            }
+        },
+        {
+            "name": "target",
+            "parse": {
+                "rule": "@target",
+                "value": "@target"
+            }
+        },
+        {
+            "name": "headingType",
+            "parse": {
+                "rule": "@type",
+                "value": "@type"
+            }
+        },
+        {
+            "name": "headingTitle",
+            "parse": {
+                "rule": "@heading-title",
+                "value": "@heading-title"
+            }
+        }
+    ]
+}

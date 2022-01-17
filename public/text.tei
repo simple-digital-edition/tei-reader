@@ -292,7 +292,7 @@ bei </ns0:seg>
       </ns0:titlePage>
       <ns0:pb xmlns:ns0="http://www.tei-c.org/ns/1.0" facs="#f0006"/>
       <ns0:pb xmlns:ns0="http://www.tei-c.org/ns/1.0" facs="#f0007"/>
-      <tei:head xml:id="heading-1">
+      <tei:head xml:id="heading-1" heading-title="Zueignung" type="level-1">
         <ns0:hi xmlns:ns0="http://www.tei-c.org/ns/1.0" style="letter-spacing">Zueignung.</ns0:hi>
       </tei:head>
       <ns0:lb xmlns:ns0="http://www.tei-c.org/ns/1.0"/>
@@ -411,7 +411,7 @@ bei </ns0:seg>
       </ns0:lg>
       <ns0:lb xmlns:ns0="http://www.tei-c.org/ns/1.0"/>
       <ns0:pb xmlns:ns0="http://www.tei-c.org/ns/1.0" facs="#f0009" n="[1]"/>
-      <tei:head xml:id="heading-2">
+      <tei:head xml:id="heading-2" heading-title="Erstes Buch" type="level-1">
         <ns0:hi xmlns:ns0="http://www.tei-c.org/ns/1.0" style="letter-spacing">Erstes Buch.</ns0:hi>
       </tei:head>
       <ns0:lb xmlns:ns0="http://www.tei-c.org/ns/1.0"/>
@@ -602,6 +602,9 @@ Theilnahme auf seine Klagen h&#246;rte. Luise hatte inde&#223; die Vorh&#228;nge
         <tei:choice xml:id="choice-2">
           <ns0:corr>vermag</ns0:corr>
           <ns0:sic>mag</ns0:sic>
+          <ns0:seg> (as an example, see also: </ns0:seg>
+          <tei:ref type="choice" target="#choice-1">verschleierten</tei:ref>
+          <ns0:seg>)</ns0:seg>
         </tei:choice>
         <ns0:seg> Gott allein, erwiederte er; thun will ich, was ich kann, das Uebrige mu&#223; man erwarten. Erwarten &#8212; dachte Luise; wer hat hier Muth und Besonnenheit, auf eine langsame Wirkung der angewandten Mittel zu hoffen! Das Schrecklichste sieht mir ganz nahe, ich mu&#223; es wegger&#228;umt wissen, oder erliegen!</ns0:seg>
       </ns0:p>
@@ -641,7 +644,7 @@ fest umschlungen hielten. Lieber Julius, sagte sie, Deine unerwartete Ankunft is
 Mutter losmachen wollte, und, indem sie Beide an ihrem Bett knieten, ihre drei H&#228;nde ineinander verschlang. Der Prediger stand gegen&#252;ber, sprach mit bebender Stimme den Seegen, und endete in folgenden Worten: Der Tod ist verschlungen in den Sieg, und der Sieg leuchtet uns in der Liebe, die das Band ist aller Vollkommenheit. &#8212; Hier schlug die Uhr Eins. &#8212; Mathilde dehnte sich mit leisem Wimmern, und ihre kalte Hand hielt die ihrer Kinder krampfhaft zusammen. Eilen Sie, rief der Doktor, wenn der Schreck ihre Braut nicht t&#246;dten soll! Mathilde schlo&#223; die Augen, und Julius trug die ohnm&#228;chtige Luise aus dem Zimmer.</ns0:seg>
       </ns0:p>
       <ns0:pb xmlns:ns0="http://www.tei-c.org/ns/1.0" facs="#f0047" n="39"/>
-      <tei:head xml:id="heading-3">
+      <tei:head xml:id="heading-3" heading-title="Zweites Buch" type="level-1">
         <ns0:hi xmlns:ns0="http://www.tei-c.org/ns/1.0" style="letter-spacing">Zweites Buch.</ns0:hi>
       </tei:head>
       <ns0:lb xmlns:ns0="http://www.tei-c.org/ns/1.0"/>
@@ -1045,7 +1048,7 @@ lassen Sie ihn doch sein was er will; es ist ja noch die Frage, ob wir ihn jemal
 dem Kamin gest&#252;tzt, in dunklen Ahndungen verloren. Julius trat mit einem jungen, sch&#246;nen Mann herein, welcher sie auf den ersten Blick Fernando erkennen lie&#223;.</ns0:seg>
       </ns0:p>
       <ns0:pb xmlns:ns0="http://www.tei-c.org/ns/1.0" facs="#f0097" n="89"/>
-      <tei:head xml:id="heading-4">
+      <tei:head xml:id="heading-4" heading-title="Drittes Buch" type="level-1">
         <ns0:hi xmlns:ns0="http://www.tei-c.org/ns/1.0" style="letter-spacing">Drittes Buch.</ns0:hi>
       </tei:head>
       <ns0:lb xmlns:ns0="http://www.tei-c.org/ns/1.0"/>
@@ -1597,7 +1600,7 @@ in den Gang brachten. Ein fl&#252;chtiger Blick zeigte Fernando die Wolken auf J
         <ns0:seg>. Die Andren n&#228;herten sich nach und nach auch. Man ward begierig, die Bedeutung der Bilder zu wissen. Eine innre Ehrfurcht vor den alten, ehrenwerthen Gestalten, ja vor dem Buche selbst, das wie ein edler, fremder Geist mitten unter ihre neue Ansichten und Gef&#252;hle trat, verscheuchte jede Sp&#246;tterei. Man drang in Stein, die kleine Geschichte vorzutragen, und er, ohne sich lange bitten zu lassen, fing sogleich an:</ns0:seg>
       </ns0:p>
       <ns0:lb xmlns:ns0="http://www.tei-c.org/ns/1.0"/>
-      <tei:head xml:id="heading-5">
+      <tei:head xml:id="heading-5" heading-title="Von getreuer und sittsamer Minne" type="level-2">
         <ns0:seg xmlns:ns0="http://www.tei-c.org/ns/1.0">Von getreuer und sittsamer Minne.</ns0:seg>
       </tei:head>
       <ns0:lb xmlns:ns0="http://www.tei-c.org/ns/1.0"/>
