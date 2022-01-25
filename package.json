@@ -1,6 +1,6 @@
 {
   "name": "tei-reader",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
