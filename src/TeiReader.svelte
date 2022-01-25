@@ -17,6 +17,7 @@
 	export {teiSchema as teischema, uiConfigSrc as uiconfig, teiSrc as teisrc, stylingSrc as stylingsrc, documentId as documentid, breakpointMedium as breakpointmedium, breakpointLarge as breakpointlarge};
 
 	let articleElement = null as HTMLElement;
+	let footnoteElement = null as HTMLElement;
 	let mainElement = null as HTMLElement;
 	let currentHeadingId = '';
 	let scrollTrackingTimeout = -1;
@@ -29,13 +30,12 @@
 		if ($currentSection) {
 			let target = ev.target as HTMLElement;
 			let targets = [];
-			while (target && target !== articleElement) {
+			while (target && target !== articleElement && target !== footnoteElement) {
 				if (target.getAttribute('data-type')) {
 					targets.push(target)
 				}
 				target = target.parentElement as HTMLElement;
 			}
-			let type = target.getAttribute('data-type');
 			if ($currentSection.links) {
 				for (let link of $currentSection.links) {
 					const linkElements = targets.filter((target) => {
@@ -74,7 +74,6 @@
 				}
 				target = target.parentElement as HTMLElement;
 			}
-			let type = target.getAttribute('data-type');
 			if ($currentSection.links) {
 				for (let link of $currentSection.links) {
 					const linkElements = targets.filter((target) => {
@@ -338,7 +337,7 @@
 	{/if}
 	{#if $currentFootnote}
 		<aside id="tr-footnote">
-			<div on:click={handleContentClick}>{@html $currentFootnote}</div>
+			<div bind:this={footnoteElement} on:click={handleContentClick}>{@html $currentFootnote}</div>
 			<div>
 				<button on:click={() => { currentFootnote.set(null); }} aria-label="Close">
 					<svg viewBox="0 0 24 24">
