@@ -1,5 +1,7 @@
 # TEI Reader
 
+**The simple-digital-edition project is being replaced by the [uEdition](https://uEdition.github.io) project. As a result, this project has been archived.**
+
 The TEI Reader is a custom HTML element that provides an interface for reading TEI documents digitally.
 
 ## Development
